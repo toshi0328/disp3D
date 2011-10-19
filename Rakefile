@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "disp3D"
   gem.homepage = "http://github.com/toshi0328/disp3D"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{disp3D provide 3D GUI framework.}
+  gem.description = %Q{disp3D provide 3D GUI framework}
   gem.email = "toshi0328@gmail.com"
   gem.authors = ["Toshiyasu Shimizu"]
   # dependencies defined in Gemfile
@@ -30,14 +30,6 @@ Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
   test.pattern = 'test/**/test_*.rb'
   test.verbose = true
-end
-
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-  test.rcov_opts << '--exclude "gems/*"'
 end
 
 task :default => :test
