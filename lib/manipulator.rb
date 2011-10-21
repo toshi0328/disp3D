@@ -3,18 +3,61 @@ require 'disp3D'
 include GMath3D
 module Disp3D
   class Manipulator
+    def initialize(camera, w, h)
+      @camera = camera
+      @start_x = 0
+      @start_y = 0
+      @w = w
+      @h = h
+
+      @moving = false
+      @scalling = false
+      @translating = false
+
+      @trackball_size = 0.8
+      GLUT.MouseFunc(method(:mouse).to_proc())
+      GLUT.MotionFunc(method(:motion).to_proc())
+    end
+
     def mouse(button,state,x,y)
-      if ( button == GLUT::GLUT_LEFT_BUTTON && state == GLUT::GLUT_DOWN )
+      if (state == GLUT::GLUT_DOWN &&
+          ((button == GLUT::GLUT_RIGHT_BUTTON && @moving == true) ||
+          (button == GLUT::GLUT_LEFT_BUTTON && @scalling == true) ))
+        # pushed left and right at the same time
+        @translating = true
+        @start_x = x
+        @start_y = y
+      elsif (button == GLUT::GLUT_RIGHT_BUTTON && state == GLUT::GLUT_DOWN)
+        @scalling = true
+        @start_y = y
+      elsif ( button == GLUT::GLUT_LEFT_BUTTON && state == GLUT::GLUT_DOWN )
         @moving = true
         @start_x = x
         @start_y = y
+      elsif ( button == GLUT::GLUT_RIGHT_BUTTON && state == GLUT::GLUT_UP )
+        @scalling = false
+        @translating = false
       elsif ( button == GLUT::GLUT_LEFT_BUTTON && state == GLUT::GLUT_UP )
         @moving = false
+        @translating = false
       end
     end
 
     def motion(x,y)
-      if ( @moving )
+      if( @translating )
+        delta_x = 2*((@start_x - x).to_f/@w)
+        delta_y = 2*((@start_y - y).to_f/@h)
+        @start_x = x
+        @start_y = y
+
+        @camera.translate[0] -= delta_x
+        @camera.translate[1] += delta_y
+        GLUT.PostRedisplay()
+      elsif ( @scalling )
+        @camera.scale *= (1.0+(@start_y - y).to_f/@h)
+        @start_y = y
+        GLUT.PostRedisplay()
+      elsif ( @moving )
         @lastquat =trackball(
                    (2.0 * @start_x - @w) / @w,
                    (@h - 2.0 * @start_y) / @h,
@@ -27,19 +70,6 @@ module Disp3D
 
         GLUT.PostRedisplay()
       end
-    end
-
-    def initialize(camera, w, h)
-      @camera = camera
-      @start_x = 0
-      @start_y = 0
-      @drag_flg = false
-      @w = w
-      @h = h
-      @trackball_size = 0.8
-
-      GLUT.MouseFunc(method(:mouse).to_proc())
-      GLUT.MotionFunc(method(:motion).to_proc())
     end
 
     def project_to_sphere(r, x, y)
