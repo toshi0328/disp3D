@@ -3,9 +3,7 @@ require 'disp3D'
 module Disp3D
   class Node
     attr_accessor :geom
-
     attr_accessor :translate
-
     attr_accessor :color
 
     def pre_draw

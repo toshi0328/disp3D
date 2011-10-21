@@ -5,12 +5,7 @@ module Disp3D
     attr_accessor :rotX
     attr_accessor :rotY
 
-    LIGHT_POSITION = [0.25, 1.0, 0.25, 0.0]
-    LIGHT_DIFFUSE  = [1.0, 1.0, 1.0]
-    LIGHT_AMBIENT  = [0.25, 0.25, 0.25]
-    LIGHT_SPECULAR = [1.0, 1.0, 1.0]
-
-    MAT_DIFFUSE   = [0.0, 0.0, 0.0]
+    MAT_DIFFUSE   = [1.0, 1.0, 1.0]
     MAT_AMBIENT   = [0.25, 0.25, 0.25]
     MAT_SPECULAR  = [1.0, 1.0, 1.0]
     MAT_SHININESS = [32.0]
@@ -28,11 +23,6 @@ module Disp3D
       GL.MatrixMode(GL::GL_MODELVIEW)
       GL.LoadIdentity()
       GLU.LookAt(0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
-
-      GL.Lightfv(GL::GL_LIGHT0, GL::GL_POSITION, LIGHT_POSITION)
-      GL.Lightfv(GL::GL_LIGHT0, GL::GL_DIFFUSE, LIGHT_DIFFUSE)
-      GL.Lightfv(GL::GL_LIGHT0, GL::GL_AMBIENT, LIGHT_AMBIENT)
-      GL.Lightfv(GL::GL_LIGHT0, GL::GL_SPECULAR, LIGHT_SPECULAR)
 
       GL.Materialfv(GL::GL_FRONT, GL::GL_DIFFUSE, MAT_DIFFUSE)
       GL.Materialfv(GL::GL_FRONT, GL::GL_AMBIENT, MAT_AMBIENT)

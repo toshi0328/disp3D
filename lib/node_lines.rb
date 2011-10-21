@@ -21,9 +21,8 @@ module Disp3D
           end
         end
         GL.End()
-
-        post_draw()
       end
+      post_draw()
     end
 
   end

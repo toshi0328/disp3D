@@ -15,7 +15,6 @@ QTとモバイルの関連についても考えておく
 
 【課題】
 ・trackball manipulator
-・GMath3D::TriMeshとDisp::Trisの実装
 ・Windowsでの利用(なぜか、インストールでエラー・・・)
 ・STLファイルパーサー
 　・自動テスト構築

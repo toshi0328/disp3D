@@ -5,6 +5,8 @@ require 'gmath3D'
 require 'opengl'
 require 'glut'
 
+require 'util'
+
 require 'view'
 require 'camera'
 require 'manipulator'
@@ -13,6 +15,7 @@ require 'node'
 require 'node_collection'
 
 require 'node_tea_pod'
-require 'node_lines'
 require 'node_points'
+require 'node_lines'
+require 'node_tris'
 
