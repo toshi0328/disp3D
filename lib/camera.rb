@@ -1,14 +1,11 @@
 require 'disp3D'
+require 'gmath3D'
+
+include GMath3D
 
 module Disp3D
   class Camera
-    attr_accessor :rotX
-    attr_accessor :rotY
-
-    MAT_DIFFUSE   = [1.0, 1.0, 1.0]
-    MAT_AMBIENT   = [0.25, 0.25, 0.25]
-    MAT_SPECULAR  = [1.0, 1.0, 1.0]
-    MAT_SHININESS = [32.0]
+    attr_accessor :rotation
 
     def reshape(w,h)
       GL.Viewport(0,0,w,h)
@@ -24,20 +21,19 @@ module Disp3D
       GL.LoadIdentity()
       GLU.LookAt(0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
 
-      GL.Materialfv(GL::GL_FRONT, GL::GL_DIFFUSE, MAT_DIFFUSE)
-      GL.Materialfv(GL::GL_FRONT, GL::GL_AMBIENT, MAT_AMBIENT)
-      GL.Materialfv(GL::GL_FRONT, GL::GL_SPECULAR, MAT_SPECULAR)
-      GL.Materialfv(GL::GL_FRONT, GL::GL_SHININESS, MAT_SHININESS)
+      rot_mat = Matrix.from_quat(@rotation)
+      rot_mat_array = [
+        [rot_mat[0,0], rot_mat[0,1], rot_mat[0,2], 0],
+        [rot_mat[1,0], rot_mat[1,1], rot_mat[1,2], 0],
+        [rot_mat[2,0], rot_mat[2,1], rot_mat[2,2], 0],
+        [0,0,0,1]]
+      GL.MultMatrix(rot_mat_array)
 
       GL.Clear(GL::GL_COLOR_BUFFER_BIT | GL::GL_DEPTH_BUFFER_BIT)
-
-      GL.Rotate(@rotX, 1, 0, 0)
-      GL.Rotate(@rotY, 0, 1, 0)
     end
 
     def initialize()
-      @rotY = 0
-      @rotX = 0
+      @rotation = Quat.from_axis(Vector3.new(1,0,0),0)
       GL.Enable(GL::GL_LIGHTING)
       GL.Enable(GL::GL_LIGHT0)
 

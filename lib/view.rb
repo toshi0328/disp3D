@@ -46,7 +46,7 @@ module Disp3D
       GLUT.DisplayFunc(method(:display).to_proc())
 
       @camera = Camera.new()
-      @manipulator = Manipulator.new(@camera)
+      @manipulator = Manipulator.new(@camera, width, height)
       @world_scene_graph = SceneGraph.new()
 
       @bk_color = [0.5,0.5,0.5,0]
