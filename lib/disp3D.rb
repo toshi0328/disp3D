@@ -6,6 +6,7 @@ require 'opengl'
 require 'glut'
 
 require 'util'
+require 'stl'
 
 require 'view'
 require 'camera'
