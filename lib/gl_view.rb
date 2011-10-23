@@ -1,9 +1,14 @@
 require 'disp3D'
 
 module Disp3D
-  class View
-    attr_accessor :world_scene_graph
-    attr_accessor :camera
+  # GLView class hold primary object for 3D displaying like camera, scene_graph.
+  # User never use this class
+  # Use QtWidgetGL class (in Qt Application)
+  # Use GLWindow class (in GLUT Window)
+  class GLView
+    attr_reader :world_scene_graph
+    attr_reader :camera
+    attr_reader :manipulator
 
     attr_accessor :bk_color
 
@@ -15,7 +20,7 @@ module Disp3D
     def display()
       GL.ClearColor(@bk_color[0],@bk_color[1],@bk_color[2],@bk_color[3])
 
-#TODO lighting object!
+#TODO create lighting object!
       GL.Lightfv(GL::GL_LIGHT0, GL::GL_POSITION, LIGHT_POSITION)
       GL.Lightfv(GL::GL_LIGHT0, GL::GL_DIFFUSE, LIGHT_DIFFUSE)
       GL.Lightfv(GL::GL_LIGHT0, GL::GL_AMBIENT, LIGHT_AMBIENT)
@@ -23,17 +28,9 @@ module Disp3D
 
       @camera.display() if(@camera)
       @world_scene_graph.display() if(@world_scene_graph)
-
-      GLUT.SwapBuffers()
     end
 
-    def initialize(x,y,width,height)
-      GLUT.InitWindowPosition(x, y)
-      GLUT.InitWindowSize(width, height)
-      GLUT.Init
-      GLUT.InitDisplayMode(GLUT::GLUT_DOUBLE | GLUT::GLUT_RGB | GLUT::GLUT_DEPTH)
-      GLUT.CreateWindow("Disp3D view test")
-
+    def initialize(width, height)
       GL.Enable(GL::GL_DEPTH_TEST)
 
       GL.FrontFace(GL::GL_CW)
@@ -43,17 +40,11 @@ module Disp3D
       GL.DepthFunc(GL::GL_LESS)
       GL.ShadeModel(GL::SMOOTH)
 
-      GLUT.DisplayFunc(method(:display).to_proc())
-
       @camera = Camera.new()
       @manipulator = Manipulator.new(@camera, width, height)
       @world_scene_graph = SceneGraph.new()
 
       @bk_color = [0.5,0.5,0.5,0]
    end
-
-    def start
-      GLUT.MainLoop()
-    end
   end
 end

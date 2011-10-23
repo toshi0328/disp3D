@@ -7,16 +7,17 @@ module Disp3D
       @camera = camera
       @start_x = 0
       @start_y = 0
-      @w = w
-      @h = h
+      reset_size(w, h)
 
       @moving = false
       @scalling = false
       @translating = false
-
       @trackball_size = 0.8
-      GLUT.MouseFunc(method(:mouse).to_proc())
-      GLUT.MotionFunc(method(:motion).to_proc())
+    end
+
+    def reset_size(width, height)
+      @width = width
+      @height = height
     end
 
     def mouse(button,state,x,y)
@@ -43,33 +44,33 @@ module Disp3D
       end
     end
 
+    # return true if should be redisplay
     def motion(x,y)
       if( @translating )
-        delta_x = 2*((@start_x - x).to_f/@w)
-        delta_y = 2*((@start_y - y).to_f/@h)
+        delta_x = 2*((@start_x - x).to_f/@width)
+        delta_y = 2*((@start_y - y).to_f/@height)
         @start_x = x
         @start_y = y
 
         @camera.translate[0] -= delta_x
         @camera.translate[1] += delta_y
-        GLUT.PostRedisplay()
+        return true
       elsif ( @scalling )
-        @camera.scale *= (1.0+(@start_y - y).to_f/@h)
+        @camera.scale *= (1.0+(@start_y - y).to_f/@height)
         @start_y = y
-        GLUT.PostRedisplay()
+        return true
       elsif ( @moving )
         @lastquat =trackball(
-                   (2.0 * @start_x - @w) / @w,
-                   (@h - 2.0 * @start_y) / @h,
-                   (2.0 * x - @w) / @w,
-                   (@h - 2.0 * y) / @h)
+                   (2.0 * @start_x - @width) / @width,
+                   (@height - 2.0 * @start_y) / @height,
+                   (2.0 * x - @width) / @width,
+                   (@height - 2.0 * y) / @height)
         @start_x = x
         @start_y = y
-
         @camera.rotation = @lastquat * @camera.rotation if( @lastquat )
-
-        GLUT.PostRedisplay()
+        return true
       end
+      return false
     end
 
     def project_to_sphere(r, x, y)

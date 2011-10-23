@@ -8,7 +8,11 @@ require 'glut'
 require 'util'
 require 'stl'
 
-require 'view'
+require 'gl_view'
+
+require 'qt_widget_gl'
+require 'glut_window'
+
 require 'camera'
 require 'manipulator'
 require 'scene_graph'

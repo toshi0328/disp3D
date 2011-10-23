@@ -43,8 +43,6 @@ module Disp3D
       @scale = 1
       GL.Enable(GL::GL_LIGHTING)
       GL.Enable(GL::GL_LIGHT0)
-
-      GLUT.ReshapeFunc(method(:reshape).to_proc())
     end
   end
 end
