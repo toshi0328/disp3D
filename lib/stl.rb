@@ -52,15 +52,12 @@ module Disp3D
         break if( line[0] == "endfacet" )
 
         if( line[0] == "outer" and line[1] == "loop")
-          added = parse_outerloop_section(file)
-          if( added && current_normal )
-            @normals.push(current_normal)
-          end
+          added_triangle = parse_outerloop_section(file, current_normal)
         end
       end
     end
 
-    def parse_outerloop_section(file)
+    def parse_outerloop_section(file, current_normal)
       # read vertex
       vertices = []
       while(line = file.gets )
@@ -71,15 +68,21 @@ module Disp3D
         end
       end
       if( vertices.size >= 3)
-        @tris.push(Triangle.new(vertices[0],vertices[1],vertices[2]))
-        return true
+        adding_triangle = Triangle.new(vertices[0],vertices[1],vertices[2])
+        if( current_normal != nil )
+          if(adding_triangle.normal.dot(current_normal) < 0)
+            adding_triangle = adding_triangle.reverse()
+          end
+          @normals.push(current_normal)
+        end
+        @tris.push(adding_triangle)
+        return adding_triangle
       end
-      return false
+      return nil
     end
 
     def tri_mesh
       return nil if(!@tris)
-p @tris
       return GMath3D::TriMesh.from_triangles(@tris)
     end
   end

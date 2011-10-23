@@ -4,7 +4,6 @@ module Disp3D
   class NodeTris < Node
     def draw
       pre_draw()
-
       if(@geom)
         GL.Begin(GL::TRIANGLES)
         if(@geom.kind_of?(GMath3D::TriMesh))
