@@ -41,8 +41,6 @@ module Disp3D
       @eye = Vector3.new(0,0,5)
       @center = Vector3.new(0,0,0)
       @scale = 1
-      GL.Enable(GL::GL_LIGHTING)
-      GL.Enable(GL::GL_LIGHT0)
     end
   end
 end

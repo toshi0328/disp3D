@@ -4,11 +4,21 @@ module Disp3D
   class Node
     attr_accessor :geom
     attr_accessor :translate
-    attr_accessor :color
+    attr_accessor :material_color
+    attr_accessor :shininess
 
     def pre_draw
-      GL.Color(@color[0], @color[1], @color[2]) if(@color && @color.size == 3)
-      GL.Color(@color[0], @color[1], @color[2], @color[3]) if(@color && @color.size == 4)
+      diffuse = @material_color
+      ambient = [@material_color[0]*0.5, @material_color[1]*0.5, @material_color[2]*0.5, 1]
+      specular = [1,1,1,0.5]
+
+      shineness = [@shiness]
+      shineness = [@shininess_default] if( !@shiness )
+
+      GL.Materialfv(GL::GL_FRONT, GL::GL_DIFFUSE, diffuse)
+      GL.Materialfv(GL::GL_FRONT, GL::GL_AMBIENT, ambient)
+      GL.Materialfv(GL::GL_FRONT, GL::GL_SPECULAR, specular)
+      GL.Materialfv(GL::GL_FRONT, GL::GL_SHININESS, shineness)
 
       GL.PushMatrix()
       GL.Translate(translate[0], translate[1], translate[2]) if(@translate)
@@ -20,7 +30,12 @@ module Disp3D
 
     def initialize(geometry)
       @geom = geometry
-      @color = [1.0, 1.0, 1.0]
+
+      @translate = nil
+
+      @material_color = [1.0, 1.0, 1.0, 1.0]
+      @shininess = nil
+      @shininess_default = 32.0
     end
   end
 end

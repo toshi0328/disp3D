@@ -10,10 +10,10 @@ require 'stl'
 
 require 'gl_view'
 
-require 'qt_widget_gl'
 require 'glut_window'
 
 require 'camera'
+require 'light'
 require 'manipulator'
 require 'scene_graph'
 require 'node'
