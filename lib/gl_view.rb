@@ -32,6 +32,9 @@ module Disp3D
       GL.Enable(GL::GL_DEPTH_TEST)
       GL.DepthFunc(GL::GL_LESS)
 
+      GL.Enable(GL::BLEND)
+      GL.BlendFunc(GL::GL_SRC_ALPHA, GL::GL_ONE_MINUS_SRC_ALPHA)
+
       GL.ShadeModel(GL::SMOOTH)
 
       @light = Light.new()
