@@ -29,9 +29,6 @@ class QtWidgetGL < Qt::GLWidget
 
   def initializeGL()
     @view = Disp3D::GLView.new(@width, @height)
-    #add node for test
-    node = Disp3D::NodeTeaPod.new(nil)
-    @view.world_scene_graph.add(node)
   end
 
   def minimumSizeHint()
