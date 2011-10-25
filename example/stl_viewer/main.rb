@@ -6,6 +6,8 @@ require 'qt_widget_gl'
 require 'stl_viewer'
 
 class STLViewerWindow < Qt::MainWindow
+  attr_reader :gl_widget
+
   slots 'new()',
         'open()',
         'save()',
@@ -43,7 +45,7 @@ class STLViewerWindow < Qt::MainWindow
     setMinimumSize(160, 160)
 
     # controllers
-    @doc_ctrl = DocumentCtrl.new()
+    @doc_ctrl = DocumentCtrl.new(self)
   end
 
   def createActions()
@@ -108,8 +110,6 @@ class STLViewerWindow < Qt::MainWindow
     Qt::MessageBox.about(self, tr("About Menu"),
                    tr("STL Viewer, Demo application using <b>disp3D</b> library."))
   end
-
-
 end
 
 # start application

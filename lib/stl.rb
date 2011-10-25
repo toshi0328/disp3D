@@ -9,10 +9,6 @@ module Disp3D
       @name = ""
     end
 
-    def split_line(line)
-      return line.strip.split(/\s+/)
-    end
-
     def parse(file_path)
       # support only ascii type
       return false if(!FileTest.exist?(file_path))
@@ -30,6 +26,17 @@ module Disp3D
         end
       }
       @normals = nil if( @normals.size == 0 )
+      return true
+    end
+
+    def tri_mesh
+      return nil if(!@tris)
+      return GMath3D::TriMesh.from_triangles(@tris)
+    end
+
+private
+    def split_line(line)
+      return line.strip.split(/\s+/)
     end
 
     def parse_solid_section(file)
@@ -81,9 +88,5 @@ module Disp3D
       return nil
     end
 
-    def tri_mesh
-      return nil if(!@tris)
-      return GMath3D::TriMesh.from_triangles(@tris)
-    end
   end
 end

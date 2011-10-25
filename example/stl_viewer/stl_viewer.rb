@@ -1,4 +1,9 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
-require 'document'
+require 'app_model'
 
+require 'document'
+require 'mesh_info'
+
+require 'document_ctrl'
+require 'gl_ctrl'
