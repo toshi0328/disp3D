@@ -22,5 +22,6 @@ require 'node_collection'
 require 'node_tea_pod'
 require 'node_points'
 require 'node_lines'
+require 'node_polylines'
 require 'node_tris'
 
