@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'helper'
+require 'qt_widget_gl'
 
 require 'Qt'
 
