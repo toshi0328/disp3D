@@ -65,6 +65,7 @@ class QtWidgetGL < Qt::GLWidget
   end
 
   def resizeGL(width, height)
+#p "called resizeGL"
     @view.camera.reshape(width, height)
     @view.manipulator.reset_size(width, height)
   end

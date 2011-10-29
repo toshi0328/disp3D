@@ -6,14 +6,18 @@ module Disp3D
     attr_accessor :translate
     attr_accessor :center
     attr_accessor :scale
+    attr_accessor :is_orth
 
     def reshape(w,h)
       GL.Viewport(0,0,w,h)
 
       GL.MatrixMode(GL::GL_PROJECTION)
       GL.LoadIdentity()
-      GLU.Perspective(45.0, w.to_f()/h.to_f(), 0.1, 100.0)
-      #GL.Ortho(-1,1,-1,1,-10,10)
+      if @is_orgh
+        GL.Ortho(-w/2.0, w/2.0, -h/2.0, h/2.0, -1000, 1000)
+      else
+        GLU.Perspective(45.0, w.to_f()/h.to_f(), 0.1, 100.0)
+      end
     end
 
     def display()
@@ -41,6 +45,7 @@ module Disp3D
       @eye = Vector3.new(0,0,5)
       @center = Vector3.new(0,0,0)
       @scale = 1
+      @is_orgh = true
     end
   end
 end

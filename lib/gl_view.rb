@@ -43,6 +43,6 @@ module Disp3D
       @world_scene_graph = SceneGraph.new()
 
       @bk_color = [0.28,0.23,0.55,1]
-   end
+    end
   end
 end
