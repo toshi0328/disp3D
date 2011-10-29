@@ -6,6 +6,7 @@ require 'opengl'
 require 'glut'
 
 require 'util'
+require 'dsl'
 require 'stl'
 
 require 'gl_view'
