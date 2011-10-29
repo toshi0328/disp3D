@@ -1,12 +1,11 @@
 require 'disp3D'
 
 module Disp3D
-  class NodeLines < Node
+  class NodeLines < NodeLeaf
     attr_accessor :width
 
-    def draw
-      pre_draw()
-
+protected
+    def draw_element
       if(@geom)
         GL.LineWidth(@width) if(@width)
 
@@ -22,7 +21,6 @@ module Disp3D
         end
         GL.End()
       end
-      post_draw()
     end
 
   end

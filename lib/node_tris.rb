@@ -1,9 +1,10 @@
 require 'disp3D'
 
 module Disp3D
-  class NodeTris < Node
-    def draw
-      pre_draw()
+  class NodeTris < NodeLeaf
+
+protected
+    def draw_element
       if(@geom)
         GL.Begin(GL::TRIANGLES)
         if(@geom.kind_of?(GMath3D::TriMesh))
@@ -16,7 +17,6 @@ module Disp3D
         end
         GL.End()
       end
-      post_draw()
     end
 
   end

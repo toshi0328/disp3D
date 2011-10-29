@@ -1,11 +1,16 @@
 require 'disp3D'
 
 module Disp3D
-  class NodePoints < Node
+  class NodePoints < NodeLeaf
     attr_accessor :size
 
-    def draw
-      pre_draw()
+    def initialize(geom)
+      super(geom)
+      @size = 3.0;
+    end
+
+protected
+    def draw_element
       if(@geom)
         GL.PointSize(@size)
 
@@ -23,12 +28,6 @@ module Disp3D
 
         GL.End()
       end
-      post_draw()
-    end
-
-    def initialize(geom)
-      super(geom)
-      @size = 3.0;
     end
   end
 end

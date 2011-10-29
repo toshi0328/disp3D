@@ -30,7 +30,7 @@ vertices2[4] = Vector3.new(1,2,2)
 vertices2[5] = Vector3.new(0,1,1)
 geoms_polyline = [Polyline.new(vertices1, true), Polyline.new(vertices2, false)]
 nodes.push( Disp3D::NodePolylines.new(geoms_polyline) )
-nodes[1].material_color = [1,1,1,1]
+nodes[1].material_color = [1,1,0,1]
 
 main_view.world_scene_graph.add(nodes)
 main_view.start

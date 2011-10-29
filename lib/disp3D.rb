@@ -19,6 +19,7 @@ require 'manipulator'
 require 'scene_graph'
 require 'node'
 require 'node_collection'
+require 'node_leaf'
 
 require 'node_tea_pod'
 require 'node_points'
