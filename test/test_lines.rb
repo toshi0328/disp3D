@@ -33,5 +33,7 @@ nodes.push( Disp3D::NodePolylines.new(geoms_polyline) )
 nodes[1].material_color = [1,1,1,1]
 
 main_view.world_scene_graph.add(nodes)
+
+
 main_view.start
 

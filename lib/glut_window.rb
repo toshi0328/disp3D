@@ -14,6 +14,7 @@ module Disp3D
       GLUT.ReshapeFunc(method(:reshape).to_proc())
       GLUT.MouseFunc(method(:mouse).to_proc())
       GLUT.MotionFunc(method(:motion).to_proc())
+      GLUT.PassiveMotionFunc(method(:passive_motion).to_proc())
       super(width, height)
     end
 
@@ -28,6 +29,18 @@ module Disp3D
 
     def mouse(button,state,x,y)
       @manipulator.mouse(button,state,x,y)
+    end
+
+    # impliment for test
+    # TODO add this method in nexternal Class
+    def passive_motion(x,y)
+      result = @picker.hit_test(x,y)
+      if(result != nil && result.size > 0)
+        p "hit #{result.size} elements"
+        result.each do | item |
+          p item
+        end
+      end
     end
 
     def motion(x,y)

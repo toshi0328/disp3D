@@ -6,6 +6,7 @@ module Disp3D
     def box
       return Box.new(Vector3.new(-0.5, -0.5, -0.5),Vector3.new(0.5, 0.5, 0.5))
     end
+
 protected
     def draw_element
       GLUT.SolidTeapot(0.5)

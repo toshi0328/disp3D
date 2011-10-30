@@ -10,13 +10,16 @@ module Disp3D
     attr_reader :camera
     attr_reader :manipulator
     attr_reader :light
+    attr_reader :picker
 
     attr_accessor :bk_color
 
     def display()
       GL.ClearColor(@bk_color[0],@bk_color[1],@bk_color[2],@bk_color[3])
+      GL.Clear(GL::GL_COLOR_BUFFER_BIT | GL::GL_DEPTH_BUFFER_BIT)
 
       @light.display() if(@light)
+
       @camera.display() if(@camera)
       @world_scene_graph.display() if(@world_scene_graph)
     end
@@ -41,7 +44,7 @@ module Disp3D
       @camera = Camera.new()
       @manipulator = Manipulator.new(@camera, width, height)
       @world_scene_graph = SceneGraph.new()
-
+      @picker = Picker.new(self)
       @bk_color = [0.28,0.23,0.55,1]
     end
 

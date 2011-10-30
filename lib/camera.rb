@@ -42,8 +42,6 @@ module Disp3D
 
       GL.MultMatrix(rot_mat_array)
       GL.Scale(@scale, @scale, @scale)
-
-      GL.Clear(GL::GL_COLOR_BUFFER_BIT | GL::GL_DEPTH_BUFFER_BIT)
     end
 
     def fit(radius, width, height)

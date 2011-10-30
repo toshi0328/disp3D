@@ -23,6 +23,12 @@ module Disp3D
       draw_inner(self.method(:draw_element))
     end
 
+    def draw_with_name
+      @@named_nodes[@node_id] = self
+      GL.LoadName(@node_id)
+      draw_inner(self.method(:draw_element))
+    end
+
     def box
       return nil if @geom == nil
       if(@geom.kind_of?(Array))

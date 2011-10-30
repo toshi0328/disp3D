@@ -27,6 +27,14 @@ module Disp3D
       post_draw()
     end
 
+    def draw_with_name
+      pre_draw()
+      @children.each do |child|
+        child.draw_with_name
+      end
+      post_draw()
+    end
+
     def box
       return nil if @children == nil || @children.size == 0
       box = @children[0].box
