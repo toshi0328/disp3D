@@ -8,39 +8,51 @@
 
 また、ゲーム、CGや大規模モデルなどは当面の目標からは外れます。
 
-= インストール
+== インストール
 ライブラリは以下の３つのgemに依存しています。
 - gmath3D
 - ruby-opengl
 - qtbindings()
 
-== gmath3D
+=== gmath3D
 gemからインストールが可能です
+
 gem install GMath3D
 
-== ruby-opengl
+=== ruby-opengl
 openglを扱う上では、必須となります。
+
 gemでのインストールが失敗する可能性があります。
 https://github.com/toshi0328/ruby-opengl
 の内容をビルド、インストールします。
 
-== qtbindings
+=== qtbindings
 Qtを利用する場合に必要となります。
+
 gemでのインストールが失敗する可能性があります。
 https://github.com/toshi0328/qtbindings
 の内容をビルド、インストールします。
 
-= 使い方
-== 例
+== 使い方
+=== 例
+1.点や線を３次元ビュー上に追加する
+開発中
 
+2.Qtアプリケーションとして開発をする
+開発中
 
+3.STLファイルを読み込み、表示する
+開発中
 
-== データ構造
+4.表示要素をマウス操作で取得する
+開発中
 
+=== データ構造
+中心となるクラスは、GLViewおよびSceneGraphです。
+執筆中
 
-
-= 今後の課題
-== 開発項目
+== 今後の課題
+=== 開発項目
 - 自動テスト
 - ピック処理の追加
 - DSLの設計
@@ -58,7 +70,7 @@ https://github.com/toshi0328/qtbindings
 - アニメーション
 - モバイル応用
 
-== 他ライブラリとの組み合わせ
+=== 他ライブラリとの組み合わせ
 - 3次元画像処理,pclの利用
 - 医用応用として、DICOMパーサー(Ruby-DICOM)の利用
 - 2次元画像処理、RMagicに任せる・・・（Ruby-DICOMとのつなぎなど）
