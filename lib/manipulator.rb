@@ -99,5 +99,14 @@ module Disp3D
       a = a.normalize
       return Quat.from_axis(a, phi)
     end
+
+    def centering(center_pos)
+      return if center_pos == nil
+      @camera.translate = center_pos
+    end
+
+    def fit(radius)
+      @camera.fit(radius, @width, @height)
+    end
   end
 end

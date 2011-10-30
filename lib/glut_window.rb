@@ -38,6 +38,7 @@ module Disp3D
     end
 
     def start
+      fit
       GLUT.MainLoop()
     end
 

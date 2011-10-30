@@ -44,5 +44,17 @@ module Disp3D
 
       @bk_color = [0.28,0.23,0.55,1]
     end
+
+    def centering
+      center_pos =  @world_scene_graph.bounding_box.center * -1 # TODO refactaring vector3.rb
+      @manipulator.centering(center_pos)
+    end
+
+    def fit
+      centering
+      length = @world_scene_graph.bounding_box.length # TODO refactaring box.rb
+      orth_length = Math.sqrt( length[0]*length[0] + length[1]*length[1] + length[2]*length[2] )
+      @manipulator.fit(orth_length/2.0)
+    end
   end
 end

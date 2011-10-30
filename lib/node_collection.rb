@@ -2,6 +2,11 @@ require 'disp3D'
 
 module Disp3D
   class NodeCollection < Node
+
+    def initialize()
+      @children = []
+    end
+
     def add(node)
       # TODO if ancestor Node is added then cancel...
       # add parents and check
@@ -22,8 +27,13 @@ module Disp3D
       post_draw()
     end
 
-    def initialize()
-      @children = []
+    def box
+      return nil if @children == nil || @children.size == 0
+      box = @children[0].box
+      @children.each do |child|
+        box += child.box
+      end
+      return box
     end
   end
 end

@@ -23,6 +23,20 @@ module Disp3D
       draw_inner(self.method(:draw_element))
     end
 
+    def box
+      return nil if @geom == nil
+      if(@geom.kind_of?(Array))
+        return nil if @geom.size == 0
+        box = @geom[0].box
+        @geom.each do |element|
+          box += element.box
+        end
+      return box
+      else
+        return @geom.box
+      end
+    end
+
 protected
     def draw_inner(draw_element)
       diffuse = @material_color

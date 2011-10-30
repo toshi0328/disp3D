@@ -17,5 +17,9 @@ module Disp3D
       super
       @translate = nil
     end
+
+    def box
+      raise
+    end
   end
 end

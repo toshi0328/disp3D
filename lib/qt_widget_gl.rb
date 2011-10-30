@@ -27,6 +27,10 @@ class QtWidgetGL < Qt::GLWidget
     return @view.world_scene_graph
   end
 
+  def fit
+    @view.fit
+  end
+
   def initializeGL()
     @view = Disp3D::GLView.new(@width, @height)
   end
@@ -65,7 +69,6 @@ class QtWidgetGL < Qt::GLWidget
   end
 
   def resizeGL(width, height)
-#p "called resizeGL"
     @view.camera.reshape(width, height)
     @view.manipulator.reset_size(width, height)
   end
