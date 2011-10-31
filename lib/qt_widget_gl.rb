@@ -50,14 +50,18 @@ class QtWidgetGL < Qt::GLWidget
   end
 
   def mouseReleaseEvent(event)
+    @mouse_release_proc.call(self, get_GLUT_button(event), event.pos.x, event.pos.y) if( @mouse_release_proc != nil)
     @view.manipulator.mouse(get_GLUT_button(event), GLUT::GLUT_UP, event.pos.x,event.pos.y)
   end
 
   def mousePressEvent(event)
+    @mouse_press_proc.call(self, get_GLUT_button(event), event.pos.x, event.pos.y) if( @mouse_press_proc != nil)
     @view.manipulator.mouse(get_GLUT_button(event), GLUT::GLUT_DOWN, event.pos.x,event.pos.y)
   end
 
   def mouseMoveEvent(event)
+    @mouse_move_proc.call(self, x,y) if( @mouse_move_proc != nil)
+
     need_update = @view.manipulator.motion(event.pos.x,event.pos.y)
     if(need_update)
       updateGL()

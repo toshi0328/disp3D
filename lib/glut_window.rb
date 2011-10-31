@@ -12,9 +12,11 @@ module Disp3D
       GLUT.CreateWindow("Disp3D view test")
       GLUT.DisplayFunc(method(:display).to_proc())
       GLUT.ReshapeFunc(method(:reshape).to_proc())
+
       GLUT.MouseFunc(method(:mouse).to_proc())
       GLUT.MotionFunc(method(:motion).to_proc())
       GLUT.PassiveMotionFunc(method(:passive_motion).to_proc())
+
       super(width, height)
     end
 
@@ -28,26 +30,25 @@ module Disp3D
     end
 
     def mouse(button,state,x,y)
+      if(state == GLUT::GLUT_UP)
+        @mouse_release_proc.call(self, button, x, y) if( @mouse_release_proc != nil)
+      elsif(state == GLUT::GLUT_DOWN)
+        @mouse_press_proc.call(self, button, x, y) if( @mouse_press_proc != nil)
+      end
       @manipulator.mouse(button,state,x,y)
     end
 
-    # impliment for test
-    # TODO add this method in nexternal Class
-    def passive_motion(x,y)
-      result = @picker.hit_test(x,y)
-      if(result != nil && result.size > 0)
-        p "hit #{result.size} elements"
-        result.each do | item |
-          p item
-        end
-      end
-    end
-
     def motion(x,y)
+      @mouse_move_proc.call(self, x,y) if( @mouse_move_proc != nil)
+
       update = @manipulator.motion(x,y)
       if(update)
         GLUT.PostRedisplay()
       end
+    end
+
+    def passive_motion(x,y)
+      @mouse_move_proc.call(self, x,y) if( @mouse_move_proc != nil)
     end
 
     def start

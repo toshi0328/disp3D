@@ -34,6 +34,19 @@ nodes[1].material_color = [1,1,1,1]
 
 main_view.world_scene_graph.add(nodes)
 
+# add pick procedure
+main_view.set_mouse_press Proc.new{|view, button, x, y|
+  current_picker = view.picker
+  if (current_picker != nil)
+    result = current_picker.hit_test(x,y)
+    if(result != nil && result.size > 0)
+      p "hit #{result.size} elements"
+      result.each do | item |
+        p item
+      end
+    end
+  end
+}
 
 main_view.start
 

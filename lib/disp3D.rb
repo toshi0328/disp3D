@@ -17,6 +17,7 @@ require 'camera'
 require 'light'
 require 'manipulator'
 require 'picker'
+require 'picked_result'
 require 'scene_graph'
 
 require 'node'

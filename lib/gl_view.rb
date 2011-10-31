@@ -14,16 +14,6 @@ module Disp3D
 
     attr_accessor :bk_color
 
-    def display()
-      GL.ClearColor(@bk_color[0],@bk_color[1],@bk_color[2],@bk_color[3])
-      GL.Clear(GL::GL_COLOR_BUFFER_BIT | GL::GL_DEPTH_BUFFER_BIT)
-
-      @light.display() if(@light)
-
-      @camera.display() if(@camera)
-      @world_scene_graph.display() if(@world_scene_graph)
-    end
-
     def initialize(width, height)
       GL.Enable(GL::GL_DEPTH_TEST)
 
@@ -46,6 +36,18 @@ module Disp3D
       @world_scene_graph = SceneGraph.new()
       @picker = Picker.new(self)
       @bk_color = [0.28,0.23,0.55,1]
+
+      @mouse_move_proc = nil
+    end
+
+    def display()
+      GL.ClearColor(@bk_color[0],@bk_color[1],@bk_color[2],@bk_color[3])
+      GL.Clear(GL::GL_COLOR_BUFFER_BIT | GL::GL_DEPTH_BUFFER_BIT)
+
+      @light.display() if(@light)
+
+      @camera.display() if(@camera)
+      @world_scene_graph.display() if(@world_scene_graph)
     end
 
     def centering
@@ -59,5 +61,18 @@ module Disp3D
       orth_length = Math.sqrt( length[0]*length[0] + length[1]*length[1] + length[2]*length[2] )
       @manipulator.fit(orth_length/2.0)
     end
+
+    def set_mouse_move(proc)
+      @mouse_move_proc = proc
+    end
+
+    def set_mouse_press(proc)
+      @mouse_press_proc = proc
+    end
+
+    def set_mouse_release(proc)
+      @mouse_release_proc = proc
+    end
+
   end
 end

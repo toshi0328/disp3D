@@ -52,8 +52,8 @@ module Disp3D
         @start_x = x
         @start_y = y
 
-        @camera.translate[0] -= delta_x
-        @camera.translate[1] += delta_y
+        @camera.translate.x -= delta_x
+        @camera.translate.y += delta_y
         return true
       elsif ( @scalling )
         @camera.scale *= (1.0+(@start_y - y).to_f/@height)

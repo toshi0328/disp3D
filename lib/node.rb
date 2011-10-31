@@ -27,6 +27,7 @@ module Disp3D
     end
 
     def box
+      # should be implimented in child class
       raise
     end
   end
