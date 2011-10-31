@@ -23,7 +23,7 @@ protected
       polyline.vertices.each do | vertex |
         GL.Vertex( vertex.x, vertex.y, vertex.z )
       end
-      GL.Vertex( polyline.vertices[0].x, polyline.vertices[0].y, polyline.vertices[0].z ) if( polyline.is_open )
+      GL.Vertex( polyline.vertices[0].x, polyline.vertices[0].y, polyline.vertices[0].z ) if( !polyline.is_open )
       GL.End()
     end
 
