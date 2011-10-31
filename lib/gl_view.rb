@@ -12,6 +12,10 @@ module Disp3D
     attr_reader :light
     attr_reader :picker
 
+    attr_reader :mouse_move_proc
+    attr_reader :mouse_press_proc
+    attr_reader :mouse_release_proc
+
     attr_accessor :bk_color
 
     def initialize(width, height)
