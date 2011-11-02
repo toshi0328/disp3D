@@ -31,4 +31,4 @@ require 'node_points'
 require 'node_lines'
 require 'node_polylines'
 require 'node_tris'
-
+require 'node_arrows'

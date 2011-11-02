@@ -59,6 +59,26 @@ text_node.position = Vector3.new(2,2,2)
 root_node.add(text_node)
 
 #=========================
+# arrow
+arrow_geom = FiniteLine.new(Vector3.new(0,3,1), Vector3.new(3,3,1))
+arrow_node = NodeArrows.new(arrow_geom)
+arrow_node.width = 4
+root_node.add(arrow_node)
+
+arrow_geoms = Array.new()
+[45, 90, 135].each do |angle|
+  axis = Vector3.new(0,1,0)
+  angle_rad = angle*Math::PI/180.0
+  rot_mat = Matrix.from_axis(axis, angle_rad)
+  arrow_geoms.push(arrow_geom.rotate(rot_mat))
+end
+
+arrow_nodes = NodeArrows.new(arrow_geoms)
+arrow_nodes.width = 2
+arrow_nodes.material_color = [1,0.5,0.5,1]
+root_node.add(arrow_nodes)
+
+#=========================
 # plane
 
 
