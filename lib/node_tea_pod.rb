@@ -9,6 +9,7 @@ module Disp3D
 
 protected
     def draw_element
+      GL.ShadeModel(GL::SMOOTH)
       GLUT.SolidTeapot(0.5)
     end
   end

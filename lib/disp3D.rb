@@ -25,6 +25,8 @@ require 'node_collection'
 require 'node_leaf'
 
 require 'node_tea_pod'
+require 'node_text'
+
 require 'node_points'
 require 'node_lines'
 require 'node_polylines'

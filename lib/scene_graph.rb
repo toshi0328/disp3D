@@ -13,11 +13,6 @@ module Disp3D
       @root_node.draw()
     end
 
-    def display_with_name()
-      Node.init_node_list
-      @root_node.draw_with_name()
-    end
-
     def add(node)
       @root_node.add(node)
     end

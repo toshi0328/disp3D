@@ -12,10 +12,9 @@ module Disp3D
 protected
     def draw_element
       if(@geom)
+        GL.ShadeModel(GL::FLAT)
         GL.PointSize(@size)
-
         GL.Begin(GL::POINTS)
-
         if(@geom.kind_of?(GMath3D::Vector3))
           GL.Vertex( @geom.x, @geom.y, @geom.z )
         elsif(@geom.kind_of?(Array))

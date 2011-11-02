@@ -32,8 +32,6 @@ module Disp3D
       GL.Enable(GL::BLEND)
       GL.BlendFunc(GL::GL_SRC_ALPHA, GL::GL_ONE_MINUS_SRC_ALPHA)
 
-      GL.ShadeModel(GL::SMOOTH)
-
       @light = Light.new()
       @camera = Camera.new()
       @manipulator = Manipulator.new(@camera, width, height)

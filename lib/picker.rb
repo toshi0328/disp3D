@@ -24,7 +24,7 @@ module Disp3D
       GL.MatrixMode(GL::MODELVIEW)
 
       @view.camera.display()
-      @view.world_scene_graph.display_with_name()
+      @view.world_scene_graph.display()
 
       GL.MatrixMode(GL::PROJECTION)
 

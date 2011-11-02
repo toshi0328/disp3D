@@ -50,9 +50,23 @@ polyline_node = NodePolylines.new(polyline_geom_close)
 polyline_node.width = 2
 root_node.add(polyline_node)
 
+#=========================
+# text
+str = "This is a pen."
+text_node = NodeText.new()
+text_node.text = str
+text_node.position = Vector3.new(2,2,2)
+root_node.add(text_node)
+
+#=========================
+# plane
+
+
 
 #=========================
 # tris
+
+
 
 #=========================
 main_view.world_scene_graph.add(root_node)

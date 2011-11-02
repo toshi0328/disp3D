@@ -6,6 +6,7 @@ module Disp3D
 protected
     def draw_element
       if(@geom)
+        GL.ShadeModel(GL::SMOOTH)
         GL.Begin(GL::TRIANGLES)
         if(@geom.kind_of?(GMath3D::TriMesh))
           @geom.triangles.each do |tri_geom|

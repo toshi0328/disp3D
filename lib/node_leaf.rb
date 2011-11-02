@@ -3,12 +3,10 @@ require 'disp3D'
 
 module Disp3D
   class NodeLeaf < Node
-    attr_accessor :geom
-
     attr_accessor :material_color
     attr_accessor :shininess
 
-    def initialize(geometry)
+    def initialize(geometry = nil)
       @geom = geometry
 
       @material_color = [1.0, 1.0, 1.0, 1.0]
@@ -20,10 +18,6 @@ module Disp3D
     end
 
     def draw
-      draw_inner(self.method(:draw_element))
-    end
-
-    def draw_with_name
       @@named_nodes[@node_id] = self
       GL.LoadName(@node_id)
       draw_inner(self.method(:draw_element))
@@ -70,13 +64,17 @@ protected
     end
 
     def draw_element
+      # you cannot call this directory. use child class one.
+      raise
     end
 
 private
-    @@id = 0
+    @@id_list = Array.new()
     def new_id()
-      @@id += 1
-      return @@id
+#      p "constructed id list #{@@id_list}"
+      id_adding = GL.GenLists(1)
+      @@id_list.push(id_adding)
+      return id_adding
     end
   end
 end

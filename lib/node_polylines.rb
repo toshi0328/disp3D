@@ -7,6 +7,7 @@ module Disp3D
 protected
     def draw_element
       if(@geom)
+        GL.ShadeModel(GL::FLAT)
         GL.LineWidth(@width) if(@width)
         if(@geom.kind_of?(GMath3D::Polyline))
           draw_each(@geom)

@@ -7,8 +7,8 @@ module Disp3D
 protected
     def draw_element
       if(@geom)
+        GL.ShadeModel(GL::FLAT)
         GL.LineWidth(@width) if(@width)
-
         GL.Begin(GL::LINES)
         if(@geom.kind_of?(GMath3D::FiniteLine))
           GL.Vertex( @geom.start_point.x, @geom.start_point.y, @geom.start_point.z )
