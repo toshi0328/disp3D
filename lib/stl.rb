@@ -1,8 +1,12 @@
 require 'disp3D'
+require 'gmath3D'
 
 module Disp3D
   class STL
     attr_reader :tris
+    attr_reader :normals
+    attr_reader :name
+
     def initialize(triangles = nil)
       @tris = triangles
       @normals = nil
@@ -11,6 +15,16 @@ module Disp3D
 
     def parse(file_path)
       # support only ascii type
+      return parse_ascii(file_path)
+    end
+
+    def tri_mesh
+      return nil if(!@tris)
+      return GMath3D::TriMesh.from_triangles(@tris)
+    end
+
+private
+    def parse_ascii(file_path)
       return false if(!FileTest.exist?(file_path))
 
       @tris = Array.new()
@@ -29,12 +43,6 @@ module Disp3D
       return true
     end
 
-    def tri_mesh
-      return nil if(!@tris)
-      return GMath3D::TriMesh.from_triangles(@tris)
-    end
-
-private
     def split_line(line)
       return line.strip.split(/\s+/)
     end
@@ -52,7 +60,7 @@ private
     def parse_facet_section(file, line)
       current_normal = nil
       if(line[1] == "normal")
-        current_normal = Vector3.new( line[2].to_f, line[3].to_f, line[4].to_f )
+        current_normal = GMath3D::Vector3.new( line[2].to_f, line[3].to_f, line[4].to_f )
       end
       while(line = file.gets)
         line = split_line(line)
@@ -71,11 +79,11 @@ private
         line = split_line(line)
         break if( line[0] == "endloop" )
         if( line[0] == "vertex")
-          vertices.push(Vector3.new( line[1].to_f, line[2].to_f, line[3].to_f ))
+          vertices.push(GMath3D::Vector3.new( line[1].to_f, line[2].to_f, line[3].to_f ))
         end
       end
       if( vertices.size >= 3)
-        adding_triangle = Triangle.new(vertices[0],vertices[1],vertices[2])
+        adding_triangle = GMath3D::Triangle.new(vertices[0],vertices[1],vertices[2])
         if( current_normal != nil )
           if(adding_triangle.normal.dot(current_normal) < 0)
             adding_triangle = adding_triangle.reverse()
@@ -87,6 +95,5 @@ private
       end
       return nil
     end
-
   end
 end

@@ -1,12 +1,28 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'helper'
 
-main_view = Disp3D::GLUTWindow.new(400,400)
-file_path = File.dirname(__FILE__) + "/test_data/cube-ascii.stl"
-stl = Disp3D::STL.new()
-stl.parse(file_path)
-node = Disp3D::NodeTris.new(stl.tri_mesh)
-node.color = [1,0,0,1]
-main_view.world_scene_graph.add(node)
-main_view.start
+include Disp3D
+
+MiniTest::Unit.autorun
+
+class STLTestCase < MiniTest::Unit::TestCase
+  def setup
+    @file_path = File.dirname(__FILE__) + "/data/cube-ascii.stl"
+    @stl = STL.new()
+  end
+
+  def test_parse
+    @stl.parse(@file_path)
+    assert_equal( "cube-ascii", @stl.name )
+    assert_equal( 12, @stl.tris.size )
+    assert_equal( 12, @stl.normals.size )
+  end
+
+  def test_tri_mesh
+    @stl.parse(@file_path)
+#    tri_mesh = @stl.tri_mesh
+#    p tri_mesh.vertices.size
+  end
+
+end
 
