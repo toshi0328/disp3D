@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{disp3D}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Toshiyasu Shimizu"]
-  s.date = %q{2011-10-19}
+  s.date = %q{2011-11-03}
   s.description = %q{disp3D provide 3D GUI framework}
   s.email = %q{toshi0328@gmail.com}
   s.extra_rdoc_files = [
@@ -24,22 +24,44 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "disp3D.gemspec",
+    "example/stl_viewer/app_model.rb",
+    "example/stl_viewer/document.rb",
+    "example/stl_viewer/document_ctrl.rb",
+    "example/stl_viewer/gl_ctrl.rb",
+    "example/stl_viewer/main.rb",
+    "example/stl_viewer/mesh_info.rb",
+    "example/stl_viewer/stl_viewer.rb",
     "lib/camera.rb",
     "lib/disp3D.rb",
-    "lib/helloworld.rb",
+    "lib/dsl.rb",
+    "lib/gl_view.rb",
+    "lib/glut_window.rb",
+    "lib/light.rb",
     "lib/manipulator.rb",
     "lib/node.rb",
+    "lib/node_arrows.rb",
     "lib/node_collection.rb",
+    "lib/node_leaf.rb",
     "lib/node_lines.rb",
     "lib/node_points.rb",
+    "lib/node_polylines.rb",
     "lib/node_tea_pod.rb",
+    "lib/node_text.rb",
+    "lib/node_tris.rb",
+    "lib/picked_result.rb",
+    "lib/picker.rb",
+    "lib/qt_widget_gl.rb",
     "lib/scene_graph.rb",
-    "lib/view.rb",
+    "lib/stl.rb",
+    "lib/util.rb",
     "test/helper.rb",
-    "test/test_line.rb",
-    "test/test_lines.rb",
-    "test/test_point.rb",
-    "test/test_points.rb",
+    "test/test_data/binary_test.stl",
+    "test/test_data/cube-ascii.stl",
+    "test/test_dsl.rb",
+    "test/test_glut_window.rb",
+    "test/test_qtgl.rb",
+    "test/test_stl.rb",
     "test/test_tea_pod.rb"
   ]
   s.homepage = %q{http://github.com/toshi0328/disp3D}
