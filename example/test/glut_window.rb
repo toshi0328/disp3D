@@ -85,9 +85,14 @@ coord_node = NodeCoord.new(Vector3.new(), 3)
 root_node.add(coord_node)
 
 #=========================
-# plane
-
-
+# work_plane
+# TODO impliment infinite plane node...
+=begin
+plane_geom = Plane.new(Vector3.new(0,0,-2), Vector3.new(0,0,1))
+work_plane = NodePlane.new(plane_geom)
+work_plane.material_color = [1,0,0,0.5]
+root_node.add(work_plane)
+=end
 
 #=========================
 # tris

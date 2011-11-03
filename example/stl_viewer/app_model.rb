@@ -1,8 +1,9 @@
 require 'stl_viewer'
 
-#TODO all model should have @dirty flg...
+# TODO all model should have @dirty flg...
+# 
 class AppModel
-  def initialize
+  def initialize()
     @dirty = false
   end
 end
