@@ -1,5 +1,6 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'helper'
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../../', 'lib'))
+
+require 'disp3D'
 
 include GMath3D
 include Disp3D
@@ -77,6 +78,11 @@ arrow_nodes = NodeArrows.new(arrow_geoms)
 arrow_nodes.width = 2
 arrow_nodes.material_color = [1,0.5,0.5,1]
 root_node.add(arrow_nodes)
+
+#=========================
+# coordinate
+coord_node = NodeCoord.new(Vector3.new(), 3)
+root_node.add(coord_node)
 
 #=========================
 # plane

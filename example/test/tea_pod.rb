@@ -1,7 +1,6 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'helper'
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../../', 'lib'))
 
-require 'gmath3D'
+require 'disp3D'
 
 main_view = Disp3D::GLUTWindow.new(400,400)
 node_tea_pod = Disp3D::NodeTeaPod.new(nil)

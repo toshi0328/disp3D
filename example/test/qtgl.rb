@@ -1,5 +1,6 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'helper'
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../../', 'lib'))
+
+require 'disp3D'
 require 'qt_widget_gl'
 
 require 'Qt'

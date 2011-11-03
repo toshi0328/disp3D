@@ -1,5 +1,4 @@
 require 'disp3D'
-require 'gmath3D'
 
 module Disp3D
   class STL

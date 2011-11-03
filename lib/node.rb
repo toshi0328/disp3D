@@ -30,5 +30,14 @@ module Disp3D
       # should be implimented in child class
       raise
     end
+
+private
+    @@id_list = Array.new()
+    def new_id()
+#      p "constructed id list #{@@id_list}"
+      id_adding = GL.GenLists(1)
+      @@id_list.push(id_adding)
+      return id_adding
+    end
   end
 end
