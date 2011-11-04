@@ -27,20 +27,23 @@ module Disp3D
       set_screen(w,h)
     end
 
-    def display()
-      GL.MatrixMode(GL::GL_MODELVIEW)
-      GL.LoadIdentity()
+    def apply_position()
       GLU.LookAt(@eye.x, @eye.y, @eye.z, @center.x, @center.y, @center.z, 0.0, 1.0, 0.0)
+    end
 
-      GL.Translate(translate.x, translate.y, translate.z) if(@translate)
+    def apply_rotation()
       rot_mat = Matrix.from_quat(@rotation)
       rot_mat_array = [
         [rot_mat[0,0], rot_mat[0,1], rot_mat[0,2], 0],
         [rot_mat[1,0], rot_mat[1,1], rot_mat[1,2], 0],
         [rot_mat[2,0], rot_mat[2,1], rot_mat[2,2], 0],
         [0,0,0,1]]
-
       GL.MultMatrix(rot_mat_array)
+    end
+
+    def apply_attitude()
+      GL.Translate(translate.x, translate.y, translate.z) if(@translate)
+      apply_rotation
       GL.Scale(@scale, @scale, @scale)
     end
 
@@ -64,6 +67,19 @@ module Disp3D
         GL.Ortho(-w/2.0, w/2.0, -h/2.0, h/2.0, -@far*@scale*10, @far*@scale*10)
       else
         GLU.Perspective(@angle, @aspect, @near, @far)
+      end
+    end
+
+    def screen_size_at_z_zero()
+      vp = GL.GetIntegerv(GL::VIEWPORT)
+      if @is_orgh
+        return vp[2], vp[3]
+      else
+        distance_to_screen = @eye.z
+        diagonal_at_z_zero = (2*distance_to_screen*Math.tan(@angle)).abs
+        width_at_z_zero = diagonal_at_z_zero/Math.sqrt(1.0+1.0/@aspect*@aspect)
+        height_at_z_zero = width_at_z_zero/@aspect
+        return width_at_z_zero, height_at_z_zero
       end
     end
 

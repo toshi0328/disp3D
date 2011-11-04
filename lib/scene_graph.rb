@@ -8,7 +8,7 @@ module Disp3D
       @root_node = NodeCollection.new()
     end
 
-    def display()
+    def gl_display()
       Node.init_node_list
       @root_node.draw()
     end

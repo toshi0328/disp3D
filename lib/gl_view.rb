@@ -7,6 +7,7 @@ module Disp3D
   # Use GLWindow class (in GLUT Window)
   class GLView
     attr_reader :world_scene_graph
+    attr_reader :camera_scene_graph
     attr_reader :camera
     attr_reader :manipulator
     attr_reader :light
@@ -36,20 +37,44 @@ module Disp3D
       @camera = Camera.new()
       @manipulator = Manipulator.new(@camera, width, height)
       @world_scene_graph = SceneGraph.new()
+      @camera_scene_graph = SceneGraph.new()
+
       @picker = Picker.new(self)
       @bk_color = [0.28,0.23,0.55,1]
 
       @mouse_move_proc = nil
     end
 
-    def display()
+    def gl_display()
       GL.ClearColor(@bk_color[0],@bk_color[1],@bk_color[2],@bk_color[3])
       GL.Clear(GL::GL_COLOR_BUFFER_BIT | GL::GL_DEPTH_BUFFER_BIT)
 
-      @light.display() if(@light)
+      return if(@camera.nil? or @light.nil?)
+      @light.gl_display()
 
-      @camera.display() if(@camera)
-      @world_scene_graph.display() if(@world_scene_graph)
+      GL.MatrixMode(GL::GL_MODELVIEW)
+      gl_display_world_scene_graph()
+      gl_display_camera_scene_graph()
+      @manipulator.gl_display_compass()
+    end
+
+    def gl_display_world_scene_graph()
+      return if(@world_scene_graph.nil?)
+      GL.LoadIdentity()
+      GL.PushMatrix()
+      @camera.apply_position()
+      @camera.apply_attitude()
+      @world_scene_graph.gl_display()
+      GL.PopMatrix()
+    end
+
+    def gl_display_camera_scene_graph()
+      return if(@camera_scene_graph.nil?)
+      GL.LoadIdentity()
+      GL.PushMatrix()
+      @camera.apply_position()
+      @camera_scene_graph.gl_display()
+      GL.PopMatrix()
     end
 
     def centering

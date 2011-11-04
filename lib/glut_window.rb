@@ -10,7 +10,7 @@ module Disp3D
       GLUT.Init
       GLUT.InitDisplayMode(GLUT::GLUT_DOUBLE | GLUT::GLUT_RGB | GLUT::GLUT_DEPTH)
       GLUT.CreateWindow("Disp3D view test")
-      GLUT.DisplayFunc(method(:display).to_proc())
+      GLUT.DisplayFunc(method(:gl_display).to_proc())
       GLUT.ReshapeFunc(method(:reshape).to_proc())
 
       GLUT.MouseFunc(method(:mouse).to_proc())
@@ -20,9 +20,9 @@ module Disp3D
       super(width, height)
     end
 
-    def display
+    def gl_display
       super
-      GLUT.SwapBuffers()
+      GLUT.SwapBuffers
     end
 
     def reshape(w,h)

@@ -13,6 +13,8 @@ module Disp3D
       @scalling = false
       @translating = false
       @trackball_size = 0.8
+
+      @compass = Compass.new(camera)
     end
 
     def reset_size(width, height)
@@ -73,6 +75,20 @@ module Disp3D
       return false
     end
 
+    def centering(center_pos)
+      return if center_pos == nil
+      @camera.translate = center_pos
+    end
+
+    def fit(radius)
+      @camera.fit(radius, @width, @height)
+    end
+
+    def gl_display_compass
+      @compass.gl_display()
+    end
+
+private
     def project_to_sphere(r, x, y)
       d = Math.sqrt(x*x + y*y)
       if (d < r * Math.sqrt(2)/2) # inside sphere
@@ -98,15 +114,6 @@ module Disp3D
       phi = 2*Math.asin(t)
       a = a.normalize
       return Quat.from_axis(a, phi)
-    end
-
-    def centering(center_pos)
-      return if center_pos == nil
-      @camera.translate = center_pos
-    end
-
-    def fit(radius)
-      @camera.fit(radius, @width, @height)
     end
   end
 end

@@ -4,7 +4,7 @@ module Disp3D
   class Light
     LIGHT_POSITION_1 = [0.25, 1.0, 0.25]
 
-    def display()
+    def gl_display()
       idx = 0
       GL.Enable(GL::GL_LIGHTING)
       all_disable = true

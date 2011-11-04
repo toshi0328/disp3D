@@ -102,6 +102,17 @@ root_node.add(work_plane)
 #=========================
 main_view.world_scene_graph.add(root_node)
 
+
+#=========================
+# text to camera_scene_graph
+str2 = "This one contains in camera scene graph."
+text_node2 = NodeText.new()
+text_node2.text = str2
+text_node2.position = Vector3.new(0,0,0)
+#root_node2.add(text_node2)
+
+main_view.camera_scene_graph.add(text_node2)
+
 #=========================
 # mouse procedure
 
@@ -112,10 +123,8 @@ main_view.set_mouse_press Proc.new{|view, button, x, y|
     result = current_picker.hit_test(x,y)
     if(result != nil && result.size > 0)
       p "hit #{result.size} elements"
-      p
       result.each do | item |
         p item
-        p
       end
     end
   end

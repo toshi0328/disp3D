@@ -23,8 +23,7 @@ module Disp3D
 
       GL.MatrixMode(GL::MODELVIEW)
 
-      @view.camera.display()
-      @view.world_scene_graph.display()
+      @view.gl_display_world_scene_graph()
 
       GL.MatrixMode(GL::PROJECTION)
 
