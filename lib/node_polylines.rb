@@ -7,12 +7,13 @@ module Disp3D
 protected
     def draw_element
       if(@geom)
-        GL.ShadeModel(GL::FLAT)
         GL.LineWidth(@width) if(@width)
+        draw_color
         if(@geom.kind_of?(GMath3D::Polyline))
           draw_each(@geom)
         elsif(@geom.kind_of?(Array))
-          @geom.each do |polyline|
+          @geom.each_with_index do |polyline, i|
+            draw_colors
             draw_each(polyline)
           end
         end

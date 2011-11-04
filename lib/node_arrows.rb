@@ -7,13 +7,14 @@ module Disp3D
 protected
     def draw_element
       if(@geom)
-        GL.ShadeModel(GL::FLAT)
         GL.LineWidth(@width) if(@width)
+        draw_color
         GL.Begin(GL::LINES)
         if(@geom.kind_of?(GMath3D::FiniteLine))
           draw_element_inner(@geom)
         elsif(@geom.kind_of?(Array))
-          @geom.each do |line|
+          @geom.each_with_index do |line, i|
+            draw_colors(i)
             draw_element_inner(line)
           end
         end

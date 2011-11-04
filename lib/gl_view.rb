@@ -20,8 +20,6 @@ module Disp3D
     attr_accessor :bk_color
 
     def initialize(width, height)
-      GL.Enable(GL::GL_DEPTH_TEST)
-
       GL.FrontFace(GL::GL_CW)
 
       GL.Enable(GL::GL_AUTO_NORMAL)

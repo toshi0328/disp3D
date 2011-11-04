@@ -16,9 +16,9 @@ module Disp3D
       x_node = NodeArrows.new(x_geom)
       y_node = NodeArrows.new(y_geom)
       z_node = NodeArrows.new(z_geom)
-      x_node.material_color = @x_color
-      y_node.material_color = @y_color
-      z_node.material_color = @z_color
+      x_node.colors = @x_color
+      y_node.colors = @y_color
+      z_node.colors = @z_color
       @children.push(x_node)
       @children.push(y_node)
       @children.push(z_node)

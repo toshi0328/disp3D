@@ -2,8 +2,6 @@ require 'disp3D'
 
 module Disp3D
   class Light
-    LIGHT_POSITION_1 = [0.25, 1.0, 0.25]
-
     def gl_display()
       idx = 0
       GL.Enable(GL::GL_LIGHTING)
@@ -18,14 +16,13 @@ module Disp3D
           all_disable = false
         end
       end
-      GL.Enable(GL::GL_LIGHT0) if(all_disable)
     end
 
     def initialize()
       @diffuse_default = [0.7, 0.7, 0.7, 1]
       @ambient_default = [0.2, 0.2, 0.2, 1]
       @specular_default = [1, 1, 1, 1]
-      @position_default = [0.25, 1.0, 0.25]
+      @position_default = [0.0, 0.0, 1.0, 0.0]
 
       light_count = 8 # openGL spec
 

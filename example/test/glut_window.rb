@@ -13,7 +13,7 @@ root_node = NodeCollection.new()
 # point and points
 point_geom = Vector3.new(1,0,0)
 point_node = NodePoints.new(point_geom)
-point_node.material_color = [0,1,0,1]
+point_node.colors = [0,1,0,1]
 point_node.size = 7
 root_node.add(point_node)
 
@@ -40,7 +40,7 @@ end
 
 line_nodes = NodeLines.new(line_geoms)
 line_nodes.width = 2
-line_nodes.material_color = [1,1,0,1]
+line_nodes.colors = [1,1,0,1]
 root_node.add(line_nodes)
 
 
@@ -64,6 +64,7 @@ root_node.add(text_node)
 arrow_geom = FiniteLine.new(Vector3.new(0,3,1), Vector3.new(3,3,1))
 arrow_node = NodeArrows.new(arrow_geom)
 arrow_node.width = 4
+arrow_node.colors = [1,0,0.5,1.0]
 root_node.add(arrow_node)
 
 arrow_geoms = Array.new()
@@ -76,7 +77,7 @@ end
 
 arrow_nodes = NodeArrows.new(arrow_geoms)
 arrow_nodes.width = 2
-arrow_nodes.material_color = [1,0.5,0.5,1]
+arrow_nodes.colors = [1,0.5,0.5,1]
 root_node.add(arrow_nodes)
 
 #=========================

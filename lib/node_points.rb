@@ -12,13 +12,14 @@ module Disp3D
 protected
     def draw_element
       if(@geom)
-        GL.ShadeModel(GL::FLAT)
         GL.PointSize(@size)
+        draw_color
         GL.Begin(GL::POINTS)
         if(@geom.kind_of?(GMath3D::Vector3))
           GL.Vertex( @geom.x, @geom.y, @geom.z )
         elsif(@geom.kind_of?(Array))
-          @geom.each do |point|
+          @geom.each_with_index do |point, i|
+            draw_colors(i)
             GL.Vertex( point.x, point.y, point.z )
           end
         else

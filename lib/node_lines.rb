@@ -7,14 +7,15 @@ module Disp3D
 protected
     def draw_element
       if(@geom)
-        GL.ShadeModel(GL::FLAT)
         GL.LineWidth(@width) if(@width)
+        draw_color
         GL.Begin(GL::LINES)
         if(@geom.kind_of?(GMath3D::FiniteLine))
           GL.Vertex( @geom.start_point.x, @geom.start_point.y, @geom.start_point.z )
           GL.Vertex( @geom.end_point.x, @geom.end_point.y, @geom.end_point.z )
         elsif(@geom.kind_of?(Array))
-          @geom.each do |line|
+          @geom.each_with_index do |line, i|
+            draw_colors(i)
             GL.Vertex( line.start_point.x, line.start_point.y, line.start_point.z )
             GL.Vertex( line.end_point.x, line.end_point.y, line.end_point.z )
           end
