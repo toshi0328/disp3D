@@ -69,7 +69,7 @@ class QtWidgetGL < Qt::GLWidget
   end
 
   def paintGL
-    @view.display
+    @view.gl_display
   end
 
   def resizeGL(width, height)
