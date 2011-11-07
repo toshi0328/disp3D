@@ -16,6 +16,9 @@ module Disp3D
           all_disable = false
         end
       end
+      if(all_disable)
+        GL.Enable( @light_id[0])
+      end
     end
 
     def initialize()
@@ -26,7 +29,7 @@ module Disp3D
 
       light_count = 8 # openGL spec
 
-      @enable = [true, false, false, false, false, false, false, false]
+      @enable = [false, false, false, false, false, false, false, false]
       @deffuse = Array.new(light_count, @diffuse_default)
       @ambient = Array.new(light_count, @ambient_default)
       @specular = Array.new(light_count, @specular_default)
