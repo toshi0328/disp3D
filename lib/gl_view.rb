@@ -87,6 +87,17 @@ module Disp3D
       @manipulator.fit(orth_length/2.0)
     end
 
+    def capture(w, h)
+      gl_display
+      GL.ReadBuffer(GL::FRONT)
+      GL.PixelStorei(GL::UNPACK_ALIGNMENT,1)
+      data = GL.ReadPixels(0,0,w,h,GL::RGB, GL::UNSIGNED_BYTE)
+
+# convert to image
+
+#      p data.class
+    end
+
     def set_mouse_move(proc)
       @mouse_move_proc = proc
     end

@@ -39,7 +39,6 @@ class STLViewerWindow < Qt::MainWindow
   end
 
   def setLayout()
-
     controller_dock_widget = Qt::DockWidget.new(tr("Controller"))
     controller_dock_widget.setWidget(@contoller_widget)
     controller_dock_widget.setAllowedAreas(Qt::RightDockWidgetArea)# | Qt::RightDockWidgetArea)
