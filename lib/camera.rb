@@ -4,20 +4,24 @@ module Disp3D
   class Camera
     attr_accessor :rotation
     attr_accessor :translate
-    attr_accessor :center
-    attr_accessor :scale
+
+    attr_reader :eye
+    attr_reader :center
+    attr_reader :far
+    attr_reader :scale
+
     attr_accessor :is_orth
 
     def initialize()
       @rotation = Quat.from_axis(Vector3.new(1,0,0),0)
       @translate = nil
-      @eye = Vector3.new(0,0,5)
+      @eye = Vector3.new(0,0,1)
       @center = Vector3.new(0,0,0)
       @scale = 1
       @angle = 30
-      @is_orgh = false
-      @near = 0.1
       @far = 100.0
+
+      @is_orth = false
     end
 
     def reshape(w,h)
@@ -47,31 +51,37 @@ module Disp3D
       GL.Scale(@scale, @scale, @scale)
     end
 
-    def fit(radius, width, height)
-      eye_z = radius / Math.sin(@angle/2.0*Math::PI/180.0)
+    def set_screen(w,h)
+      @aspect = w.to_f()/h.to_f()
+      if @is_orth
+        GL.Ortho(-w/2.0, w/2.0, -h/2.0, h/2.0, -@far*@scale*10, @far*@scale*10)
+      else
+        GLU.Perspective(@angle, @aspect, 0.1, @far)
+      end
+    end
+
+    def viewport
+      return GL.GetIntegerv(GL::VIEWPORT)
+    end
+
+    def fit(radius)
+      dmy, dmy, w, h = viewport
+      # calc suitable eye posision and near, far position
+      min_screen_size = [w, h].min
+      eye_z = radius*(Math.sqrt(w*w+h*h)/min_screen_size)/(Math.tan(@angle/2.0*Math::PI/180.0))
       @eye = Vector3.new(0,0,eye_z)
-      @near = radius - 1
-      @far = eye_z + radius
-      if @is_orgh
-        min_screen = [width, height].min
-        @scale = (min_screen.to_f/2.0)/radius
+      @far = eye_z + radius*2
+      if @is_orth
+        @scale = (min_screen_size.to_f/2.0)/radius
       else
         @scale = 1.0
       end
-      set_screen(width,height)
+      set_screen(w,h)
     end
 
-    def set_screen(w,h)
-      @aspect = w.to_f()/h.to_f()
-      if @is_orgh
-        GL.Ortho(-w/2.0, w/2.0, -h/2.0, h/2.0, -@far*@scale*10, @far*@scale*10)
-      else
-        GLU.Perspective(@angle, @aspect, @near, @far)
-      end
-    end
-
+=begin
     def screen_size_at_z_zero()
-      vp = GL.GetIntegerv(GL::VIEWPORT)
+      vp = viewport
       if @is_orgh
         return vp[2], vp[3]
       else
@@ -82,6 +92,6 @@ module Disp3D
         return width_at_z_zero, height_at_z_zero
       end
     end
-
+=end
   end
 end

@@ -7,7 +7,6 @@ module Disp3D
       @camera = camera
       @start_x = 0
       @start_y = 0
-      reset_size(w, h)
 
       @moving = false
       @scalling = false
@@ -15,11 +14,6 @@ module Disp3D
       @trackball_size = 0.8
 
       @compass = Compass.new(camera)
-    end
-
-    def reset_size(width, height)
-      @width = width
-      @height = height
     end
 
     def mouse(button,state,x,y)
@@ -48,9 +42,10 @@ module Disp3D
 
     # return true if should be redisplay
     def motion(x,y)
+      dmy, dmy, width, height = @camera.viewport()
       if( @translating )
-        delta_x = 2*((@start_x - x).to_f/@width)
-        delta_y = 2*((@start_y - y).to_f/@height)
+        delta_x = 2*((@start_x - x).to_f/width)
+        delta_y = 2*((@start_y - y).to_f/height)
         @start_x = x
         @start_y = y
 
@@ -58,30 +53,21 @@ module Disp3D
         @camera.translate.y += delta_y
         return true
       elsif ( @scalling )
-        @camera.scale *= (1.0+(@start_y - y).to_f/@height)
+        @camera.scale *= (1.0+(@start_y - y).to_f/height)
         @start_y = y
         return true
       elsif ( @moving )
         @lastquat =trackball(
-                   (2.0 * @start_x - @width) / @width,
-                   (@height - 2.0 * @start_y) / @height,
-                   (2.0 * x - @width) / @width,
-                   (@height - 2.0 * y) / @height)
+                   (2.0 * @start_x - width) / width,
+                   (height - 2.0 * @start_y) / height,
+                   (2.0 * x - width) / width,
+                   (height - 2.0 * y) / height)
         @start_x = x
         @start_y = y
         @camera.rotation = @lastquat * @camera.rotation if( @lastquat )
         return true
       end
       return false
-    end
-
-    def centering(center_pos)
-      return if center_pos == nil
-      @camera.translate = center_pos
-    end
-
-    def fit(radius)
-      @camera.fit(radius, @width, @height)
     end
 
     def gl_display_compass
