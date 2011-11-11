@@ -8,7 +8,7 @@ module Disp3D
     attr_reader :eye
     attr_reader :center
     attr_reader :far
-    attr_reader :scale
+    attr_accessor :scale
 
     attr_accessor :is_orth
 
