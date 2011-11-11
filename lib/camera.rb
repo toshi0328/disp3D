@@ -14,7 +14,7 @@ module Disp3D
 
     def initialize()
       @rotation = Quat.from_axis(Vector3.new(1,0,0),0)
-      @translate = nil
+      @translate = Vector3.new(0,0,0)
       @eye = Vector3.new(0,0,1)
       @center = Vector3.new(0,0,0)
       @scale = 1
@@ -46,17 +46,16 @@ module Disp3D
     end
 
     def apply_attitude()
-      GL.Translate(translate.x, translate.y, translate.z) if(@translate)
+      GL.Translate(translate.x, translate.y, translate.z)
       apply_rotation
       GL.Scale(@scale, @scale, @scale)
     end
 
     def set_screen(w,h)
-      @aspect = w.to_f()/h.to_f()
       if @is_orth
         GL.Ortho(-w/2.0, w/2.0, -h/2.0, h/2.0, -@far*@scale*10, @far*@scale*10)
       else
-        GLU.Perspective(@angle, @aspect, 0.1, @far)
+        GLU.Perspective(@angle, w.to_f()/h.to_f(), 0.1, @far)
       end
     end
 
@@ -64,9 +63,36 @@ module Disp3D
       return GL.GetIntegerv(GL::VIEWPORT)
     end
 
+    def unproject(screen_pos)
+      vp = GL.GetIntegerv(GL::VIEWPORT)
+      projection = GL::GetDoublev(GL::PROJECTION_MATRIX)
+      model_view = GL::GetDoublev(GL::MODELVIEW_MATRIX)
+
+      unprojected = GLU::UnProject(screen_pos.x,vp[3]-screen_pos.y-1,screen_pos.z, model_view, projection, vp)
+      unprojected[2] += @eye.z
+      unprojected = Vector3.new(unprojected[0], unprojected[1], unprojected[2])
+
+      if @is_orth
+        w = vp[2]
+        h = vp[3]
+        min_screen_size = [w, h].min
+
+# TODO Refactoring!!
+# something is Wrong.. in orth
+        rad = @eye.z/((Math.sqrt(w*w+h*h)/min_screen_size)/(Math.tan(@angle/2.0*Math::PI/180.0)))
+        current_scale = (min_screen_size.to_f/2.0)/rad
+      else
+        current_scale = @scale
+      end
+      unprojected -= @translate
+      rot_matrix = Matrix.from_quat(@rotation)
+      unprojected = rot_matrix*unprojected
+      unprojected /= (current_scale)
+      return unprojected
+    end
+
     def fit(radius)
       dmy, dmy, w, h = viewport
-      # calc suitable eye posision and near, far position
       min_screen_size = [w, h].min
       eye_z = radius*(Math.sqrt(w*w+h*h)/min_screen_size)/(Math.tan(@angle/2.0*Math::PI/180.0))
       @eye = Vector3.new(0,0,eye_z)
@@ -78,6 +104,7 @@ module Disp3D
       end
       set_screen(w,h)
     end
+
 
 =begin
     def screen_size_at_z_zero()
