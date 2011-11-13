@@ -6,7 +6,7 @@ module Disp3D
 
     def initialize(geom)
       super(geom)
-      @size = 3.0;
+      @size = 3.0
     end
 
 protected

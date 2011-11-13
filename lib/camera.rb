@@ -4,20 +4,24 @@ module Disp3D
   class Camera
     attr_accessor :rotation
     attr_accessor :translate
-    attr_accessor :center
+
+    attr_reader :eye
+    attr_reader :center
+    attr_reader :far
     attr_accessor :scale
+
     attr_accessor :is_orth
 
     def initialize()
       @rotation = Quat.from_axis(Vector3.new(1,0,0),0)
-      @translate = nil
-      @eye = Vector3.new(0,0,5)
+      @translate = Vector3.new(0,0,0)
+      @eye = Vector3.new(0,0,1)
       @center = Vector3.new(0,0,0)
       @scale = 1
       @angle = 30
-      @is_orgh = false
-      @near = 0.1
       @far = 100.0
+
+      @is_orth = false
     end
 
     def reshape(w,h)
@@ -42,36 +46,69 @@ module Disp3D
     end
 
     def apply_attitude()
-      GL.Translate(translate.x, translate.y, translate.z) if(@translate)
+      GL.Translate(translate.x, translate.y, translate.z)
       apply_rotation
       GL.Scale(@scale, @scale, @scale)
     end
 
-    def fit(radius, width, height)
-      eye_z = radius / Math.sin(@angle/2.0*Math::PI/180.0)
+    def set_screen(w,h)
+      if @is_orth
+        GL.Ortho(-w/2.0, w/2.0, -h/2.0, h/2.0, -@far*@scale*10, @far*@scale*10)
+      else
+        GLU.Perspective(@angle, w.to_f()/h.to_f(), 0.1, @far)
+      end
+    end
+
+    def viewport
+      return GL.GetIntegerv(GL::VIEWPORT)
+    end
+
+    def unproject(screen_pos)
+      vp = GL.GetIntegerv(GL::VIEWPORT)
+      projection = GL::GetDoublev(GL::PROJECTION_MATRIX)
+      model_view = GL::GetDoublev(GL::MODELVIEW_MATRIX)
+
+      unprojected = GLU::UnProject(screen_pos.x,vp[3]-screen_pos.y-1,screen_pos.z, model_view, projection, vp)
+      unprojected[2] += @eye.z
+      unprojected = Vector3.new(unprojected[0], unprojected[1], unprojected[2])
+
+      if @is_orth
+        w = vp[2]
+        h = vp[3]
+        min_screen_size = [w, h].min
+
+# TODO Refactoring!!
+# something is Wrong.. in orth
+        rad = @eye.z/((Math.sqrt(w*w+h*h)/min_screen_size)/(Math.tan(@angle/2.0*Math::PI/180.0)))
+        current_scale = (min_screen_size.to_f/2.0)/rad
+      else
+        current_scale = @scale
+      end
+      unprojected -= @translate
+      rot_matrix = Matrix.from_quat(@rotation)
+      unprojected = rot_matrix*unprojected
+      unprojected /= (current_scale)
+      return unprojected
+    end
+
+    def fit(radius)
+      dmy, dmy, w, h = viewport
+      min_screen_size = [w, h].min
+      eye_z = radius*(Math.sqrt(w*w+h*h)/min_screen_size)/(Math.tan(@angle/2.0*Math::PI/180.0))
       @eye = Vector3.new(0,0,eye_z)
-      @near = radius - 1
-      @far = eye_z + radius
-      if @is_orgh
-        min_screen = [width, height].min
-        @scale = (min_screen.to_f/2.0)/radius
+      @far = eye_z + radius*2
+      if @is_orth
+        @scale = (min_screen_size.to_f/2.0)/radius
       else
         @scale = 1.0
       end
-      set_screen(width,height)
+      set_screen(w,h)
     end
 
-    def set_screen(w,h)
-      @aspect = w.to_f()/h.to_f()
-      if @is_orgh
-        GL.Ortho(-w/2.0, w/2.0, -h/2.0, h/2.0, -@far*@scale*10, @far*@scale*10)
-      else
-        GLU.Perspective(@angle, @aspect, @near, @far)
-      end
-    end
 
+=begin
     def screen_size_at_z_zero()
-      vp = GL.GetIntegerv(GL::VIEWPORT)
+      vp = viewport
       if @is_orgh
         return vp[2], vp[3]
       else
@@ -82,6 +119,6 @@ module Disp3D
         return width_at_z_zero, height_at_z_zero
       end
     end
-
+=end
   end
 end

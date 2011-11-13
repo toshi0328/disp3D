@@ -2,12 +2,12 @@ require 'disp3D'
 
 module Disp3D
   class GLUTWindow < GLView
+    GLUT.Init
     def initialize(width, height)
       x = 100
       y = 100
       GLUT.InitWindowPosition(x, y)
       GLUT.InitWindowSize(width, height)
-      GLUT.Init
       GLUT.InitDisplayMode(GLUT::GLUT_DOUBLE | GLUT::GLUT_RGB | GLUT::GLUT_DEPTH)
       GLUT.CreateWindow("Disp3D view test")
       GLUT.DisplayFunc(method(:gl_display).to_proc())

@@ -53,7 +53,7 @@ module Disp3D
       GL.MatrixMode(GL::GL_MODELVIEW)
       gl_display_world_scene_graph()
       gl_display_camera_scene_graph()
-      @manipulator.gl_display_compass()
+      #@manipulator.gl_display_compass()
     end
 
     def gl_display_world_scene_graph()
@@ -76,19 +76,12 @@ module Disp3D
     end
 
     def centering
-      bb = @world_scene_graph.bounding_box
-      return if bb.nil?
-      center_pos =  bb.center * -1 # TODO refactaring vector3.rb
-      @manipulator.centering(center_pos)
+      @camera.translate = center_pos * -1.0
     end
 
     def fit
       centering
-      bb = @world_scene_graph.bounding_box
-      return if bb.nil?
-      length = bb.length # TODO refactaring box.rb
-      orth_length = Math.sqrt( length[0]*length[0] + length[1]*length[1] + length[2]*length[2] )
-      @manipulator.fit(orth_length/2.0)
+      @camera.fit(self.bb_radius)
     end
 
     def capture(w, h)
@@ -114,5 +107,18 @@ module Disp3D
       @mouse_release_proc = proc
     end
 
+    def center_pos
+      bb = @world_scene_graph.bounding_box
+      return nil if bb.nil?
+      return bb.center
+    end
+
+    def bb_radius
+      bb = @world_scene_graph.bounding_box
+      return if bb.nil?
+      length = bb.length # TODO refactaring box.rb
+      orth_length = Math.sqrt( length[0]*length[0] + length[1]*length[1] + length[2]*length[2] )
+      orth_length/2.0
+    end
   end
 end

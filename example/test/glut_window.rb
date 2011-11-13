@@ -54,9 +54,7 @@ root_node.add(polyline_node)
 #=========================
 # text
 str = "This is a pen."
-text_node = NodeText.new()
-text_node.text = str
-text_node.position = Vector3.new(2,2,2)
+text_node = NodeText.new(str, Vector3.new(2,2,2))
 root_node.add(text_node)
 
 #=========================
@@ -107,9 +105,7 @@ main_view.world_scene_graph.add(root_node)
 #=========================
 # text to camera_scene_graph
 str2 = "This one contains in camera scene graph."
-text_node2 = NodeText.new()
-text_node2.text = str2
-text_node2.position = Vector3.new(0,0,0)
+text_node2 = NodeText.new(str2, Vector3.new(0,0,0))
 #root_node2.add(text_node2)
 
 main_view.camera_scene_graph.add(text_node2)

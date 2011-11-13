@@ -4,6 +4,13 @@ module Disp3D
   class NodeText < NodeLeaf
     attr_accessor :text
     attr_accessor :position
+
+    def initialize(text, position)
+      @text = text
+      @position = position
+      super(nil)
+    end
+
 protected
     def draw_element
       if(@text and @position)
