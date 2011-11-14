@@ -54,7 +54,6 @@ module Disp3D
 
     def set_screen(w,h)
       if @is_orth
-        p "rep_length:#{@obj_rep_length}"
         GL.Ortho(-w*@orth_scale/2.0, w*@orth_scale/2.0, -h*@orth_scale/2.0, h*@orth_scale/2.0, -@obj_rep_length*10, @obj_rep_length*10)
       else
         GLU.Perspective(@angle, w.to_f()/h.to_f(), 0.1, @eye.z + @obj_rep_length*5.0)

@@ -44,8 +44,6 @@ module Disp3D
         return nil if ( count > 100000)# invalid hit count
 
         mid_z = (near+far)/2.0
-        p "near:#{near}"
-        p "far:#{far}"
         screen_pos = Vector3.new(x,y,mid_z)
         unprojected = @view.camera.unproject(screen_pos)
         nodes = Array.new()
