@@ -51,7 +51,9 @@ module Disp3D
       @light.gl_display()
 
       GL.MatrixMode(GL::GL_MODELVIEW)
+      GL.Enable(GL::GL_DEPTH_TEST)
       gl_display_world_scene_graph()
+      GL.Disable(GL::GL_DEPTH_TEST)
       gl_display_camera_scene_graph()
       #@manipulator.gl_display_compass()
     end
