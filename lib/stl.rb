@@ -6,15 +6,26 @@ module Disp3D
     attr_reader :normals
     attr_reader :name
 
+    ASCII = 0
+    BINARY = 1
+
     def initialize(triangles = nil)
       @tris = triangles
       @normals = nil
       @name = ""
     end
 
-    def parse(file_path)
-      # support only ascii type
-      return parse_ascii(file_path)
+    # return true if success processing.
+    def parse(file_path, type =BINARY )
+      return false if(!FileTest.exist?(file_path))
+
+      if(type == ASCII)
+        return parse_ascii(file_path)
+      elsif(type == BINARY)
+        return parse_binary(file_path)
+      end
+      @tris = nil
+      return false
     end
 
     def tri_mesh
@@ -23,9 +34,31 @@ module Disp3D
     end
 
 private
-    def parse_ascii(file_path)
-      return false if(!FileTest.exist?(file_path))
+    def parse_binary(file_path)
+      @tris = Array.new()
+      @normals = Array.new()
+      file_ptr = open(file_path, "r")
+      file_ptr.binmode
+      buf = file_ptr.read(80)
+      buf = file_ptr.read(4)
+      tri_count = buf.unpack("i*")[0]
+      @tris = Array.new(tri_count)
+      @normals = Array.new(tri_count)
+      tri_count.times do | idx |
+        buf = file_ptr.read(12*4)
+        numeric = buf.unpack("f*")
+        @normals[idx] = Vector3.new(numeric[0], numeric[1], numeric[2])
+        adding_triangle = GMath3D::Triangle.new(
+                                            Vector3.new(numeric[3], numeric[4], numeric[5]),
+                                            Vector3.new(numeric[6], numeric[7], numeric[8]),
+                                            Vector3.new(numeric[9], numeric[10], numeric[11]))
+        @tris[idx] = adding_triangle
+        file_ptr.read(2) # spacer
+      end
+      return true
+    end
 
+    def parse_ascii(file_path)
       @tris = Array.new()
       @normals = Array.new()
 
