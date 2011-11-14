@@ -104,9 +104,20 @@ main_view.world_scene_graph.add(root_node)
 # text to camera_scene_graph
 str2 = "This one contains in camera scene graph."
 text_node2 = NodeText.new(str2, Vector3.new(0,0,0))
-#root_node2.add(text_node2)
-
 main_view.camera_scene_graph.add(text_node2)
+
+#=========================
+# points on camera_scene_graph
+point_geom_camera = Vector3.new(-2, 1, 0)
+str_point = "[#{point_geom_camera}] on camera scene"
+text_node_camera = NodeText.new(str_point, point_geom_camera )
+main_view.camera_scene_graph.add(text_node_camera)
+
+point_node_camera = NodePoints.new(point_geom_camera)
+point_node_camera.colors = [0,1,0,1]
+point_node_camera.size = 7
+main_view.camera_scene_graph.add(point_node_camera)
+
 
 #=========================
 # mouse procedure
@@ -125,4 +136,5 @@ main_view.set_mouse_press Proc.new{|view, button, x, y|
   end
 }
 
+main_view.camera.is_orth = true
 main_view.start

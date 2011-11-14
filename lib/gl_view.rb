@@ -55,7 +55,7 @@ module Disp3D
       gl_display_world_scene_graph()
       GL.Disable(GL::GL_DEPTH_TEST)
       gl_display_camera_scene_graph()
-      #@manipulator.gl_display_compass()
+      @manipulator.gl_display_compass()
     end
 
     def gl_display_world_scene_graph()

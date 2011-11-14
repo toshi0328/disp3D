@@ -7,11 +7,12 @@ module Disp3D
     end
 
     def node_coord
-      width_at_z_zero, height_at_z_zero = @camera.screen_size_at_z_zero
-      coord_size = [width_at_z_zero, height_at_z_zero].min
-      coord_size /= (8*10)
-      @coord_pos = Vector3.new(-3.0/100*width_at_z_zero, -3.0/100*height_at_z_zero, 0)
-      node = NodeCoord.new(Vector3.new(-coord_size/4.0, -coord_size/4.0, 0.0), coord_size)
+      dmy, dmy, screen_width, screen_height = @camera.viewport
+      coord_size = [screen_width, screen_height].min
+      scalling_factor = 0.003
+      coord_size *= scalling_factor
+      @coord_pos = Vector3.new(-screen_width*scalling_factor*2.5, -screen_height*scalling_factor*2.5, 0.0)
+      node = NodeCoord.new(Vector3.new(), coord_size)
       return node
     end
 

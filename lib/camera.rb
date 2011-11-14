@@ -95,20 +95,5 @@ module Disp3D
       dmy, dmy, w, h = viewport
       set_screen(w,h)
     end
-
-=begin
-    def screen_size_at_z_zero()
-      vp = viewport
-      if @is_orgh
-        return vp[2], vp[3]
-      else
-        distance_to_screen = @eye.z
-        diagonal_at_z_zero = (2*distance_to_screen*Math.tan(@angle)).abs
-        width_at_z_zero = diagonal_at_z_zero/Math.sqrt(1.0+1.0/@aspect*@aspect)
-        height_at_z_zero = width_at_z_zero/@aspect
-        return width_at_z_zero, height_at_z_zero
-      end
-    end
-=end
   end
 end
