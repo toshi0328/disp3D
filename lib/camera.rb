@@ -3,7 +3,8 @@ require 'disp3D'
 module Disp3D
   class Camera
     attr_accessor :rotation
-    attr_accessor :translate
+    attr_accessor :pre_translate
+    attr_accessor :post_translate
 
     attr_reader :eye
     attr_accessor :scale
@@ -12,7 +13,8 @@ module Disp3D
 
     def initialize()
       @rotation = Quat.from_axis(Vector3.new(1,0,0),0)
-      @translate = Vector3.new(0,0,0)
+      @pre_translate = Vector3.new(0,0,0)
+      @post_translate = Vector3.new(0,0,0)
       @eye = Vector3.new(0,0,1)
       @center = Vector3.new(0,0,0)
       @scale = 1.0
@@ -47,9 +49,10 @@ module Disp3D
     end
 
     def apply_attitude()
-      GL.Translate(translate.x, translate.y, translate.z)
+      GL.Translate(pre_translate.x, pre_translate.y, pre_translate.z)
       apply_rotation
       GL.Scale(@scale, @scale, @scale)
+      GL.Translate(post_translate.x, post_translate.y, post_translate.z)
     end
 
     def set_screen(w,h)
@@ -72,10 +75,11 @@ module Disp3D
       unprojected = Vector3.new(unprojected[0], unprojected[1], unprojected[2])
       unprojected.z += @eye.z
 
-      unprojected -= @translate
+      unprojected -= @pre_translate
       rot_matrix = Matrix.from_quat(@rotation)
       unprojected = rot_matrix*unprojected
       unprojected /= @scale
+      unprojected -= @post_translate
       return unprojected
     end
 

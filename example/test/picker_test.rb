@@ -60,5 +60,6 @@ main_view.set_mouse_press Proc.new{|view, button, x, y|
   end
 }
 
-#main_view.camera.is_orth = true
+main_view.camera.is_orth = true
+main_view.manipulator.set_rotation_ceter(Vector3.new(1,1,2))
 main_view.start

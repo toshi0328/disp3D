@@ -58,7 +58,7 @@ module Disp3D
     end
 
     def start
-      fit
+      @manipulator.fit(@world_scene_graph)
       GLUT.MainLoop()
     end
 

@@ -77,23 +77,12 @@ module Disp3D
       GL.PopMatrix()
     end
 
-    def centering
-      @camera.translate = center_pos * -1.0
-    end
-
-    def fit
-      centering
-      @camera.fit(self.bb_radius)
-    end
-
     def capture(w, h)
       gl_display
       GL.ReadBuffer(GL::FRONT)
       GL.PixelStorei(GL::UNPACK_ALIGNMENT,1)
       data = GL.ReadPixels(0,0,w,h,GL::RGB, GL::UNSIGNED_BYTE)
-
 # convert to image
-
 #      p data.class
     end
 
@@ -107,20 +96,6 @@ module Disp3D
 
     def set_mouse_release(proc)
       @mouse_release_proc = proc
-    end
-
-    def center_pos
-      bb = @world_scene_graph.bounding_box
-      return nil if bb.nil?
-      return bb.center
-    end
-
-    def bb_radius
-      bb = @world_scene_graph.bounding_box
-      return if bb.nil?
-      length = bb.length # TODO refactaring box.rb
-      orth_length = Math.sqrt( length[0]*length[0] + length[1]*length[1] + length[2]*length[2] )
-      orth_length/2.0
     end
   end
 end

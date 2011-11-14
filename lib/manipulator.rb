@@ -16,6 +16,35 @@ module Disp3D
       @compass = Compass.new(camera)
     end
 
+    def centering(scene_graph)
+      # TODO this procedure is not considered about rotation and scalling!
+      @camera.pre_translate = @camera.post_translate*-1.0 - center_pos(scene_graph)
+    end
+
+    def fit(scene_graph)
+      centering(scene_graph)
+      @camera.fit(bb_radius(scene_graph))
+    end
+
+    def center_pos(scene_graph)
+      bb = scene_graph.bounding_box
+      return nil if bb.nil?
+      return bb.center
+    end
+
+    def bb_radius(scene_graph)
+      bb = scene_graph.bounding_box
+      return if bb.nil?
+      length = bb.length # TODO refactaring box.rb
+      orth_length = Math.sqrt( length[0]*length[0] + length[1]*length[1] + length[2]*length[2] )
+      orth_length/2.0
+    end
+
+    def set_rotation_ceter(pos)
+      # TODO If pre_translate is set...
+      @camera.post_translate = pos*-1.0
+    end
+
     def mouse(button,state,x,y)
       if (state == GLUT::GLUT_DOWN &&
           ((button == GLUT::GLUT_RIGHT_BUTTON && @moving == true) ||
@@ -49,8 +78,8 @@ module Disp3D
         @start_x = x
         @start_y = y
 
-        @camera.translate.x -= delta_x
-        @camera.translate.y += delta_y
+        @camera.pre_translate.x -= delta_x
+        @camera.pre_translate.y += delta_y
         return true
       elsif ( @scalling )
         @camera.scale *= (1.0+(@start_y - y).to_f/height)
@@ -90,6 +119,7 @@ private
       if( p1x == p2x && p1y == p2y)
         return Quat.new(0,0,0,1)
       end
+
       p1 = Vector3.new( p1x, p1y, project_to_sphere(@trackball_size, p1x, p1y))
       p2 = Vector3.new( p2x, p2y, project_to_sphere(@trackball_size, p2x, p2y))
       a = p1.cross(p2)
