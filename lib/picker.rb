@@ -7,7 +7,7 @@ module Disp3D
       @max_select_count = 100
     end
 
-    def hit_test(x,y)
+    def pick(x,y)
       vp = GL.GetIntegerv(GL::VIEWPORT)
 
       selection = GL.SelectBuffer(@max_select_count)
@@ -51,7 +51,7 @@ module Disp3D
           picked_node = Node.from_id(data[4*i+3 + j])
           nodes.push(picked_node) if (picked_node != nil)
         end
-        picked_result.push(PickedResult.new(nodes, screen_pos, unprojected))
+        picked_result.push(PickedResult.new(nodes, screen_pos, unprojected, near, far))
       end
       return picked_result
     end

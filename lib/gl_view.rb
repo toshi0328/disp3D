@@ -33,12 +33,14 @@ module Disp3D
 
       @light = Light.new()
       @camera = Camera.new()
-      @manipulator = Manipulator.new(@camera, width, height)
+
       @world_scene_graph = SceneGraph.new()
       @camera_scene_graph = SceneGraph.new()
 
       @picker = Picker.new(self)
       @bk_color = [0.28,0.23,0.55,1]
+
+      @manipulator = Manipulator.new(@camera, @picker)
 
       @mouse_move_proc = nil
     end

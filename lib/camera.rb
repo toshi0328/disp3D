@@ -36,21 +36,15 @@ module Disp3D
       set_screen(w,h)
     end
 
-    def apply_position()
+    def apply_position
       GLU.LookAt(@eye.x, @eye.y, @eye.z, @center.x, @center.y, @center.z, 0.0, 1.0, 0.0)
     end
 
-    def apply_rotation()
-      rot_mat = Matrix.from_quat(@rotation)
-      rot_mat_array = [
-        [rot_mat[0,0], rot_mat[0,1], rot_mat[0,2], 0],
-        [rot_mat[1,0], rot_mat[1,1], rot_mat[1,2], 0],
-        [rot_mat[2,0], rot_mat[2,1], rot_mat[2,2], 0],
-        [0,0,0,1]]
-      GL.MultMatrix(rot_mat_array)
+    def apply_rotation
+      GL.MultMatrix(rotation_array)
     end
 
-    def apply_attitude()
+    def apply_attitude
       GL.Translate(pre_translate.x, pre_translate.y, pre_translate.z)
       apply_rotation
       GL.Scale(@scale, @scale, @scale)
@@ -85,6 +79,14 @@ module Disp3D
       return unprojected
     end
 
+    def fit(radius)
+      @obj_rep_length = radius
+      fit_camera_pos
+      @scale = 1.0
+      dmy, dmy, w, h = viewport
+      set_screen(w,h)
+    end
+
     def fit_camera_pos
       # move camera pos for showing all objects
       dmy, dmy, w, h = viewport
@@ -94,12 +96,15 @@ module Disp3D
       @orth_scale = @obj_rep_length/(min_screen_size.to_f)*2.0
     end
 
-    def fit(radius)
-      @obj_rep_length = radius
-      fit_camera_pos
-      @scale = 1.0
-      dmy, dmy, w, h = viewport
-      set_screen(w,h)
+    # convert quat to matrix
+    def rotation_array()
+      rot_mat = Matrix.from_quat(@rotation)
+      rot_mat_array = [
+        [rot_mat[0,0], rot_mat[0,1], rot_mat[0,2], 0],
+        [rot_mat[1,0], rot_mat[1,1], rot_mat[1,2], 0],
+        [rot_mat[2,0], rot_mat[2,1], rot_mat[2,2], 0],
+        [0,0,0,1]]
+      return rot_mat_array
     end
   end
 end

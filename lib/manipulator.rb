@@ -1,10 +1,13 @@
+# -*- coding: cp932 -*-
 require 'disp3D'
 
 include GMath3D
 module Disp3D
   class Manipulator
-    def initialize(camera, w, h)
+    def initialize(camera, picker)
       @camera = camera
+      @picker = picker
+
       @start_x = 0
       @start_y = 0
 
@@ -26,9 +29,15 @@ module Disp3D
       @camera.fit(scene_graph.radius)
     end
 
-    def set_rotation_ceter(pos)
-      # TODO If pre_translate is set...
-      @camera.post_translate = pos*-1.0
+    def set_rotation_ceter(rot_center)
+      scale = @camera.scale
+      post_trans_vec = @camera.post_translate.to_column_vector
+      pre_trans_vec = @camera.pre_translate.to_column_vector
+      rot_mat = Matrix.from_quat(@camera.rotation)
+      new_pre_translate = ( rot_mat.t * post_trans_vec * scale + pre_trans_vec ) + rot_mat.t * rot_center.to_column_vector * scale
+      new_pre_translate = GMath3D::Vector3.new(new_pre_translate[0,0], new_pre_translate[1,0], new_pre_translate[2,0])
+      @camera.pre_translate = new_pre_translate
+      @camera.post_translate = rot_center*-1.0
     end
 
     def mouse(button,state,x,y)
@@ -46,6 +55,8 @@ module Disp3D
         @rotating = true
         @start_x = x
         @start_y = y
+      elsif ( button == GLUT::GLUT_MIDDLE_BUTTON && state == GLUT::GLUT_DOWN )
+        set_clicked_point_as_rotation_center(x,y)
       elsif ( button == GLUT::GLUT_RIGHT_BUTTON && state == GLUT::GLUT_UP )
         @scalling = false
         @translating = false
@@ -90,6 +101,13 @@ module Disp3D
     end
 
 private
+   def set_clicked_point_as_rotation_center(x,y)
+     results = @picker.pick(x,y)
+     nearest = results.min {|a,b| a.near <=> b.near}
+     return if(nearest.nil?)
+     set_rotation_ceter(nearest.world_position)
+   end
+
     def project_to_sphere(r, x, y)
       d = Math.sqrt(x*x + y*y)
       if (d < r * Math.sqrt(2)/2) # inside sphere
