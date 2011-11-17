@@ -8,7 +8,7 @@ module Disp3D
       @start_x = 0
       @start_y = 0
 
-      @moving = false
+      @rotating = false
       @scalling = false
       @translating = false
       @trackball_size = 0.8
@@ -47,7 +47,7 @@ module Disp3D
 
     def mouse(button,state,x,y)
       if (state == GLUT::GLUT_DOWN &&
-          ((button == GLUT::GLUT_RIGHT_BUTTON && @moving == true) ||
+          ((button == GLUT::GLUT_RIGHT_BUTTON && @rotating == true) ||
           (button == GLUT::GLUT_LEFT_BUTTON && @scalling == true) ))
         # pushed left and right at the same time
         @translating = true
@@ -57,14 +57,14 @@ module Disp3D
         @scalling = true
         @start_y = y
       elsif ( button == GLUT::GLUT_LEFT_BUTTON && state == GLUT::GLUT_DOWN )
-        @moving = true
+        @rotating = true
         @start_x = x
         @start_y = y
       elsif ( button == GLUT::GLUT_RIGHT_BUTTON && state == GLUT::GLUT_UP )
         @scalling = false
         @translating = false
       elsif ( button == GLUT::GLUT_LEFT_BUTTON && state == GLUT::GLUT_UP )
-        @moving = false
+        @rotating = false
         @translating = false
       end
     end
@@ -78,14 +78,14 @@ module Disp3D
         @start_x = x
         @start_y = y
 
-        @camera.pre_translate.x -= delta_x
-        @camera.pre_translate.y += delta_y
+        @camera.pre_translate.x -= delta_x*@camera.obj_rep_length
+        @camera.pre_translate.y += delta_y*@camera.obj_rep_length
         return true
       elsif ( @scalling )
         @camera.scale *= (1.0+(@start_y - y).to_f/height)
         @start_y = y
         return true
-      elsif ( @moving )
+      elsif ( @rotating )
         @lastquat =trackball(
                    (2.0 * @start_x - width) / width,
                    (height - 2.0 * @start_y) / height,

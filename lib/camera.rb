@@ -9,6 +9,8 @@ module Disp3D
     attr_reader :eye
     attr_accessor :scale
 
+    attr_reader :obj_rep_length
+
     attr_accessor :is_orth
 
     def initialize()
