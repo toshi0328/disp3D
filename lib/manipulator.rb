@@ -17,27 +17,13 @@ module Disp3D
     end
 
     def centering(scene_graph)
-      # TODO this procedure is not considered about rotation and scalling!
-      @camera.pre_translate = @camera.post_translate*-1.0 - center_pos(scene_graph)
+      @camera.pre_translate = Vector3.new()
+      set_rotation_ceter(scene_graph.center)
     end
 
     def fit(scene_graph)
       centering(scene_graph)
-      @camera.fit(bb_radius(scene_graph))
-    end
-
-    def center_pos(scene_graph)
-      bb = scene_graph.bounding_box
-      return nil if bb.nil?
-      return bb.center
-    end
-
-    def bb_radius(scene_graph)
-      bb = scene_graph.bounding_box
-      return if bb.nil?
-      length = bb.length # TODO refactaring box.rb
-      orth_length = Math.sqrt( length[0]*length[0] + length[1]*length[1] + length[2]*length[2] )
-      orth_length/2.0
+      @camera.fit(scene_graph.radius)
     end
 
     def set_rotation_ceter(pos)
