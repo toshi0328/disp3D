@@ -8,13 +8,10 @@ module Disp3D
 
     def node_coord
       dmy, dmy, screen_width, screen_height = @camera.viewport
-p "screen info"
-p screen_width
-p screen_height
       coord_size = [screen_width, screen_height].min
-      scalling_factor = 0.003
+      scalling_factor = 0.1
       coord_size *= scalling_factor
-      @coord_pos = Vector3.new(-screen_width*scalling_factor*2.5, -screen_height*scalling_factor*2.5, 0.0)
+      @coord_pos = Vector3.new(-screen_width*0.5 + coord_size*1.5, -screen_height*0.5 + coord_size*1.5, 0.0)
       node = NodeCoord.new(Vector3.new(), coord_size)
       return node
     end
@@ -22,10 +19,7 @@ p screen_height
     def gl_display
       GL.PushMatrix()
       GL.LoadIdentity()
-      @camera.apply_position()
-
       node = node_coord
-
       GL.Translate(@coord_pos.x, @coord_pos.y, @coord_pos.z)
       @camera.apply_rotation()
       node.draw if( !node.nil? )
