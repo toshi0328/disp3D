@@ -52,18 +52,20 @@ module Disp3D
       return if(@camera.nil? or @light.nil?)
       @light.gl_display()
 
-      GL.MatrixMode(GL::GL_MODELVIEW)
       GL.Enable(GL::GL_DEPTH_TEST)
+      @camera.set_projection_for_world_scene
       gl_display_world_scene_graph()
       GL.Disable(GL::GL_DEPTH_TEST)
+      @camera.set_projection_for_camera_scene
       gl_display_camera_scene_graph()
-      @manipulator.gl_display_compass()
+#      @manipulator.gl_display_compass()
     end
 
     def gl_display_world_scene_graph()
       return if(@world_scene_graph.nil?)
-      GL.LoadIdentity()
+      GL.MatrixMode(GL::GL_MODELVIEW)
       GL.PushMatrix()
+      GL.LoadIdentity()
       @camera.apply_position()
       @camera.apply_attitude()
       @world_scene_graph.gl_display()
@@ -72,8 +74,9 @@ module Disp3D
 
     def gl_display_camera_scene_graph()
       return if(@camera_scene_graph.nil?)
-      GL.LoadIdentity()
+      GL.MatrixMode(GL::GL_MODELVIEW)
       GL.PushMatrix()
+      GL.LoadIdentity()
       @camera.apply_position()
       @camera_scene_graph.gl_display()
       GL.PopMatrix()
@@ -84,8 +87,8 @@ module Disp3D
       GL.ReadBuffer(GL::FRONT)
       GL.PixelStorei(GL::UNPACK_ALIGNMENT,1)
       data = GL.ReadPixels(0,0,w,h,GL::RGB, GL::UNSIGNED_BYTE)
-# convert to image
-#      p data.class
+      # convert to image
+      #      p data.class
     end
 
     def set_mouse_move(proc)

@@ -31,9 +31,7 @@ module Disp3D
 
     def reshape(w,h)
       GL.Viewport(0.0,0.0,w,h)
-      GL.MatrixMode(GL::GL_PROJECTION)
-      GL.LoadIdentity()
-      set_screen(w,h)
+      set_projection_for_world_scene
     end
 
     def apply_position
@@ -63,13 +61,34 @@ module Disp3D
       return GL.GetIntegerv(GL::VIEWPORT)
     end
 
+    def set_projection_for_world_scene
+      GL.MatrixMode(GL::GL_PROJECTION)
+      GL.LoadIdentity()
+      dmy, dmy, w,h = viewport
+      set_screen(w,h)
+    end
+
+    def set_projection_for_camera_scene
+      GL.MatrixMode(GL::GL_PROJECTION)
+      GL.LoadIdentity()
+      dmy, dmy, w,h = viewport
+      GL.Ortho(-w/2, w/2, -h/2, h/2, -100, 100)
+    end
+
     def unproject(screen_pos)
+      set_projection_for_world_scene
+
+      GL.MatrixMode(GL::GL_MODELVIEW)
+      GL.PushMatrix()
+      GL.LoadIdentity()
+      apply_position()
       vp = viewport
       projection = GL::GetDoublev(GL::PROJECTION_MATRIX)
       model_view = GL::GetDoublev(GL::MODELVIEW_MATRIX)
+      GL.PopMatrix()
+
       unprojected = GLU::UnProject(screen_pos.x, vp[3]-screen_pos.y-1, screen_pos.z, model_view, projection, vp)
       unprojected = Vector3.new(unprojected[0], unprojected[1], unprojected[2])
-      unprojected.z += @eye.z
 
       unprojected -= @pre_translate
       rot_matrix = Matrix.from_quat(@rotation)

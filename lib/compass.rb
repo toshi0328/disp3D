@@ -8,6 +8,9 @@ module Disp3D
 
     def node_coord
       dmy, dmy, screen_width, screen_height = @camera.viewport
+p "screen info"
+p screen_width
+p screen_height
       coord_size = [screen_width, screen_height].min
       scalling_factor = 0.003
       coord_size *= scalling_factor
@@ -17,8 +20,8 @@ module Disp3D
     end
 
     def gl_display
-      GL.LoadIdentity()
       GL.PushMatrix()
+      GL.LoadIdentity()
       @camera.apply_position()
 
       node = node_coord

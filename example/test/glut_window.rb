@@ -101,14 +101,8 @@ main_view.world_scene_graph.add(root_node)
 
 
 #=========================
-# text to camera_scene_graph
-str2 = "This one contains in camera scene graph."
-text_node2 = NodeText.new(str2, Vector3.new(0,0,0))
-main_view.camera_scene_graph.add(text_node2)
-
-#=========================
 # points on camera_scene_graph
-point_geom_camera = Vector3.new(-2, 1, 0)
+point_geom_camera = Vector3.new(-300, 200, 0)
 str_point = "[#{point_geom_camera}] on camera scene"
 text_node_camera = NodeText.new(str_point, point_geom_camera )
 main_view.camera_scene_graph.add(text_node_camera)
@@ -126,7 +120,7 @@ main_view.camera_scene_graph.add(point_node_camera)
 main_view.set_mouse_press Proc.new{|view, button, x, y|
   current_picker = view.picker
   if (current_picker != nil)
-    result = current_picker.hit_test(x,y)
+    result = current_picker.pick(x,y)
     if(result != nil && result.size > 0)
       p "hit #{result.size} elements"
       result.each do | item |

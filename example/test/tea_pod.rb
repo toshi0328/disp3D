@@ -12,6 +12,6 @@ node_workplane = Disp3D::NodeWorkplane.new(plane)
 node_workplane.colors = [1,0,0,0.5]
 
 main_view.world_scene_graph.add(node_workplane)
-#main_view.camera.is_orth = true
+main_view.camera.is_orth = true
 main_view.start
 

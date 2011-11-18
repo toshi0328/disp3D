@@ -54,7 +54,7 @@ main_view.set_mouse_press Proc.new{|view, button, x, y|
     if(result != nil && result.size > 0)
       p "hit #{result.size} elements"
       result.each do | item |
-#        p item
+        p item
       end
     end
   end
