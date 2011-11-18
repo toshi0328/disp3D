@@ -1,5 +1,3 @@
-require 'opengl'
-
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../../', 'lib'))
 
 require 'disp3D'
@@ -18,6 +16,5 @@ stl.parse(file_path, Disp3D::STL::ASCII)
 stl_node = Disp3D::NodeTris.new( stl.tri_mesh )
 
 main_view.world_scene_graph.add(stl_node)
-
 #main_view.camera.is_orth = true
 main_view.start

@@ -4,6 +4,7 @@ module Disp3D
   class NodeCollection < Node
 
     def initialize()
+      super
       @children = []
     end
 

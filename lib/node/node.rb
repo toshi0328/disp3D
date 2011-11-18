@@ -5,7 +5,7 @@ module Disp3D
     attr_accessor :translate
 
     @@named_nodes = nil
-    def initialize(geometry)
+    def initialize()
       @translate = nil
     end
 
