@@ -61,7 +61,7 @@ protected
 
       if(@list_created == false)
         @list_created = true
-        GL.NewList(@node_id, GL::GL_COMPILE_AND_EXECUTE)
+        GL.NewList(@node_id, GL::COMPILE_AND_EXECUTE)
         pre_draw  # matrix manipulation
         draw_element.call
         post_draw # matrix manipulation

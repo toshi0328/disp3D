@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+require 'observer'
+
+require 'Qt'
 require 'stl_viewer'
 
 class DocumentCtrl
@@ -6,53 +10,42 @@ class DocumentCtrl
   def initialize(main_window)
     @document = nil # this is THE ROOT DOCUMENT of this application
     @main_window = main_window
-    @gl_ctrl = GLCtrl.new(main_window.gl_widget)
-  end
-
-  def new
-    if (@document.nil? || may_be_save)
-      @document = Document.new()
-    end
   end
 
   def open
-    #TODO implement!
-  end
-
-  def save
-    #TODO implement! return true if success
-    return true
-  end
-
-  def add_stl
-    if(@document.nil?)
-      new()
-    end
-
+    return if(!exit_current_session?)
     file_name = Qt::FileDialog.getOpenFileName(@main_window)
     if !file_name.nil?
-      stl = STL.new()
-      if stl.parse(file_name)
-        added =  @document.add_tri_mesh!(stl.tri_mesh)
-        if !added.nil?
-          @gl_ctrl.add2scenegraph(added)
-        end
+      stl = Disp3D::STL.new()
+      if stl.parse(file_name, Disp3D::STL::ASCII)
+        @document = Document.new()
+        @document.add_observer(self)
+        @document.tri_mesh = stl.tri_mesh
       end
     end
   end
 
+# 更新といっても、ノードの入れ替え、色の変更、フィットさせるだけなど、様々と思うが・・・
+  def update
+    @main_window.gl_widget.gl_view.world_scene_graph.add(@document.tri_node)
+    @main_window.gl_widget.gl_view.fit
+    @main_window.gl_widget.updateGL
+
+    @main_window.ctrl_widget.vert_cnt = @document.tri_mesh.vertices.size
+    @main_window.ctrl_widget.tri_cnt = @document.tri_mesh.tri_indices.size
+  end
+
 private
-  def may_be_save
-    if @document.dirty
+  def exit_current_session?
+    if !@document.nil?
       ret = Qt::MessageBox::warning(@main_window, tr("STL Viewer"),
-                            tr("The document has been modified. \n" +
-                               "Do you want to save your change?"),
+                            tr("Already STL file is open. \n" +
+                               "Do you want to exit current session?"),
                             Qt::MessageBox::Yes | Qt::MessageBox::Defaut,
-                            Qt::MessageBox::No,
-                            Qt::MessageBox::Cancel | Qt::MessageBox::Escape)
+                            Qt::MessageBox::No| Qt::MessageBox::Escape )
       if ret == Qt::MessageBox::Yes
-        return save()
-      elsif ret == Qt::MessageBox::Cancel
+        return true
+      elsif ret == Qt::MessageBox::No
         return false
       end
     end

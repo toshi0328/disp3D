@@ -43,6 +43,8 @@ module Disp3D
       @manipulator = Manipulator.new(@camera, @picker)
 
       @mouse_move_proc = nil
+      @mouse_press_proc = nil
+      @mouse_release_proc = nil
     end
 
     def gl_display()
@@ -89,6 +91,14 @@ module Disp3D
       data = GL.ReadPixels(0,0,w,h,GL::RGB, GL::UNSIGNED_BYTE)
       # convert to image
       #      p data.class
+    end
+
+    def fit
+      @manipulator.fit(@world_scene_graph)
+    end
+
+    def centering
+      @manipulator.centering(@world_scene_graph)
     end
 
     def set_mouse_move(proc)

@@ -1,70 +1,80 @@
 require 'Qt'
 
 class QTWidgetController < Qt::Widget
-  def initialize
-    super
+  def initialize(gl_widget)
+    super()
 
+    @gl_widget = gl_widget
     @width = 200
-    @height = 400
+    @height = 500
 
-    @tab_widget = Qt::TabWidget.new()
-    @tab_widget.addTab(TagPageInfo.new(), tr("Info"))
-    @tab_widget.addTab(HogePage.new(), tr("Hoge"))
-    @tab_widget.setSizePolicy(Qt::SizePolicy::Expanding,Qt::SizePolicy::Expanding)
+    setupWidgets
+    setupLayout
+  end
 
-    @tree_view = Qt::TreeView.new()
-    @tree_view.setSizePolicy(Qt::SizePolicy::Expanding,Qt::SizePolicy::Expanding)
-
-    self.layout = Qt::VBoxLayout.new do |m|
-      m.addWidget(@tab_widget)
-      m.addWidget(@tree_view)
-      m.addStretch()
+  def setupWidgets
+    @info_gbox = Qt::GroupBox.new(tr("Info"))
+    @vert_text = Qt::LineEdit.new(@info_gbox)
+    @tris_text = Qt::LineEdit.new(@info_gbox)
+    @info_gbox.layout = Qt::GridLayout.new do |m|
+      m.addWidget(Qt::Label.new(tr("Vertex:")),0,0)
+      m.addWidget(@vert_text,0,1)
+      m.addWidget(Qt::Label.new(tr("Triangle:")),1,0)
+      m.addWidget(@tris_text,1,1)
     end
 
+    @ctrl_gbox = Qt::GroupBox.new(tr("Control"))
+    @fit_btn = Qt::PushButton.new(tr("Fit"))
+    @centering_btn = Qt::PushButton.new(tr("Centering"))
+    connect(@fit_btn, SIGNAL('clicked()'), self, SLOT('fit()'))
+    connect(@centering_btn, SIGNAL('clicked()'), self, SLOT('centering()'))
+    button_layout = Qt::HBoxLayout.new do |n|
+      n.addWidget(@fit_btn)
+      n.addWidget(@centering_btn)
+    end
+
+    @ctrl_gbox.layout = Qt::VBoxLayout.new do |m|
+      m.addLayout button_layout
+      m.addWidget(Qt::Label.new(tr("Set Center Point")))
+    end
+
+    @appearance_gbox = Qt::GroupBox.new(tr("Appearance"))
+    @appearance_gbox.layout = Qt::GridLayout.new do |m|
+      m.addWidget(Qt::Label.new(tr("Color:")),0,0)
+      m.addWidget(Qt::Label.new(tr("Hoge")),0,1)
+      m.addWidget(Qt::Label.new(tr("Alpha:")),1,0)
+      m.addWidget(Qt::Label.new(tr("sliderbar")),1,1)
+    end
+  end
+
+  def setupLayout
+    self.layout = Qt::VBoxLayout.new do |m|
+      m.addWidget(@info_gbox)
+      m.addWidget(@ctrl_gbox)
+      m.addWidget(@appearance_gbox)
+      m.addStretch()
+    end
   end
 
   def sizeHint()
     return Qt::Size.new(@width, @height)
   end
 
-  ##########################################
-  class TagPageInfo < Qt::Widget
-    def initialize(parent=nil)
-      super(parent)
-      label_name = Qt::Label.new(tr("Name:"))
-      label_value_name = Qt::Label.new("")
-      label_value_name.frameStyle = Qt::Frame::Panel | Qt::Frame::Sunken
-
-      label_vertex_count = Qt::Label.new(tr("Vertex Count:"))
-      label_value_vertex_count = Qt::Label.new("")
-      label_value_vertex_count.frameStyle = Qt::Frame::Panel | Qt::Frame::Sunken
-
-      label_tri_count = Qt::Label.new(tr("Triangle Count:"))
-      label_value_tri_count = Qt::Label.new("")
-      label_value_tri_count.frameStyle = Qt::Frame::Panel | Qt::Frame::Sunken
-
-      self.layout = Qt::GridLayout.new do |m|
-        m.addWidget(label_name, 0, 0)
-        m.addWidget(label_tri_count, 1, 0)
-        m.addWidget(label_vertex_count, 2, 0)
-
-        m.addWidget(label_value_name, 0, 1)
-        m.addWidget(label_value_vertex_count, 1, 1)
-        m.addWidget(label_value_tri_count, 2, 1)
-      end
-    end
+  def fit
+p "fit processing"
+#    @gl_widget.gl_view.fit
   end
 
-  class HogePage < Qt::Widget
-    def initialize(parent=nil)
-      super(parent)
-      label = Qt::Label.new(tr("hoge"))
-
-      self.layout = Qt::VBoxLayout.new do |m|
-        m.addWidget(label)
-      end
-    end
-
+  def centering
+p "cenering processing"
+#    @gl_widget.gl_view.centering
   end
 
+  def vert_cnt=(rhs)
+    @vert_text.text = rhs.to_s
+  end
+
+  def tri_cnt=(rhs)
+    @tris_text.text = rhs.to_s
+  end
 end

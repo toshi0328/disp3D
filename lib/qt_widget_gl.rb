@@ -6,6 +6,8 @@ class QtWidgetGL < Qt::GLWidget
   attr_accessor :width
   attr_accessor :height
 
+  attr_reader :load_proc
+
   def initialize(parent)
     super(parent)
     @width = 400
@@ -19,16 +21,12 @@ class QtWidgetGL < Qt::GLWidget
     super
   end
 
-  def camera
-    return @view.camera
+  def gl_view
+    @view
   end
 
-  def world_scene_graph
-    return @view.world_scene_graph
-  end
-
-  def fit
-    @view.fit
+  def set_load_proc(proc)
+    @load_proc = proc
   end
 
   def initializeGL()
@@ -45,6 +43,7 @@ class QtWidgetGL < Qt::GLWidget
 
   def get_GLUT_button(event)
     return GLUT::GLUT_RIGHT_BUTTON if( event.button == Qt::RightButton)
+    return GLUT::GLUT_MIDDLE_BUTTON if( event.button == Qt::MiddleButton)
     return GLUT::GLUT_LEFT_BUTTON if( event.button == Qt::LeftButton)
     return nil
   end
@@ -61,7 +60,6 @@ class QtWidgetGL < Qt::GLWidget
 
   def mouseMoveEvent(event)
     @view.mouse_move_proc.call(self, x,y) if( @view.mouse_move_proc != nil)
-
     need_update = @view.manipulator.motion(event.pos.x,event.pos.y)
     if(need_update)
       updateGL()
@@ -74,7 +72,6 @@ class QtWidgetGL < Qt::GLWidget
 
   def resizeGL(width, height)
     @view.camera.reshape(width, height)
-    @view.manipulator.reset_size(width, height)
   end
 end
 

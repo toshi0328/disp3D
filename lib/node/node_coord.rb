@@ -23,7 +23,5 @@ module Disp3D
       @children.push(y_node)
       @children.push(z_node)
     end
-
-
   end
 end

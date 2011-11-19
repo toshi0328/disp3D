@@ -4,6 +4,10 @@ module Disp3D
   class NodeArrows < NodeLeaf
     attr_accessor :width
 
+    def initialize(geom)
+      super(geom)
+    end
+
 protected
     def draw_element
       if(@geom)
