@@ -28,14 +28,13 @@ class CameraTestCase < MiniTest::Unit::TestCase
     @camera.fit(rad)
     assert_in_delta(62.20084679281463, @camera.eye.z, 1e-8)
     assert_in_delta(1.0, @camera.scale, 1e-8)
-    assert_in_delta(82.20084679281463, @camera.far, 1e-8)
-    assert_in_delta(1.0, @camera.scale, 1e-8)
+    assert_in_delta(10.0, @camera.obj_rep_length, 1e-8)
 
     @camera.is_orth = true
     @camera.fit(rad)
     assert_in_delta(62.20084679281463, @camera.eye.z, 1e-8)
-    assert_in_delta(82.20084679281463, @camera.far, 1e-8)
-    assert_in_delta(15.0, @camera.scale, 1e-8)
+    assert_in_delta(1.0, @camera.scale, 1e-8)
+    assert_in_delta(10.0, @camera.obj_rep_length, 1e-8)
   end
 
 end
