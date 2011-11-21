@@ -1,6 +1,5 @@
 require 'disp3D'
 
-
 =begin
 class GL
   alias_method :Vertex_inner, :Vertex  # hold original processing

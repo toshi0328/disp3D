@@ -9,7 +9,7 @@ module Disp3D
     end
 
     def gl_display()
-      Node.init_node_list
+      Node.init_path_id_hash
       @root_node.draw()
     end
 

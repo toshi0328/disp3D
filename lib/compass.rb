@@ -21,7 +21,7 @@ module Disp3D
       GL.LoadIdentity()
       node = node_coord
       GL.Translate(@coord_pos.x, @coord_pos.y, @coord_pos.z)
-      @camera.apply_rotation()
+      @camera.apply_rotate
       node.draw if( !node.nil? )
       GL.PopMatrix()
     end

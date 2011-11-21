@@ -60,7 +60,7 @@ module Disp3D
       GL.Disable(GL::GL_DEPTH_TEST)
       @camera.set_projection_for_camera_scene
       gl_display_camera_scene_graph()
-      @manipulator.gl_display_compass()
+#      @manipulator.gl_display_compass()
     end
 
     def gl_display_world_scene_graph()

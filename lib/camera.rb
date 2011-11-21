@@ -2,7 +2,7 @@ require 'disp3D'
 
 module Disp3D
   class Camera
-    attr_accessor :rotation
+    attr_accessor :rotate
     attr_accessor :pre_translate
     attr_accessor :post_translate
 
@@ -14,7 +14,7 @@ module Disp3D
     attr_accessor :is_orth
 
     def initialize()
-      @rotation = Quat.from_axis(Vector3.new(1,0,0),0)
+      @rotate = Quat.from_axis(Vector3.new(1,0,0),0)
       @pre_translate = Vector3.new(0,0,0)
       @post_translate = Vector3.new(0,0,0)
       @eye = Vector3.new(0,0,1)
@@ -38,13 +38,13 @@ module Disp3D
       GLU.LookAt(@eye.x, @eye.y, @eye.z, @center.x, @center.y, @center.z, 0.0, 1.0, 0.0)
     end
 
-    def apply_rotation
-      GL.MultMatrix(rotation_array)
+    def apply_rotate
+      GL.MultMatrix(@rotate.to_array)
     end
 
     def apply_attitude
       GL.Translate(pre_translate.x, pre_translate.y, pre_translate.z)
-      apply_rotation
+      apply_rotate
       GL.Scale(@scale, @scale, @scale)
       GL.Translate(post_translate.x, post_translate.y, post_translate.z)
     end
@@ -91,7 +91,7 @@ module Disp3D
       unprojected = Vector3.new(unprojected[0], unprojected[1], unprojected[2])
 
       unprojected -= @pre_translate
-      rot_matrix = Matrix.from_quat(@rotation)
+      rot_matrix = Matrix.from_quat(@rotate)
       unprojected = rot_matrix*unprojected
       unprojected /= @scale
       unprojected -= @post_translate
@@ -115,15 +115,5 @@ module Disp3D
       @orth_scale = @obj_rep_length/(min_screen_size.to_f)*2.0
     end
 
-    # convert quat to matrix
-    def rotation_array()
-      rot_mat = Matrix.from_quat(@rotation)
-      rot_mat_array = [
-        [rot_mat[0,0], rot_mat[0,1], rot_mat[0,2], 0],
-        [rot_mat[1,0], rot_mat[1,1], rot_mat[1,2], 0],
-        [rot_mat[2,0], rot_mat[2,1], rot_mat[2,2], 0],
-        [0,0,0,1]]
-      return rot_mat_array
-    end
   end
 end

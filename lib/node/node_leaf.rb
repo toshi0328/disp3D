@@ -15,13 +15,10 @@ module Disp3D
       @shininess = nil
       @shininess_default = 32.0
 
-      @node_id = new_id()
       @list_created = false
     end
 
     def draw
-      @@named_nodes[@node_id] = self
-      GL.LoadName(@node_id)
       draw_inner(self.method(:draw_element))
     end
 
@@ -29,14 +26,15 @@ module Disp3D
       return nil if @geom == nil
       if(@geom.kind_of?(Array))
         return nil if @geom.size == 0
-        box = @geom[0].box
+        rtn_box = @geom[0].box
         @geom.each do |element|
-          box += element.box
+          rtn_box += element.box
         end
-      return box
       else
-        return @geom.box
+        rtn_box = @geom.box
       end
+
+      return rtn_box
     end
 
 protected
@@ -61,13 +59,13 @@ protected
 
       if(@list_created == false)
         @list_created = true
-        GL.NewList(@node_id, GL::COMPILE_AND_EXECUTE)
+        GL.NewList(@instance_id, GL::COMPILE_AND_EXECUTE)
         pre_draw  # matrix manipulation
         draw_element.call
         post_draw # matrix manipulation
         GL.EndList()
       else
-        GL.CallList(@node_id)
+        GL.CallList(@instance_id)
       end
     end
 

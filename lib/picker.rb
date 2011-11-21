@@ -44,14 +44,19 @@ module Disp3D
         return nil if ( count > 100000)# invalid hit count
 
         mid_z = (near+far)/2.0
-        screen_pos = Vector3.new(x,y,mid_z)
+        screen_pos = Vector3.new(x,y,near)
         unprojected = @view.camera.unproject(screen_pos)
-        nodes = Array.new()
+        node_info = Array.new()
         count.times do | j |
-          picked_node = Node.from_id(data[4*i+3 + j])
-          nodes.push(picked_node) if (picked_node != nil)
+          path_id = data[4*i+3 + j]
+          picked_node = Node.from_path_id(path_id)
+          if (picked_node != nil)
+            parent_node = picked_node.parents.find {|parent| parent.include?(path_id) }
+            picked_node_info = NodeInfo.new(picked_node, parent_node, path_id)
+            node_info.push(picked_node_info)
+          end
         end
-        picked_result.push(PickedResult.new(nodes, screen_pos, unprojected, near, far))
+        picked_result.push(PickedResult.new(node_info, screen_pos, unprojected, near, far))
       end
       return picked_result
     end
