@@ -17,7 +17,7 @@ module Disp3D
         end
       end
       if(all_disable)
-        GL.Enable( @light_id[0])
+        GL.Enable(@light_id[0])
       end
     end
 

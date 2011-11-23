@@ -34,7 +34,8 @@ module Disp3D
       post_trans_vec = @camera.post_translate.to_column_vector
       pre_trans_vec = @camera.pre_translate.to_column_vector
       rot_mat = Matrix.from_quat(@camera.rotate)
-      new_pre_translate = ( rot_mat.t * post_trans_vec * scale + pre_trans_vec ) + rot_mat.t * rot_center.to_column_vector * scale
+      new_pre_translate = ( rot_mat.t * post_trans_vec * scale + pre_trans_vec ) +
+        rot_mat.t * rot_center.to_column_vector * scale
       new_pre_translate = GMath3D::Vector3.new(new_pre_translate[0,0], new_pre_translate[1,0], new_pre_translate[2,0])
       @camera.pre_translate = new_pre_translate
       @camera.post_translate = rot_center*-1.0

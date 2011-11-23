@@ -3,6 +3,8 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'gmath3D'
 
 require 'opengl'
+require 'disp3d_ext'
+
 require 'glut'
 
 require 'util'
@@ -18,7 +20,7 @@ require 'light'
 require 'manipulator'
 require 'compass'
 require 'picker'
-require 'node_info'
+require 'path_info'
 require 'picked_result'
 
 require 'scene_graph'
@@ -38,17 +40,3 @@ require 'node/node_coord'
 require 'node/node_workplane'
 
 
-module GMath3D
-  class Quat
-    # convert quat to array
-    def to_array
-      rot_mat = Matrix.from_quat(self)
-      rot_mat_array = [
-        [rot_mat[0,0], rot_mat[0,1], rot_mat[0,2], 0],
-        [rot_mat[1,0], rot_mat[1,1], rot_mat[1,2], 0],
-        [rot_mat[2,0], rot_mat[2,1], rot_mat[2,2], 0],
-        [0,0,0,1]]
-      return rot_mat_array
-    end
-  end
-end

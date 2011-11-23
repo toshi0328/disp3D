@@ -1,11 +1,9 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'helper'
 
-require 'gmath3D'
-
 MiniTest::Unit.autorun
 
-class ManipulatorTestCase < MiniTest::Unit::TestCase
+class SceneGraphTestCase < MiniTest::Unit::TestCase
   def setup
     # GL must be initialized...
     @gl_view_has_line = Disp3D::GLUTWindow.new(300, 300)

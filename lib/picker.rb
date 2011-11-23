@@ -19,7 +19,7 @@ module Disp3D
       GL.PushMatrix()
       GL.LoadIdentity()
 
-      GLU.PickMatrix(x, vp[3] - y - 1, 3, 3, vp)
+      GLU.PickMatrix(x, vp[3] - y - 1, 1, 1, vp)
       @view.camera.set_screen(vp[2], vp[3])
 
       GL.MatrixMode(GL::MODELVIEW)
@@ -43,7 +43,6 @@ module Disp3D
         far = data[4*i+2].to_f / div
         return nil if ( count > 100000)# invalid hit count
 
-        mid_z = (near+far)/2.0
         screen_pos = Vector3.new(x,y,near)
         unprojected = @view.camera.unproject(screen_pos)
         node_info = Array.new()
@@ -52,7 +51,7 @@ module Disp3D
           picked_node = Node.from_path_id(path_id)
           if (picked_node != nil)
             parent_node = picked_node.parents.find {|parent| parent.include?(path_id) }
-            picked_node_info = NodeInfo.new(picked_node, parent_node, path_id)
+            picked_node_info = PathInfo.new(picked_node, parent_node, path_id)
             node_info.push(picked_node_info)
           end
         end

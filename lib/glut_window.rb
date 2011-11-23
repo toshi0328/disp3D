@@ -16,7 +16,6 @@ module Disp3D
       GLUT.MouseFunc(method(:mouse).to_proc())
       GLUT.MotionFunc(method(:motion).to_proc())
       GLUT.PassiveMotionFunc(method(:passive_motion).to_proc())
-
       super(width, height)
     end
 
@@ -40,7 +39,6 @@ module Disp3D
 
     def motion(x,y)
       @mouse_move_proc.call(self, x,y) if( @mouse_move_proc != nil)
-
       update = @manipulator.motion(x,y)
       if(update)
         GLUT.PostRedisplay()
@@ -61,7 +59,5 @@ module Disp3D
       fit
       GLUT.MainLoop()
     end
-
-
   end
 end

@@ -1,8 +1,6 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'helper'
 
-require 'gmath3D'
-
 MiniTest::Unit.autorun
 
 class GLViewTestCase < MiniTest::Unit::TestCase
@@ -18,6 +16,22 @@ class GLViewTestCase < MiniTest::Unit::TestCase
     point_node = Disp3D::NodePoints.new(point_geom)
     point_node.size = 4
     @gl_view_has_point.world_scene_graph.add(point_node)
+  end
+
+  def test_fit
+    assert_equal( Vector3.new(0,0,0), @gl_view_has_line.camera.post_translate)
+    assert_equal( 1.0, @gl_view_has_line.camera.scale)
+    assert_equal( 1.0, @gl_view_has_line.camera.eye.z)
+    @gl_view_has_line.fit
+    assert_equal( Vector3.new(-0.5,-0.5,-0.5), @gl_view_has_line.camera.post_translate)
+    assert_equal( 1.0, @gl_view_has_line.camera.scale)
+    assert_in_delta( 1.0, @gl_view_has_line.camera.eye.z, 4.57081, 1e-3)
+  end
+
+  def test_centering
+    assert_equal( Vector3.new(0,0,0), @gl_view_has_line.camera.post_translate)
+    @gl_view_has_line.centering
+    assert_equal( Vector3.new(-0.5,-0.5,-0.5), @gl_view_has_line.camera.post_translate)
   end
 
 end

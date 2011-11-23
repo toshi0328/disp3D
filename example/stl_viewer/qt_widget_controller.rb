@@ -1,6 +1,12 @@
 require 'Qt'
 
 class QTWidgetController < Qt::Widget
+  slots 'fit()',
+        'centering()',
+        'change_projection()',
+        'change_color()',
+        'change_alpha()'
+
   def initialize(gl_widget)
     super()
 
@@ -26,8 +32,10 @@ class QTWidgetController < Qt::Widget
     @ctrl_gbox = Qt::GroupBox.new(tr("Control"))
     @fit_btn = Qt::PushButton.new(tr("Fit"))
     @centering_btn = Qt::PushButton.new(tr("Centering"))
+    @change_projection_btn = Qt::PushButton.new(tr("Projection/Orth"))
     connect(@fit_btn, SIGNAL('clicked()'), self, SLOT('fit()'))
     connect(@centering_btn, SIGNAL('clicked()'), self, SLOT('centering()'))
+    connect(@change_projection_btn, SIGNAL('clicked()'), self, SLOT('change_projection()'))
     button_layout = Qt::HBoxLayout.new do |n|
       n.addWidget(@fit_btn)
       n.addWidget(@centering_btn)
@@ -35,7 +43,7 @@ class QTWidgetController < Qt::Widget
 
     @ctrl_gbox.layout = Qt::VBoxLayout.new do |m|
       m.addLayout button_layout
-      m.addWidget(Qt::Label.new(tr("Set Center Point")))
+      m.addWidget(@change_projection_btn)
     end
 
     @appearance_gbox = Qt::GroupBox.new(tr("Appearance"))
@@ -61,13 +69,29 @@ class QTWidgetController < Qt::Widget
   end
 
   def fit
-p "fit processing"
-#    @gl_widget.gl_view.fit
+    @gl_widget.gl_view.fit
+    @gl_widget.updateGL
   end
 
   def centering
-p "cenering processing"
-#    @gl_widget.gl_view.centering
+    @gl_widget.gl_view.centering
+    @gl_widget.updateGL
+  end
+
+  def change_projection
+    if(@gl_widget.gl_view.camera.is_orth)
+      @gl_widget.gl_view.camera.is_orth = false
+    else
+      @gl_widget.gl_view.camera.is_orth = true
+    end
+    @gl_widget.updateGL
+  end
+
+  def change_color
+#    @document_ctrl.set_stl_color([255,0,0])
+  end
+
+  def change_alpha
   end
 
   def vert_cnt=(rhs)

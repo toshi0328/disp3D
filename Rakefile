@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'rubygems'
+#require 'rubygems'
 require 'bundler'
 begin
   Bundler.setup(:default, :development)
@@ -34,7 +34,7 @@ end
 
 task :default => :test
 
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 

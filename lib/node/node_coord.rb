@@ -19,9 +19,9 @@ module Disp3D
       x_node.colors = @x_color
       y_node.colors = @y_color
       z_node.colors = @z_color
-      @children.push(x_node)
-      @children.push(y_node)
-      @children.push(z_node)
+      add(x_node)
+      add(y_node)
+      add(z_node)
     end
   end
 end

@@ -60,7 +60,7 @@ module Disp3D
       GL.Disable(GL::GL_DEPTH_TEST)
       @camera.set_projection_for_camera_scene
       gl_display_camera_scene_graph()
-#      @manipulator.gl_display_compass()
+      @manipulator.gl_display_compass()
     end
 
     def gl_display_world_scene_graph()
@@ -84,13 +84,13 @@ module Disp3D
       GL.PopMatrix()
     end
 
+    #TODO capture current image and return picture data
     def capture(w, h)
       gl_display
       GL.ReadBuffer(GL::FRONT)
       GL.PixelStorei(GL::UNPACK_ALIGNMENT,1)
       data = GL.ReadPixels(0,0,w,h,GL::RGB, GL::UNSIGNED_BYTE)
       # convert to image
-      #      p data.class
     end
 
     def fit

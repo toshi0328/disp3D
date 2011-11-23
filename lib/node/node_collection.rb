@@ -17,8 +17,7 @@ module Disp3D
         end
       elsif(node.kind_of?(Node))
         # assign new path_id
-        new_path_id = gen_path_id
-        @children[new_path_id] = node
+        @children[gen_path_id()] = node
         node.parents.push(self)
       else
         raise # invalid Argument
