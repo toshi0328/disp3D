@@ -32,7 +32,6 @@ module Disp3D
       hit = GL.RenderMode(GL::RENDER)
 
       return nil if (hit < 0 || hit > 100000) # invalid hit count
-
       data = selection.unpack("I*")
       picked_result = Array.new()
       hit.times.each do | i |

@@ -87,7 +87,7 @@ module Disp3D
       model_view = GL::GetDoublev(GL::MODELVIEW_MATRIX)
       GL.PopMatrix()
 
-      unprojected = GLU::UnProject(screen_pos.x, vp[3]-screen_pos.y-1, screen_pos.z, model_view, projection, vp)
+      unprojected = GLU::UnProject(screen_pos.x, vp[3] - screen_pos.y - 1, screen_pos.z, model_view, projection, vp)
       unprojected = Vector3.new(unprojected[0], unprojected[1], unprojected[2])
 
       unprojected -= @pre_translate

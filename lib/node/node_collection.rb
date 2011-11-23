@@ -2,7 +2,6 @@ require 'disp3D'
 
 module Disp3D
   class NodeCollection < Node
-
     def initialize()
       super
       @children = Hash.new()
@@ -46,12 +45,15 @@ module Disp3D
           rtnbox += node.box
         end
       end
-
       return rtnbox
     end
 
     def include?(path_id)
       @children.include?(path_id)
+    end
+
+    def cnild(path_id)
+      return @children[path_id]
     end
   end
 end

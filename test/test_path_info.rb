@@ -4,14 +4,13 @@ require 'helper'
 MiniTest::Unit.autorun
 
 class PathInfoTestCase < MiniTest::Unit::TestCase
-
   def setup
-    #initialize GL for create test node
-    gl_view = Disp3D::GLUTWindow.new(400, 300)
+    # gl initalized befor creating node
+    @gl_view = Disp3D::GLUTWindow.new(300, 300)
   end
 
   def test_initalize
-    node = Disp3D::NodeTeaPod.new(10)
+    node = Disp3D::NodePoints.new(Vector3.new)
     parent_node = Disp3D::NodeCollection.new()
     parent_node.add(node)
     path_id = 5

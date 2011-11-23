@@ -15,7 +15,7 @@ module Disp3D
       GMath3D::Util.check_arg_type(::Numeric, near)
       GMath3D::Util.check_arg_type(::Numeric, far)
 
-      @node_path_info = node_path_info
+      @node_path_info = node_path_info_ary
       @screen_position = screen_position
       @world_position = world_position
       @near = near
