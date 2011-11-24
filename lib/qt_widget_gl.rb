@@ -43,7 +43,7 @@ class QtWidgetGL < Qt::GLWidget
 
   def get_GLUT_button(event)
     return GLUT::GLUT_RIGHT_BUTTON if( event.button == Qt::RightButton)
-    return GLUT::GLUT_MIDDLE_BUTTON if( event.button == Qt::MiddleButton)
+    return GLUT::GLUT_MIDDLE_BUTTON if( event.button == Qt::MidButton)
     return GLUT::GLUT_LEFT_BUTTON if( event.button == Qt::LeftButton)
     return nil
   end
