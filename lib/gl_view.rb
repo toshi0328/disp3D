@@ -1,4 +1,5 @@
 require 'disp3D'
+require 'rmagick'
 
 module Disp3D
   # GLView class hold primary object for 3D displaying like camera, scene_graph.
@@ -84,13 +85,26 @@ module Disp3D
       GL.PopMatrix()
     end
 
-    #TODO capture current image and return picture data
-    def capture(w, h)
+    def capture
+      dmy,dmy, w, h = @camera.viewport
       gl_display
       GL.ReadBuffer(GL::FRONT)
       GL.PixelStorei(GL::UNPACK_ALIGNMENT,1)
       data = GL.ReadPixels(0,0,w,h,GL::RGB, GL::UNSIGNED_BYTE)
-      # convert to image
+      data_ary = data.unpack("C*")
+      data_index = -1
+      max_color_intensity =  Magick::QuantumRange.to_f
+      pixels = Array.new(w*h).collect do | elem |
+          r = data_ary[data_index+=1]
+          g = data_ary[data_index+=1]
+          b = data_ary[data_index+=1]
+          elem = Magick::Pixel.new(
+                                   r/255.0*max_color_intensity,
+                                   g/255.0*max_color_intensity,
+                                   b/255.0*max_color_intensity)
+      end
+      image = Magick::Image.new(w, h).store_pixels(0,0,w,h,pixels)
+      return image.flip
     end
 
     def fit

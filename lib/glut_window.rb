@@ -49,12 +49,6 @@ module Disp3D
       @mouse_move_proc.call(self, x,y) if( @mouse_move_proc != nil)
     end
 
-    def capture
-      w = GLUT.Get(GLUT::WINDOW_WIDTH)
-      h = GLUT.Get(GLUT::WINDOW_WIDTH)
-      super(w,h)
-    end
-
     def start
       fit
       GLUT.MainLoop()

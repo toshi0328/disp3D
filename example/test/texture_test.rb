@@ -35,8 +35,5 @@ rect_geom3 = Rectangle.new(original_point, Vector3.new(length,0,0), Vector3.new(
 rect_node3 = Disp3D::NodeRectangle.new(rect_geom3)
 main_view.world_scene_graph.add(rect_node3)
 
-bb = main_view.world_scene_graph.bounding_box
-p main_view.world_scene_graph.radius
 main_view.fit
-p main_view.camera.obj_rep_length
 main_view.start
