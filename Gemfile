@@ -4,4 +4,5 @@ group :development do
   gem "jeweler", "~> 1.6.4" 
   gem "gmath3D"
   gem "ruby-opengl", "0.60.1"
+  gem "rmagick"
 end
