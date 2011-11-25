@@ -2,8 +2,9 @@ require 'disp3D'
 
 module Disp3D
   class Node
-    attr_accessor :translate # GMath3D::Vector3
+    attr_accessor :pre_translate # GMath3D::Vector3
     attr_accessor :rotate # GMath3D::Quat
+    attr_accessor :post_translate # GMath3D::Vector3
 
     attr_reader :instance_id
 
@@ -27,8 +28,9 @@ module Disp3D
 
     def pre_draw
       GL.PushMatrix()
-      GL.Translate(translate.x, translate.y, translate.z) if(@translate)
+      GL.Translate(pre_translate.x, pre_translate.y, pre_translate.z) if(@pre_translate)
       GL.MultMatrix(@rotate.to_array) if(@rotate)
+      GL.Translate(post_translate.x, post_translate.y, post_translate.z) if(@post_translate)
     end
 
     def post_draw

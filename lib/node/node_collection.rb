@@ -45,10 +45,14 @@ module Disp3D
       return nil if @children == nil || @children.size == 0
       rtnbox = nil
       @children.each do |key, node|
+        adding_box = node.box
+        adding_box = adding_box.translate(@pre_translate) if(@pre_translate)
+        adding_box = adding_box.rotate(@rotate) if(@rotate)
+        adding_box = adding_box.translate(@post_translate) if(@post_translate)
         if rtnbox.nil?
-          rtnbox = node.box
+          rtnbox = adding_box
         else
-          rtnbox += node.box
+          rtnbox += adding_box
         end
       end
       return rtnbox

@@ -12,8 +12,9 @@ class NodeTestCase < MiniTest::Unit::TestCase
 
   def test_initalize
     node = Disp3D::Node.new()
-    assert_equal(nil, node.translate)
+    assert_equal(nil, node.pre_translate)
     assert_equal(nil, node.rotate)
+    assert_equal(nil, node.post_translate)
 
     assert_equal([], node.parents)
   end

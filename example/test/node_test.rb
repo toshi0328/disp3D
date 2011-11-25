@@ -17,10 +17,10 @@ group_nodes = Array.new()
   group_nodes[i] = Disp3D::NodeCollection.new()
   group_nodes[i].add(cube_node)
 end
-group_nodes[0].translate = GMath3D::Vector3.new(-2,-3,0)
-group_nodes[1].translate = GMath3D::Vector3.new(2,-3,0)
-group_nodes[2].translate = GMath3D::Vector3.new(-2,4,0)
-group_nodes[3].translate = GMath3D::Vector3.new(2,4,0)
+group_nodes[0].pre_translate = GMath3D::Vector3.new(-2,-3,0)
+group_nodes[1].pre_translate = GMath3D::Vector3.new(2,-3,0)
+group_nodes[2].pre_translate = GMath3D::Vector3.new(-2,3,0)
+group_nodes[3].pre_translate = GMath3D::Vector3.new(2,4,0)
 
 axis = GMath3D::Vector3.new(0,0,1)
 angle = 30.0*Math::PI/180.0
@@ -50,9 +50,9 @@ main_view.set_mouse_press Proc.new{|view, button, x, y|
     if(result != nil && result.size > 0)
       p "hit #{result.size} elements"
       result.each do | item |
-        p "instance_id : #{item.node_info[0].node.instance_id}"
-        p "path_id : #{item.node_info[0].path_id}"
-        p "parent is nil? : #{item.node_info[0].parent_node.nil?}"
+        p "instance_id : #{item.node_path_info[0].node.instance_id}"
+        p "path_id : #{item.node_path_info[0].path_id}"
+        p "parent is nil? : #{item.node_path_info[0].parent_node.nil?}"
       end
     end
   end
