@@ -39,5 +39,6 @@ require 'node/node_tris'
 require 'node/node_arrows'
 require 'node/node_coord'
 require 'node/node_workplane'
+require 'node/node_rectangle'
 
 

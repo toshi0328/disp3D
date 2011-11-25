@@ -1,4 +1,5 @@
 require 'disp3D'
+require 'rmagick'
 
 module GMath3D
   class Quat
@@ -11,6 +12,24 @@ module GMath3D
         [rot_mat[2,0], rot_mat[2,1], rot_mat[2,2], 0],
         [0,0,0,1]]
       return rot_mat_array
+    end
+  end
+end
+
+module Disp3D
+  class Magick::Image
+    def to_array
+      return nil if(self.nil?)
+      channel_size = 3
+      data_ary = Array.new(self.columns * self.rows * channel_size)
+      max_color_intensity =  Magick::QuantumRange.to_f
+      idx = -1
+      self.each_pixel do | pixel, c, r |
+        data_ary[idx+=1] = pixel.red / max_color_intensity
+        data_ary[idx+=1] = pixel.green / max_color_intensity
+        data_ary[idx+=1] = pixel.blue / max_color_intensity
+      end
+      return data_ary
     end
   end
 end
