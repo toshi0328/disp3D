@@ -4,6 +4,7 @@ require 'gmath3D'
 
 require 'opengl'
 require 'disp3d_ext'
+require 'exception'
 
 require 'glut'
 

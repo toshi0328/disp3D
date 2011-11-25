@@ -40,6 +40,22 @@ module Disp3D
       raise
     end
 
+    def ancestors
+      rtn_ancestors_ary = []
+      return ancestors_inner(rtn_ancestors_ary)
+    end
+
+protected
+    def ancestors_inner(rtn_ancestors_ary)
+      parents.each do |parent|
+        if(!rtn_ancestors_ary.include?(parent.instance_id))
+          rtn_ancestors_ary.push(parent.instance_id)
+          parent.ancestors_inner(rtn_ancestors_ary)
+        end
+      end
+      return rtn_ancestors_ary
+    end
+
 private
     def gen_instance_id
       id_adding = GL.GenLists(1)

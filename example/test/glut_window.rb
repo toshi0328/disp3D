@@ -94,8 +94,17 @@ root_node.add(work_plane)
 #=========================
 # tris
 
-
-
+#==========================
+# circular reference
+=begin
+node_collection1 = NodeCollection.new()
+node_collection2 = NodeCollection.new()
+node_collection3 = NodeCollection.new()
+node_collection1.add(node_collection2)
+node_collection2.add(node_collection3)
+node_collection3.add(node_collection1)
+root_node.add(node_collection1)
+=end
 #=========================
 main_view.world_scene_graph.add(root_node)
 

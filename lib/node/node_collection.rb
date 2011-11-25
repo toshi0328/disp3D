@@ -7,17 +7,23 @@ module Disp3D
       @children = Hash.new()
     end
 
+    # returns generated path_id
     def add(node)
-      # TODO if ancestor Node is added then cancel...
-      # add parents and check processing
+      ancestors_ary = self.ancestors
       if(node.kind_of?(Array))
-        node.each do |item|
-          self.add(item)
+        new_ids = Array.new(node.size)
+        node.each_with_index do |item,i|
+          new_ids[i] = self.add(item)
         end
+        return new_ids
       elsif(node.kind_of?(Node))
-        # assign new path_id
-        @children[gen_path_id()] = node
+        if(ancestors_ary.include?(node.instance_id) || node.instance_id == self.instance_id)
+          raise CircularReferenceException
+        end
+        new_id = gen_path_id()
+        @children[new_id] = node
         node.parents.push(self)
+        return new_id
       else
         raise # invalid Argument
       end
@@ -52,7 +58,7 @@ module Disp3D
       @children.include?(path_id)
     end
 
-    def cnild(path_id)
+    def child(path_id)
       return @children[path_id]
     end
   end
