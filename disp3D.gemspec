@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{disp3D}
-  s.version = "0.1.1"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Toshiyasu Shimizu"]
-  s.date = %q{2011-11-03}
+  s.date = %q{2011-11-26}
   s.description = %q{disp3D provide 3D GUI framework}
   s.email = %q{toshi0328@gmail.com}
   s.extra_rdoc_files = [
@@ -25,44 +25,67 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "disp3D.gemspec",
-    "example/stl_viewer/app_model.rb",
     "example/stl_viewer/document.rb",
     "example/stl_viewer/document_ctrl.rb",
-    "example/stl_viewer/gl_ctrl.rb",
     "example/stl_viewer/main.rb",
-    "example/stl_viewer/mesh_info.rb",
+    "example/stl_viewer/qt_widget_controller.rb",
     "example/stl_viewer/stl_viewer.rb",
+    "example/test/capture_test.rb",
+    "example/test/data/test.png",
+    "example/test/data/test2.jpg",
+    "example/test/glut_window_test.rb",
+    "example/test/node_test.rb",
+    "example/test/picker_test.rb",
+    "example/test/qtgl_test.rb",
+    "example/test/stl_test.rb",
+    "example/test/tea_pod_test.rb",
+    "example/test/texture_test.rb",
+    "example/test/unprojected_test.rb",
     "lib/camera.rb",
+    "lib/compass.rb",
     "lib/disp3D.rb",
+    "lib/disp3D_ext.rb",
     "lib/dsl.rb",
+    "lib/exception.rb",
     "lib/gl_view.rb",
     "lib/glut_window.rb",
     "lib/light.rb",
     "lib/manipulator.rb",
-    "lib/node.rb",
-    "lib/node_arrows.rb",
-    "lib/node_collection.rb",
-    "lib/node_leaf.rb",
-    "lib/node_lines.rb",
-    "lib/node_points.rb",
-    "lib/node_polylines.rb",
-    "lib/node_tea_pod.rb",
-    "lib/node_text.rb",
-    "lib/node_tris.rb",
+    "lib/node/node.rb",
+    "lib/node/node_arrows.rb",
+    "lib/node/node_collection.rb",
+    "lib/node/node_coord.rb",
+    "lib/node/node_leaf.rb",
+    "lib/node/node_lines.rb",
+    "lib/node/node_points.rb",
+    "lib/node/node_polylines.rb",
+    "lib/node/node_rectangle.rb",
+    "lib/node/node_tea_pod.rb",
+    "lib/node/node_text.rb",
+    "lib/node/node_tris.rb",
+    "lib/node/node_workplane.rb",
+    "lib/path_info.rb",
     "lib/picked_result.rb",
     "lib/picker.rb",
     "lib/qt_widget_gl.rb",
     "lib/scene_graph.rb",
     "lib/stl.rb",
-    "lib/util.rb",
+    "test/data/binary_test.stl",
+    "test/data/bunny-flatfoot.stl",
+    "test/data/bunny.stl",
+    "test/data/cube-ascii.stl",
+    "test/data/cube-binary.stl",
     "test/helper.rb",
-    "test/test_data/binary_test.stl",
-    "test/test_data/cube-ascii.stl",
-    "test/test_dsl.rb",
-    "test/test_glut_window.rb",
-    "test/test_qtgl.rb",
-    "test/test_stl.rb",
-    "test/test_tea_pod.rb"
+    "test/node/test_node.rb",
+    "test/node/test_node_collection.rb",
+    "test/test_camera.rb",
+    "test/test_gl_view.rb",
+    "test/test_manipulator.rb",
+    "test/test_path_info.rb",
+    "test/test_picked_result.rb",
+    "test/test_picker.rb",
+    "test/test_scene_graph.rb",
+    "test/test_stl.rb"
   ]
   s.homepage = %q{http://github.com/toshi0328/disp3D}
   s.licenses = ["MIT"]
@@ -78,20 +101,20 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_development_dependency(%q<gmath3D>, [">= 0"])
       s.add_development_dependency(%q<ruby-opengl>, ["= 0.60.1"])
-      s.add_development_dependency(%q<qtbindings>, ["= 4.6.3.4"])
+      s.add_development_dependency(%q<rmagick>, [">= 0"])
     else
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_dependency(%q<gmath3D>, [">= 0"])
       s.add_dependency(%q<ruby-opengl>, ["= 0.60.1"])
-      s.add_dependency(%q<qtbindings>, ["= 4.6.3.4"])
+      s.add_dependency(%q<rmagick>, [">= 0"])
     end
   else
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
     s.add_dependency(%q<gmath3D>, [">= 0"])
     s.add_dependency(%q<ruby-opengl>, ["= 0.60.1"])
-    s.add_dependency(%q<qtbindings>, ["= 4.6.3.4"])
+    s.add_dependency(%q<rmagick>, [">= 0"])
   end
 end
 
