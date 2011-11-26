@@ -22,6 +22,9 @@ class QTWidgetController < Qt::Widget
     @info_gbox = Qt::GroupBox.new(tr("Info"))
     @vert_text = Qt::LineEdit.new(@info_gbox)
     @tris_text = Qt::LineEdit.new(@info_gbox)
+    @vert_text.setReadOnly(true)
+    @tris_text.setReadOnly(true)
+
     @info_gbox.layout = Qt::GridLayout.new do |m|
       m.addWidget(Qt::Label.new(tr("Vertex:")),0,0)
       m.addWidget(@vert_text,0,1)
@@ -45,7 +48,7 @@ class QTWidgetController < Qt::Widget
       m.addLayout button_layout
       m.addWidget(@change_projection_btn)
     end
-
+=begin
     @appearance_gbox = Qt::GroupBox.new(tr("Appearance"))
     @appearance_gbox.layout = Qt::GridLayout.new do |m|
       m.addWidget(Qt::Label.new(tr("Color:")),0,0)
@@ -53,13 +56,14 @@ class QTWidgetController < Qt::Widget
       m.addWidget(Qt::Label.new(tr("Alpha:")),1,0)
       m.addWidget(Qt::Label.new(tr("sliderbar")),1,1)
     end
+=end
   end
 
   def setupLayout
     self.layout = Qt::VBoxLayout.new do |m|
       m.addWidget(@info_gbox)
       m.addWidget(@ctrl_gbox)
-      m.addWidget(@appearance_gbox)
+#      m.addWidget(@appearance_gbox)
       m.addStretch()
     end
   end
