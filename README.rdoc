@@ -12,26 +12,8 @@
 ライブラリは以下の３つのgemに依存しています。
 - gmath3D
 - ruby-opengl
-- qtbindings()
-
-=== gmath3D
-gemからインストールが可能です
-
-gem install GMath3D
-
-=== ruby-opengl
-openglを扱う上では、必須となります。
-
-gemでのインストールが失敗する可能性があります。
-https://github.com/toshi0328/ruby-opengl
-の内容をビルド、インストールします。
-
-=== qtbindings
-Qtを利用する場合に必要となります。
-
-gemでのインストールが失敗する可能性があります。
-https://github.com/toshi0328/qtbindings
-の内容をビルド、インストールします。
+- rmagick
+- qtbindings(オプション)
 
 == 使い方
 === 例
