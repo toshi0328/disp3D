@@ -3,16 +3,14 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'gmath3D'
 
 require 'opengl'
-require 'disp3d_ext'
+
 require 'exception'
+require 'disp3D_ext'
 
-require 'glut'
-
-require 'util'
-require 'dsl'
 require 'stl'
 
 require 'gl_view'
+require 'dsl'
 
 require 'glut_window'
 
@@ -40,5 +38,3 @@ require 'node/node_arrows'
 require 'node/node_coord'
 require 'node/node_workplane'
 require 'node/node_rectangle'
-
-

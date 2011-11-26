@@ -9,11 +9,11 @@ module Disp3D
     attr_reader :far
 
     def initialize(node_path_info_ary, screen_position, world_position, near, far)
-      GMath3D::Util.check_arg_type(Array, node_path_info_ary)
-      GMath3D::Util.check_arg_type(Vector3, screen_position)
-      GMath3D::Util.check_arg_type(Vector3, world_position)
-      GMath3D::Util.check_arg_type(::Numeric, near)
-      GMath3D::Util.check_arg_type(::Numeric, far)
+      Util3D.check_arg_type(Array, node_path_info_ary)
+      Util3D.check_arg_type(Vector3, screen_position)
+      Util3D.check_arg_type(Vector3, world_position)
+      Util3D.check_arg_type(::Numeric, near)
+      Util3D.check_arg_type(::Numeric, far)
 
       @node_path_info = node_path_info_ary
       @screen_position = screen_position

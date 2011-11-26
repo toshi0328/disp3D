@@ -1,8 +1,8 @@
 require 'disp3D'
 require 'rmagick'
 
-module GMath3D
-  class Quat
+module Disp3D
+  class GMath3D::Quat
     # convert quat to array
     def to_array
       rot_mat = Matrix.from_quat(self)
@@ -14,9 +14,7 @@ module GMath3D
       return rot_mat_array
     end
   end
-end
 
-module Disp3D
   class Magick::Image
     def to_array
       return nil if(self.nil?)
