@@ -22,7 +22,7 @@ class CameraTestCase < MiniTest::Unit::TestCase
     assert_equal(1.0, @camera.scale)
 
     assert_equal(10.0, @camera.obj_rep_length)
-    assert_equal(false, @camera.is_orth)
+    assert_equal(Disp3D::Camera::PERSPECTIVE, @camera.projection)
   end
 
   def test_get_view_port
@@ -40,7 +40,7 @@ class CameraTestCase < MiniTest::Unit::TestCase
     assert_in_delta(1.0, @camera.scale, 1e-8)
     assert_in_delta(10.0, @camera.obj_rep_length, 1e-8)
 
-    @camera.is_orth = true
+    @camera.projection = Disp3D::Camera::ORTHOGONAL
     @camera.fit(rad)
     assert_in_delta(62.20084679281463, @camera.eye.z, 1e-8)
     assert_in_delta(1.0, @camera.scale, 1e-8)
@@ -88,7 +88,7 @@ class CameraTestCase < MiniTest::Unit::TestCase
     @camera.rotate = Quat.from_axis(Vector3.new(1,0,0), 0.0)
     @camera.pre_translate = Vector3.new(0,0,0)
 
-    @camera.is_orth = true
+    @camera.projection = Disp3D::Camera::ORTHOGONAL
     screen_pos = Vector3.new(200,149,0.5)
     unprojected = @camera.unproject(screen_pos)
     assert_in_delta(0.0, unprojected.x, check_pricision)

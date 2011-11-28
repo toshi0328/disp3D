@@ -11,7 +11,10 @@ module Disp3D
 
     attr_reader :obj_rep_length
 
-    attr_accessor :is_orth
+    attr_accessor :projection
+
+    PERSPECTIVE = 0
+    ORTHOGONAL = 1
 
     def initialize()
       @rotate = Quat.from_axis(Vector3.new(1,0,0),0)
@@ -25,7 +28,7 @@ module Disp3D
 
       @angle = 30
 
-      @is_orth = false
+      @projection = PERSPECTIVE
       @orth_scale = 1.0
     end
 
@@ -50,7 +53,7 @@ module Disp3D
     end
 
     def set_screen(w,h)
-      if @is_orth
+      if @projection == ORTHOGONAL
         GL.Ortho(-w*@orth_scale/2.0, w*@orth_scale/2.0, -h*@orth_scale/2.0, h*@orth_scale/2.0, -@obj_rep_length*10, @obj_rep_length*10)
       else
         GLU.Perspective(@angle, w.to_f()/h.to_f(), 0.1, @eye.z + @obj_rep_length*5.0)

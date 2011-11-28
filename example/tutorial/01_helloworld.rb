@@ -8,6 +8,6 @@ node_tea_pod = Disp3D::NodeTeaPod.new(tea_pod_size)
 node_tea_pod.material_color = [1,1,0,1]
 main_view.world_scene_graph.add(node_tea_pod)
 
-main_view.camera.is_orth = true
+main_view.camera.projection = Disp3D::Camera::ORTHOGONAL
 main_view.start
 
