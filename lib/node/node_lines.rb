@@ -4,7 +4,9 @@ module Disp3D
   class NodeLines < NodeLeaf
     attr_accessor :width
 
-    def initialize(geom = nil, name = nil)
+    def initialize(geom, name = nil)
+      Util3D.check_arg_type(Symbol, name, true)
+      Util3D.check_arg_type(GMath3D::FiniteLine, geom, false, true)
       super
       @width = 1.0
     end

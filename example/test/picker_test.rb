@@ -38,7 +38,7 @@ main_view.world_scene_graph.add(rect_node)
 # text
 vertices = rect_geom.vertices
 vertices.each do | vertex |
-  text_node = NodeText.new(vertex.to_element_s, vertex)
+  text_node = NodeText.new( vertex, nil, vertex.to_element_s)
   text_node.colors = [1,0,0,1]
   main_view.world_scene_graph.add(text_node)
 end

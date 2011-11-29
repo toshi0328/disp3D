@@ -4,7 +4,9 @@ module Disp3D
   class NodePoints < NodeLeaf
     attr_accessor :size
 
-    def initialize(geom = nil, name = nil)
+    def initialize(geom, name = nil)
+      Util3D.check_arg_type(Symbol, name, true)
+      Util3D.check_arg_type(GMath3D::Vector3, geom, false, true)
       super
       @size = 2.0
     end
@@ -23,9 +25,8 @@ protected
             GL.Vertex( point.x, point.y, point.z )
           end
         else
-          #TODO error message
+          raise
         end
-
         GL.End()
       end
     end

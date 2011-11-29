@@ -4,7 +4,9 @@ module Disp3D
   class NodeArrows < NodeLeaf
     attr_accessor :width
 
-    def initialize(geom = nil, name = nil)
+    def initialize(geom, name = nil)
+      Util3D.check_arg_type(Symbol, name, true)
+      Util3D.check_arg_type(GMath3D::FiniteLine, geom, false, true)
       super
       @width = 1.0
     end
@@ -22,6 +24,8 @@ protected
             draw_colors(i)
             draw_element_inner(line)
           end
+        else
+          raise
         end
         GL.End()
       end

@@ -3,28 +3,12 @@ require 'disp3D'
 module Disp3D
   class NodeRectangle < NodeLeaf
     # texture_image should be rmagick image
-    def initialize(geom, texture_image = nil)
-      super(geom)
+    def initialize(geom, name = nil, texture_image = nil)
+      Util3D.check_arg_type(Symbol, name, true)
+      Util3D.check_arg_type(GMath3D::Rectangle, geom, false, false) #Array is not allowed
+      super(geom, name)
       @image = texture_image
-      if(!@image.nil?)
-        data_ary = @image.to_array
-        data = data_ary.pack("f*")
-
-        GL::PixelStore(GL::UNPACK_ALIGNMENT,1)
-        @texture = GL::GenTextures(1)
-        GL::BindTexture(GL::TEXTURE_2D, @texture[0])
-        GL::TexParameter(GL::TEXTURE_2D, GL::TEXTURE_MAG_FILTER, GL::LINEAR)
-        GL::TexParameter(GL::TEXTURE_2D, GL::TEXTURE_MIN_FILTER, GL::LINEAR)
-        GL::TexImage2D(
-            GL::TEXTURE_2D,
-            0,
-            GL::RGB8,
-            @image.columns, @image.rows,
-            0,
-            GL::RGB,
-            GL::FLOAT,
-            data )
-      end
+      initialize_texture
     end
 
     def box
@@ -51,9 +35,33 @@ protected
         GL.TexCoord2d(0.0, 0.0) if(!@texture.nil?)
         GL.Vertex( vertices[3].x, vertices[3].y, vertices[3].z )
 
-
         GL.End()
         GL.Disable(GL::TEXTURE_2D) if(!@texture.nil?)
+      else
+        raise
+      end
+    end
+
+private
+    def initialize_texture
+      if(!@image.nil?)
+        data_ary = @image.to_array
+        data = data_ary.pack("f*")
+
+        GL::PixelStore(GL::UNPACK_ALIGNMENT,1)
+        @texture = GL::GenTextures(1)
+        GL::BindTexture(GL::TEXTURE_2D, @texture[0])
+        GL::TexParameter(GL::TEXTURE_2D, GL::TEXTURE_MAG_FILTER, GL::LINEAR)
+        GL::TexParameter(GL::TEXTURE_2D, GL::TEXTURE_MIN_FILTER, GL::LINEAR)
+        GL::TexImage2D(
+            GL::TEXTURE_2D,
+            0,
+            GL::RGB8,
+            @image.columns, @image.rows,
+            0,
+            GL::RGB,
+            GL::FLOAT,
+            data )
       end
     end
 

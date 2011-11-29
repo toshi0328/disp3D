@@ -13,7 +13,7 @@ image1 = Magick::Image.read(file_path1).first
 original_point = Vector3.new(0,0,0)
 length = 100
 rect_geom1 = Rectangle.new(original_point, Vector3.new(length,0,0), Vector3.new(0,length,0))
-rect_node1 = Disp3D::NodeRectangle.new(rect_geom1, image1)
+rect_node1 = Disp3D::NodeRectangle.new(rect_geom1, nil, image1)
 main_view.world_scene_graph.add(rect_node1)
 
 #=========================
@@ -25,7 +25,7 @@ image2 = Magick::Image.read(file_path2).first
 # rect
 original_point = Vector3.new(200,0,0)
 rect_geom2 = Rectangle.new(original_point, Vector3.new(length,0,0), Vector3.new(0,length,0))
-rect_node2 = Disp3D::NodeRectangle.new(rect_geom2, image2)
+rect_node2 = Disp3D::NodeRectangle.new(rect_geom2, nil, image2)
 main_view.world_scene_graph.add(rect_node2)
 
 #=========================

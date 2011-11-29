@@ -5,10 +5,14 @@ module Disp3D
     attr_accessor :text
     attr_accessor :position
 
-    def initialize(text, position)
+    def initialize(position, name = nil, text = nil)
+      Util3D.check_arg_type(Vector3, position)
+      Util3D.check_arg_type(Symbol, name, true)
+      Util3D.check_arg_type(String, text, true)
+
+      super(nil, name)
       @text = text
       @position = position
-      super(nil)
     end
 
 protected

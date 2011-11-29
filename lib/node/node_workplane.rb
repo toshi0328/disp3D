@@ -4,8 +4,10 @@ module Disp3D
   class NodeWorkplane < NodeLeaf
     attr_accessor :length
 
-    def initialize(geom)
-      super(geom)
+    def initialize(geom, name = nil)
+      Util3D.check_arg_type(Symbol, name, true)
+      Util3D.check_arg_type(GMath3D::Plane, geom, false)
+      super
       @length = 1000
     end
 
@@ -23,6 +25,8 @@ protected
           GL.Vertex( vertex.x, vertex.y, vertex.z )
         end
         GL.End()
+      else
+        raise
       end
     end
 

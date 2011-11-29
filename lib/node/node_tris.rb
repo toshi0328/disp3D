@@ -7,8 +7,10 @@ module Disp3D
     NORMAL_EACH_FACE = 0
     NORMAL_EACH_VERTEX = 1
 
-    def initialize(geom)
-      super(geom)
+    def initialize(geom, name = nil)
+      Util3D.check_arg_type(Symbol, name, true)
+      Util3D.check_arg_type(GMath3D::TriMesh, geom, false)
+      super
       @normal_mode = NORMAL_EACH_VERTEX
     end
 
@@ -16,7 +18,6 @@ protected
     def draw_element
       if(@geom)
         draw_color
-
         if( @normal_mode == NORMAL_EACH_VERTEX && @each_vertex_normal.nil?)
           @each_vertex_normal = @geom.normals_for_each_vertices
         end
@@ -36,6 +37,8 @@ protected
           end
         end
         GL.End()
+      else
+        raise
       end
     end
 

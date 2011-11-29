@@ -8,6 +8,8 @@ module Disp3D
     attr_accessor :shininess
 
     def initialize(geometry = nil, name = nil)
+      Util3D.check_arg_type(Symbol, name, true)
+      Util3D.check_arg_type(GMath3D::Geom, geometry, true, true)
       super(name)
       @geom = geometry
 
