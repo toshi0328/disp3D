@@ -14,6 +14,8 @@ module Disp3D
     @@path_id_hash = nil
 
     def initialize(name = nil)
+      Util3D.check_arg_type(Symbol, name, true)
+
       @name = name
       @translate = nil
       @rotate = nil
@@ -86,6 +88,16 @@ protected
         new_node.send( key.to_s+"=", value)
       end
       return new_node
+    end
+
+    def transform(hash)
+      Util3D.check_arg_type(Vector3, hash[:pre_translate], true)
+      Util3D.check_arg_type(Vector3, hash[:rotate], true)
+      Util3D.check_arg_type(Vector3, hash[:post_translate], true)
+
+      @pre_translate = hash[:pre_translate] if(hash.key?(:pre_translate))
+      @rotate = hash[:rotate] if(hash.key?(:rotate))
+      @pre_translate = hash[:post_translate] if(hash.key?(:post_translate))
     end
 
     def ancestors_inner(rtn_ancestors_ary)
