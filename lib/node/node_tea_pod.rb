@@ -2,10 +2,11 @@ require 'disp3D'
 
 module Disp3D
   class NodeTeaPod < NodeLeaf
+    attr_accessor :size
 
-    def initialize(size)
+    def initialize(geom = nil, name = nil, size)
+      super(geom, name)
       @size = size
-      super()
     end
 
     def box

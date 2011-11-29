@@ -5,6 +5,11 @@ require 'disp3D'
 main_view = Disp3D::GLUTWindow.new(600,400)
 
 Disp3D::NodeCollection.create :root_node do
+  add_new :type => :TeaPod,
+          :material_color => [0,0,1,1],
+          :post_translate => Vector3.new(0,0,-4),
+          :size => 3
+
   add_new :type => :Points,
           :geom => Vector3.new(0,0,0),
           :colors => [1,1,0,1],

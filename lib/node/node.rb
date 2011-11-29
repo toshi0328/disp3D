@@ -77,7 +77,6 @@ module Disp3D
 
 protected
     def create(hash)
-      Util3D.check_key_arg(hash, :geom)
       Util3D.check_key_arg(hash, :type)
       geom = hash[:geom]
       name = hash[:name]
