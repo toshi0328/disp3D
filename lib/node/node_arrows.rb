@@ -4,14 +4,15 @@ module Disp3D
   class NodeArrows < NodeLeaf
     attr_accessor :width
 
-    def initialize(geom)
-      super(geom)
+    def initialize(geom = nil, name = nil)
+      super
+      @width = 1.0
     end
 
 protected
     def draw_element
       if(@geom)
-        GL.LineWidth(@width) if(@width)
+        GL.LineWidth(@width)
         draw_color
         GL.Begin(GL::LINES)
         if(@geom.kind_of?(GMath3D::FiniteLine))

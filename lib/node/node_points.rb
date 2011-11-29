@@ -4,9 +4,9 @@ module Disp3D
   class NodePoints < NodeLeaf
     attr_accessor :size
 
-    def initialize(geom)
-      super(geom)
-      @size = 3.0
+    def initialize(geom = nil, name = nil)
+      super
+      @size = 2.0
     end
 
 protected

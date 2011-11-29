@@ -6,16 +6,20 @@ module Disp3D
     attr_accessor :rotate # GMath3D::Quat
     attr_accessor :post_translate # GMath3D::Vector3
 
+    attr_reader :name
     attr_reader :instance_id
 
     attr_accessor :parents # Array of Node
 
     @@path_id_hash = nil
-    def initialize()
+
+    def initialize(name = nil)
+      @name = name
       @translate = nil
       @rotate = nil
       @parents = []
       @instance_id = gen_instance_id()
+      Node.add_to_db(self) if(!name.nil?)
     end
 
     def self.init_path_id_hash
@@ -47,7 +51,43 @@ module Disp3D
       return ancestors_inner(rtn_ancestors_ary)
     end
 
+    # add node to DB
+    def self.add_to_db(node)
+      Util3D.check_arg_type(Node, node)
+      @node_db ||= Hash.new()
+      key = node.name
+      if(!@node_db.key?(key))
+        @node_db[key] = node
+      elsif(@node_db[key].kind_of?(Node))
+        @node_db[key] = [@node_db[key], node]
+      elsif(@node_db[key].kind_of?(Array))
+        @node_db[key].push(node)
+      else
+        raise
+      end
+    end
+
+    # find node by name from DB
+    def self.find(node_name)
+      Util3D.check_arg_type(Symbol, node_name)
+      return @node_db[node_name]
+    end
+
 protected
+    def create(hash)
+      Util3D.check_key_arg(hash, :geom)
+      Util3D.check_key_arg(hash, :type)
+      geom = hash[:geom]
+      name = hash[:name]
+      clazz = eval "Node" + hash[:type].to_s
+      new_node = clazz.new(geom, name)
+      hash.each do | key, value |
+        next if( key == :geom or key == :type or key ==:name)
+        new_node.send( key.to_s+"=", value)
+      end
+      return new_node
+    end
+
     def ancestors_inner(rtn_ancestors_ary)
       parents.each do |parent|
         if(!rtn_ancestors_ary.include?(parent.instance_id))

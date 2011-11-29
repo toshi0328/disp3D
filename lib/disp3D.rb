@@ -10,10 +10,7 @@ require 'disp3D_ext'
 require 'stl'
 
 require 'gl_view'
-require 'dsl'
-
 require 'glut_window'
-
 require 'camera'
 require 'light'
 require 'manipulator'

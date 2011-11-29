@@ -4,10 +4,15 @@ module Disp3D
   class NodePolylines < NodeLeaf
     attr_accessor :width
 
+    def initialize(geom = nil, name = nil)
+      super
+      @width = 1.0
+    end
+
 protected
     def draw_element
       if(@geom)
-        GL.LineWidth(@width) if(@width)
+        GL.LineWidth(@width)
         draw_color
         if(@geom.kind_of?(GMath3D::Polyline))
           draw_each(@geom)

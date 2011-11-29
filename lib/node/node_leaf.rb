@@ -7,8 +7,8 @@ module Disp3D
     attr_accessor :colors
     attr_accessor :shininess
 
-    def initialize(geometry = nil)
-      super()
+    def initialize(geometry = nil, name = nil)
+      super(name)
       @geom = geometry
 
       @material_color = [1,1,1,1]
