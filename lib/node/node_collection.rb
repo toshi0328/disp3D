@@ -30,6 +30,10 @@ module Disp3D
       end
     end
 
+    def open(&block)
+      self.instance_eval(&block)
+    end
+
     def draw
       pre_draw()
       @children.each do |key, node|

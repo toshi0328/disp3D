@@ -5,11 +5,6 @@ require 'disp3D'
 main_view = Disp3D::GLUTWindow.new(600,400)
 
 Disp3D::NodeCollection.create :root_node do
-  add_new :type => :TeaPod,
-          :material_color => [0,0,1,1],
-          :post_translate => Vector3.new(0,0,-4),
-          :size => 3
-
   add_new :type => :Points,
           :geom => Vector3.new(0,0,0),
           :colors => [1,1,0,1],
@@ -31,7 +26,6 @@ Disp3D::NodeCollection.create :root_node do
   end
 
   # "add_new" is as same as "create" and "add" process
-
   create :type => :Polylines,
          :name => :polyline1,
          :geom => Polyline.new([Vector3.new(-1,0,0), Vector3.new(1,0,0), Vector3.new(1,3,0)]),
@@ -42,4 +36,11 @@ Disp3D::NodeCollection.create :root_node do
 end
 
 main_view.world_scene_graph.add(:root_node)
+
+main_view.world_scene_graph.open do
+  add_new :type => :TeaPod,
+          :material_color => [0,0,1,1],
+          :post_translate => Vector3.new(0,0,-4),
+          :size => 3
+end
 main_view.start

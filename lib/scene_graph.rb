@@ -17,6 +17,10 @@ module Disp3D
       @root_node.add(node)
     end
 
+    def open(&block)
+      @root_node.open(&block)
+    end
+
     def bounding_box
       return @root_node.box
     end
