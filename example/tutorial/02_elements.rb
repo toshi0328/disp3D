@@ -35,12 +35,6 @@ main_view.world_scene_graph.open do
           :colors => [0,1,0,1],
           :width => 3
 
-  # text
-  add_new :type => :Text,
-          :geom => Vector3.new(0,0,1),
-          :colors => [1,0,0,1],
-          :text => "Test Text"
-
   # arrow
   add_new :type => :Arrows,
           :geom => FiniteLine.new(Vector3.new(-1,0,1.5), Vector3.new(1,0,1.5)),
@@ -59,25 +53,23 @@ main_view.world_scene_graph.open do
           :colors => [0,1,1,1],
           :width => 2
 
+  # text
+  add_new :type => :Text,
+          :geom => Vector3.new(0,0,1),
+          :colors => [1,0,0,1],
+          :text => "Test Text"
+
   # polyline
   add_new :type => :Polylines,
-          :geom => Polyline.new([Vector3.new(-1,0,2), Vector3.new(1,0,2), Vector3.new(1,0,2.3), Vector3.new(-1,0,2.3)]),
-          :colors => [1,0,0,1],
+          :geom => Polyline.new([Vector3.new(-1,0,2), Vector3.new(1,0,2), Vector3.new(1,0,2.5), Vector3.new(-1,0,2.5)]),
+          :colors => [0,0,1,1],
           :width => 3
 
-=begin
-  # polyline ary
-  base_polyline_geom = Polyline.new([Vector3.new(0,0,2), Vector3.new(1,0,2), Vector3.new(1,0,2.3), Vector3.new(0,0,2.3)]),
-  polyline_geom_ary = Array.new
-  [45, 90, 135].each do |angle|
-    rotate_matrix = Matrix.from_axis(Vector3.new(0,0,1), angle*Math::PI/180.0)
-    polyline_geom_ary.push(base_polyline_geom.rotate(rotate_matrix))
-  end
-  add_new :type => :Polylines,
-          :geom => polyline_geom_ary,
-          :colors => [0,1,1,1],
-          :width => 2
-=end
+  # triangles
+  mesh = TriMesh.from_rectangle(Rectangle.new(Vector3.new(-1,0,3),Vector3.new(2,0,0),Vector3.new(0,-1,0)))
+  add_new :type => :Tris,
+          :geom => mesh,
+          :material_color => [1,1,0,1]
 end
 
 main_view.start

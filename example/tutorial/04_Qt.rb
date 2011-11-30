@@ -6,20 +6,22 @@ require 'qt_widget_gl'
 class TestQTGLWindow < Qt::Widget
   def initialize(parent = nil)
     super
-    @gl_widget = QtWidgetGL.new(self)
-#    @gl_widget.width = 600
-#    @gl_widget.height = 400
+    @gl_widget = QtWidgetGL.new(self, 600, 400)
     self.layout = Qt::HBoxLayout.new do |m|
       m.addWidget(@gl_widget)
     end
-    self.windowTitle = tr("Hello GL")
+    self.windowTitle = tr("04_Qt")
     @is_first_show = true
   end
 
   def showEvent(eventArg)
     if( @is_first_show )
-      node_tea_pod = Disp3D::NodeTeaPod.new(10)
-      @gl_widget.gl_view.world_scene_graph.add(node_tea_pod)
+      @gl_widget.gl_view.world_scene_graph.open do
+        add_new :type => :TeaPod,
+                :material_color => [1,1,0,1],
+                :size => 10.0
+      end
+      @gl_widget.gl_view.camera.projection = Disp3D::Camera::ORTHOGONAL
       @gl_widget.gl_view.fit
       @is_first_show = false
     end

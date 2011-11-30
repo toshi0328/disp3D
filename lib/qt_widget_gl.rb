@@ -8,10 +8,10 @@ class QtWidgetGL < Qt::GLWidget
 
   attr_reader :load_proc
 
-  def initialize(parent)
+  def initialize(parent, width = 400, height = 400)
     super(parent)
-    @width = 400
-    @height = 400
+    @width = width
+    @height = height
 
     @min_width = 50
     @min_height = 50
