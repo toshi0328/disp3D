@@ -54,6 +54,10 @@ module Disp3D
       return @children[path_id]
     end
 
+    def children_count
+      return @children.size
+    end
+
     # ========= path id DB ===========
     def self.init_path_db
       @path_db = Hash.new

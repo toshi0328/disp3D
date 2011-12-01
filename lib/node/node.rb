@@ -55,6 +55,27 @@ protected
       return new_node
     end
 
+    def delete(node_name)
+      Util3D::check_arg_type(Symbol, node_name)
+      node = NodeDB.find_by_name(node_name)
+
+      if(node.kind_of?(Array))
+        node.each do | node_ele |
+         remove_from_parents(node_ele)
+        end
+      elsif(!node.nil?)
+         remove_from_parents(node)
+      end
+      NodeDB.delete_by_name(node_name)
+    end
+
+    def remove_from_parents(node)
+      Util3D::check_arg_type(Node, node)
+      node.parents.each do |parent|
+        parent.remove_child_by_node(node)
+      end
+    end
+
     def box_transform(box)
       box = box.translate(@pre_translate) if(@pre_translate)
       box = box.rotate(@rotate) if(@rotate)
@@ -73,27 +94,6 @@ protected
     end
 
 private
-    def delete(node_name)
-      if( node_name.kind_of?(Node) )
-        node = node_name
-      elsif(node_name.kind_of?(Symbol))
-        node = NodeDB.find_node_by_name(node_name)
-      else
-        Util3D::raise_argurment_error(node_name)
-      end
-      if(node.kind_of?(Array))
-        node.each do | item |
-          self.delete(item)
-        end
-      end
-      if(!node.nil?)
-        node.parents.each do |parent|
-          parent.remove_child_by_node(node)
-        end
-        NodeDB.delete_from_node_name_db_by_node(node)
-      end
-    end
-
     def gen_instance_id
       id_adding = GL.GenLists(1)
       return id_adding
@@ -122,17 +122,9 @@ private
       return @node_db[node_name]
     end
 
-    def self.delete_from_node_name_db_by_node(node)
-      @node_db ||= Hash.new()
-      node_name = node.name
-      if(!node_name.nil?)
-        entry = find_node_by_name(node_name)
-        if(entry == node)
-          @node_db[node_name] = nil
-        elsif(entry.kind_of?(Array))
-          entry.reject!{|item| item == node}
-        end
-      end
+    def self.delete_by_name(node_name)
+      return if @node_db.nil?
+      @node_db[node_name] = nil
     end
   end
 end

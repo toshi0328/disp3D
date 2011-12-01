@@ -108,6 +108,72 @@ class NodeTestCase < MiniTest::Unit::TestCase
   end
 
   def test_box_trans_form
-    #TODO impliment!
+    node = Disp3D::Node.new
+    box = Box.new
+    box_org = box.clone
+
+    node_group = Disp3D::NodeCollection.new
+    node_group.pre_translate = Vector3.new(1,1,1)
+    node_group.open do
+      box = box_transform(box_org)
+    end
+    assert_equal(box_org.translate(Vector3.new(1,1,1)), box)
+
+    rotate_quat = Quat.from_axis( Vector3.new(1,0,0), 45.0/180.0*Math::PI )
+    node_group.rotate = rotate_quat
+    node_group.open do
+      box = box_transform(box_org)
+    end
+    assert_equal(box_org.translate(Vector3.new(1,1,1)).rotate(rotate_quat), box)
+
+    node_group.post_translate = Vector3.new(-1,-1,-1)
+    node_group.open do
+      box = box_transform(box_org)
+    end
+    assert_equal(box_org.translate(Vector3.new(1,1,1)).rotate(rotate_quat).translate(Vector3.new(-1,-1,-1)), box)
+  end
+
+  def test_delete
+    node_group = Disp3D::NodeCollection.new()
+    node_group.open do
+      create :type => :TeaPod,
+             :name => :node20
+
+      create :type => :Points,
+             :geom => Vector3.new(),
+             :name => :node21
+
+      create :type => :Text,
+             :geom => Vector3.new(),
+             :name => :node22
+
+      create :type => :Collection,
+             :name => :node23
+
+      create :type => :Coord,
+             :name => :node23 # same name
+
+      add :node20
+      add :node21
+      add :node23
+    end
+    assert_equal( 4, node_group.children_count)
+    assert_equal( Disp3D::NodeTeaPod, Disp3D::NodeDB.find_by_name(:node20).class)
+    node_ary = Disp3D::NodeDB.find_by_name(:node23)
+    assert_equal( Array, node_ary.class)
+    assert( node_ary.find { |node| node.class == Disp3D::NodeCollection })
+    assert( node_ary.find { |node| node.class == Disp3D::NodeCoord })
+
+    node_group.open do
+      delete :node20
+    end
+    assert_equal( 3, node_group.children_count)
+    assert_equal( nil, Disp3D::NodeDB.find_by_name(:node20))
+
+    node_group.open do
+      delete :node23
+    end
+    assert_equal( 1, node_group.children_count)
+    assert_equal( nil, Disp3D::NodeDB.find_by_name(:node23))
   end
 end
