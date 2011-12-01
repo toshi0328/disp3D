@@ -47,7 +47,7 @@ module Disp3D
         node_info = Array.new()
         count.times do | j |
           path_id = data[4*i+3 + j]
-          picked_node = NodeCollection.find_node_by_path_id(path_id)
+          picked_node = NodePathDB.find_by_path_id(path_id)
           if (picked_node != nil)
             parent_node = picked_node.parents.find {|parent| parent.include?(path_id) }
             picked_node_info = PathInfo.new(picked_node, parent_node, path_id)

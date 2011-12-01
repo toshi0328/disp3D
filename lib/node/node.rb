@@ -15,7 +15,7 @@ module Disp3D
       @parents = []
       @instance_id = gen_instance_id()
       @name = name
-      NodeDB.add_to_db(self) if(!name.nil?)
+      NodeDB.add(self) if(!name.nil?)
     end
 
     def pre_draw
@@ -101,7 +101,7 @@ private
   end
 
   class NodeDB
-    def self.add_to_db(node)
+    def self.add(node)
       Util3D.check_arg_type(Node, node)
       @node_db ||= Hash.new()
       key = node.name

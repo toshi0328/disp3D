@@ -24,7 +24,7 @@ module Disp3D
       pre_draw()
       @children.each do |key, node|
         if(node.kind_of?(NodeLeaf))
-          NodeCollection.add_to_path_db(key, node)
+          NodePathDB.add(key, node)
           GL.LoadName(key)
         end
         node.draw
@@ -58,20 +58,6 @@ module Disp3D
       return @children.size
     end
 
-    # ========= path id DB ===========
-    def self.init_path_db
-      @path_db = Hash.new
-    end
-
-    def self.add_to_path_db(path_id, node)
-      return @path_db[path_id] = node
-    end
-
-    def self.find_node_by_path_id(path_id)
-      return @path_db[path_id]
-    end
-    # ========= path id DB ===========
-
 protected
     def remove_child_by_path_id(path_id)
       @children.delete(path_id)
@@ -88,6 +74,23 @@ private
       elsif(node_info.kind_of?(Hash))
         create_and_add_node(node_info)
       end
+    end
+
+    def remove(path_id)
+      if(path_id.kind_of?(Integer))
+        node = NodePathDB.find_by_path_id(path_id)
+      else
+        Util3D::raise_argurment_error(path_id)
+      end
+      node.parents.each do |parent|
+        parent.remove_child_by_path_id(path_id)
+      end
+    end
+
+    def add_node_by_name(node_name)
+      Util3D.check_arg_type(Symbol, node_name)
+      nodes = NodeDB.find_by_name(node_name)
+      add_node(nodes)
     end
 
     def add_node(node)
@@ -111,17 +114,6 @@ private
       end
     end
 
-    def remove(path_id)
-      if(path_id.kind_of?(Integer))
-        node = NodeCollection.find_node_by_path_id(path_id)
-      else
-        Util3D::raise_argurment_error(path_id)
-      end
-      node.parents.each do |parent|
-        parent.remove_child_by_path_id(path_id)
-      end
-    end
-
     def create_and_add_node(hash)
       new_node = create(hash)
       add_node(new_node)
@@ -134,18 +126,26 @@ private
       add_node(new_node)
     end
 
-    def add_node_by_name(node_name)
-      Util3D.check_arg_type(Symbol, node_name)
-      nodes = NodeDB.find_by_name(node_name)
-      add_node(nodes)
-    end
-
     @@path_id_list = Array.new()
     def gen_path_id
       id_adding = @@path_id_list.size
       @@path_id_list.push(id_adding)
       return id_adding
     end
+  end
 
+  # hold path id and node connectivity
+  class NodePathDB
+    def self.init
+      @path_db = Hash.new
+    end
+
+    def self.add(path_id, node)
+      return @path_db[path_id] = node
+    end
+
+    def self.find_by_path_id(path_id)
+      return @path_db[path_id]
+    end
   end
 end

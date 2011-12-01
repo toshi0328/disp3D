@@ -11,46 +11,64 @@ class NodeCollectionTestCase < MiniTest::Unit::TestCase
     @gl_view = Disp3D::GLUTWindow.new(300, 300)
   end
 
-  def test_add_include
-    node_collection = Disp3D::NodeCollection.new()
-    node_point = Disp3D::NodePoints.new(Vector3.new())
-    added_id = node_collection.add(node_point)
+  def test_add
+    node_group = Disp3D::NodeCollection.new()
+
     node_ary = Array.new()
     node_ary[0] = Disp3D::NodeTeaPod.new()
     node_ary[1] = Disp3D::NodeLines.new(FiniteLine.new(Vector3.new(0,0,0),Vector3.new(1,1,1)))
-    added_id_ary = node_collection.add(node_ary)
 
-    assert(node_collection.include?(added_id))
-    assert_equal(node_point, node_collection.child(added_id))
-    assert_equal(2, added_id_ary.size)
-    added_id_ary.each do |item|
-      assert(node_collection.include?(item))
+    path_id = -1
+    path_id_ary = -1
+    node_group.open do
+      create :type => :Points,
+             :geom => Vector3.new(),
+             :name => :node100
+
+      path_id = add :node100
+      path_id_ary = add node_ary
     end
-    assert_equal(node_ary[0], node_collection.child(added_id_ary[0]))
-    assert_equal(node_ary[1], node_collection.child(added_id_ary[1]))
-    assert_equal(nil, node_collection.child(-1))
+
+    assert(node_group.include?(path_id))
+    assert_equal(Disp3D::NodeDB.find_by_name(:node100), node_group.child(path_id))
+    assert_equal(2, path_id_ary.size)
+    path_id_ary.each do |item|
+      assert(node_group.include?(item))
+    end
+    assert_equal(node_ary[0], node_group.child(path_id_ary[0]))
+    assert_equal(node_ary[1], node_group.child(path_id_ary[1]))
+    assert_equal(nil, node_group.child(-1))
   end
 
-  def test_circular_reference
-    node_collection1 = Disp3D::NodeCollection.new()
-    node_collection2 = Disp3D::NodeCollection.new()
-    node_collection3 = Disp3D::NodeCollection.new()
-    node_collection1.add(node_collection2)
-    node_collection2.add(node_collection3)
 
-    # circular reference occures!
+  def test_circular_reference
     assert_raises Disp3D::CircularReferenceException do
-      node_collection3.add(node_collection1)
+      Disp3D::NodeCollection.new().open do
+        add_new :name => :node101 do
+          add_new :name => :node102 do
+            add :node101
+          end
+        end
+      end
     end
-#    @gl_view.world_scene_graph.add(node_collection1)
-#    @gl_view.gl_display()
   end
 
   def test_self_reference
-    node_collection1 = Disp3D::NodeCollection.new()
     assert_raises Disp3D::CircularReferenceException do
-      node_collection1.add(node_collection1)
+      Disp3D::NodeCollection.new().open do
+        add_new :name => :node101 do
+          add :node101
+        end
+      end
     end
+  end
+
+  def test_add_new
+    # TODO impliment
+  end
+
+  def test_remove
+    # TODO impliment
   end
 
   def test_boundary_box
