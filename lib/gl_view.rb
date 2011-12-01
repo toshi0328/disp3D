@@ -115,16 +115,16 @@ module Disp3D
       @manipulator.centering(@world_scene_graph)
     end
 
-    def set_mouse_move(proc)
-      @mouse_move_proc = proc
+    def mouse_move(&block)
+      @mouse_move_proc = block
     end
 
-    def set_mouse_press(proc)
-      @mouse_press_proc = proc
+    def mouse_press(&block)
+      @mouse_press_proc = block
     end
 
-    def set_mouse_release(proc)
-      @mouse_release_proc = proc
+    def mouse_release(&block)
+      @mouse_release_proc = block
     end
   end
 end

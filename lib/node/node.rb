@@ -11,8 +11,6 @@ module Disp3D
 
     attr_accessor :parents # Array of Node
 
-    @@path_id_hash = nil
-
     def initialize(name = nil)
       Util3D.check_arg_type(Symbol, name, true)
 
@@ -21,40 +19,24 @@ module Disp3D
       @rotate = nil
       @parents = []
       @instance_id = gen_instance_id()
-      Node.add_to_db(self) if(!name.nil?)
+      Node.add_to_node_name_db(self) if(!name.nil?)
     end
 
-    def self.init_path_id_hash
-      @@path_id_hash = Hash.new
+    # path id DB
+    def self.init_path_db
+      @path_db = Hash.new
     end
 
-    def self.from_path_id(id)
-      return @@path_id_hash[id]
+    def self.add_to_path_db(path_id, node)
+      return @path_db[path_id] = node
     end
 
-    def pre_draw
-      GL.PushMatrix()
-      GL.Translate(pre_translate.x, pre_translate.y, pre_translate.z) if(@pre_translate)
-      GL.MultMatrix(@rotate.to_array) if(@rotate)
-      GL.Translate(post_translate.x, post_translate.y, post_translate.z) if(@post_translate)
+    def self.find_node_by_path_id(path_id)
+      return @path_db[path_id]
     end
 
-    def post_draw
-      GL.PopMatrix()
-    end
-
-    def box
-      # should be implimented in child class
-      raise
-    end
-
-    def ancestors
-      rtn_ancestors_ary = []
-      return ancestors_inner(rtn_ancestors_ary)
-    end
-
-    # add node to DB
-    def self.add_to_db(node)
+    # node name DB
+    def self.add_to_node_name_db(node)
       Util3D.check_arg_type(Node, node)
       @node_db ||= Hash.new()
       key = node.name
@@ -69,34 +51,63 @@ module Disp3D
       end
     end
 
-    # find node by name from DB
-    def self.find(node_name)
+    def self.find_node_by_name(node_name)
       Util3D.check_arg_type(Symbol, node_name)
       return @node_db[node_name]
     end
 
+    def self.delete_from_node_name_db_by_node(node)
+      node_name = node.name
+      if(!node_name.nil?)
+        entry = find_node_by_name(node_name)
+        if(entry == node)
+          @node_db[node_name] = nil
+        elsif(entry.kind_of?(Array))
+          entry.reject!{|item| item == node}
+        end
+      end
+    end
+
+    def pre_draw
+      GL.PushMatrix()
+      GL.Translate(pre_translate.x, pre_translate.y, pre_translate.z) if(@pre_translate)
+      GL.MultMatrix(@rotate.to_array) if(@rotate)
+      GL.Translate(post_translate.x, post_translate.y, post_translate.z) if(@post_translate)
+    end
+
+    def post_draw
+      GL.PopMatrix()
+    end
+
+    def ancestors
+      rtn_ancestors_ary = []
+      return ancestors_inner(rtn_ancestors_ary)
+    end
+
 protected
+    def box_transform(box)
+      box = box.translate(@pre_translate) if(@pre_translate)
+      box = box.rotate(@rotate) if(@rotate)
+      box = box.translate(@post_translate) if(@post_translate)
+      return box
+    end
+
     def create(hash)
       Util3D.check_key_arg(hash, :type)
       geom = hash[:geom]
       name = hash[:name]
       clazz = eval "Node" + hash[:type].to_s
-      new_node = clazz.new(geom, name)
+      # node leaf constractor need 2 args
+      if( clazz < NodeLeaf )
+        new_node = clazz.new(geom, name)
+      else
+        new_node = clazz.new(name)
+      end
       hash.each do | key, value |
         next if( key == :geom or key == :type or key ==:name)
         new_node.send( key.to_s+"=", value)
       end
       return new_node
-    end
-
-    def transform(hash)
-      Util3D.check_arg_type(Vector3, hash[:pre_translate], true)
-      Util3D.check_arg_type(Vector3, hash[:rotate], true)
-      Util3D.check_arg_type(Vector3, hash[:post_translate], true)
-
-      @pre_translate = hash[:pre_translate] if(hash.key?(:pre_translate))
-      @rotate = hash[:rotate] if(hash.key?(:rotate))
-      @pre_translate = hash[:post_translate] if(hash.key?(:post_translate))
     end
 
     def ancestors_inner(rtn_ancestors_ary)
@@ -110,16 +121,46 @@ protected
     end
 
 private
+    def remove(path_id)
+      if(path_id.kind_of?(Integer))
+        node = Node.find_node_by_path_id(path_id)
+      else
+        Util3D::raise_argurment_error(path_id)
+      end
+      node.parents.each do |parent|
+        parent.remove_child_by_path_id(path_id)
+      end
+    end
+
+    def delete(node_name)
+      if( node_name.kind_of?(Node) )
+        node = node_name
+      elsif(node_name.kind_of?(Symbol))
+        node = Node.find_node_by_name(node_name)
+      else
+        Util3D::raise_argurment_error(node_name)
+      end
+      if(node.kind_of?(Array))
+        node.each do | item |
+          self.delete(item)
+        end
+      end
+      if(!node.nil?)
+        node.parents.each do |parent|
+          parent.remove_child_by_node(node)
+        end
+        Node.delete_from_node_name_db_by_node(node)
+      end
+    end
+
     def gen_instance_id
       id_adding = GL.GenLists(1)
-#      p "instance id : #{id_adding} is generated"
       return id_adding
     end
 
     @@path_id_list = Array.new()
     def gen_path_id
       id_adding = @@path_id_list.size
-#      p "node id : #{id_adding} is generated"
       @@path_id_list.push(id_adding)
       return id_adding
     end

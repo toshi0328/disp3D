@@ -19,6 +19,10 @@ module Disp3D
       super(width, height)
     end
 
+    def update
+      gl_display
+    end
+
     def gl_display
       super
       GLUT.SwapBuffers

@@ -1,3 +1,4 @@
+
 require 'disp3D'
 
 module Disp3D
@@ -7,18 +8,8 @@ module Disp3D
       @children = Hash.new()
     end
 
-    def self.create (node_name, &block)
-      new_node = NodeCollection.new(node_name)
-      new_node.instance_eval(&block) if(block_given?)
-      return new_node
-    end
-
-    def add_new(node_info, &block)
-      if(block_given?)
-        create_and_add_node_by_block(node_info, &block)
-      elsif(node_info.kind_of?(Hash))
-        create_and_add_node(node_info)
-      end
+    def open(&block)
+      self.instance_eval(&block)
     end
 
     # returns generated path_id
@@ -30,15 +21,11 @@ module Disp3D
       end
     end
 
-    def open(&block)
-      self.instance_eval(&block)
-    end
-
     def draw
       pre_draw()
       @children.each do |key, node|
         if(node.kind_of?(NodeLeaf))
-          @@path_id_hash[key] = node
+          Node.add_to_path_db(key, node)
           GL.LoadName(key)
         end
         node.draw
@@ -50,10 +37,7 @@ module Disp3D
       return nil if @children == nil || @children.size == 0
       rtnbox = nil
       @children.each do |key, node|
-        adding_box = node.box
-        adding_box = adding_box.translate(@pre_translate) if(@pre_translate)
-        adding_box = adding_box.rotate(@rotate) if(@rotate)
-        adding_box = adding_box.translate(@post_translate) if(@post_translate)
+        adding_box = box_transform(node.box)
         if rtnbox.nil?
           rtnbox = adding_box
         else
@@ -71,14 +55,32 @@ module Disp3D
       return @children[path_id]
     end
 
+protected
+    def remove_child_by_path_id(path_id)
+      @children.delete(path_id)
+    end
+
+    def remove_child_by_node(child_node)
+      @children.reject!{|key, value| value == child_node}
+    end
+
 private
+    def add_new(node_info, &block)
+      if(block_given?)
+        create_and_add_node_by_block(node_info, &block)
+      elsif(node_info.kind_of?(Hash))
+        create_and_add_node(node_info)
+      end
+    end
+
     def create_and_add_node(hash)
       new_node = create(hash)
       add_node(new_node)
     end
 
-    def create_and_add_node_by_block(node_name, &block)
-      new_node = NodeCollection.new(node_name)
+    def create_and_add_node_by_block(hash, &block)
+      hash[:type] = :Collection
+      new_node = create(hash)
       new_node.instance_eval(&block) if(block_given?)
       add_node(new_node)
     end
@@ -106,8 +108,9 @@ private
 
     def add_node_by_name(node_name)
       Util3D.check_arg_type(Symbol, node_name)
-      nodes = Node.find(node_name)
+      nodes = Node.find_node_by_name(node_name)
       add_node(nodes)
     end
+
   end
 end

@@ -9,8 +9,12 @@ module Disp3D
 
     def initialize(geom, name = nil)
       Util3D.check_arg_type(Symbol, name, true)
-      Util3D.check_arg_type(GMath3D::TriMesh, geom, false)
-      super
+      geom_inner = geom
+      if(geom.kind_of?(STL))
+        geom_inner = geom.tri_mesh
+      end
+      Util3D.check_arg_type(GMath3D::TriMesh, geom_inner, false)
+      super(geom_inner, name)
       @normal_mode = NORMAL_EACH_VERTEX
     end
 

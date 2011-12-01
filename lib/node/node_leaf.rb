@@ -35,8 +35,7 @@ module Disp3D
       else
         rtn_box = @geom.box
       end
-
-      return rtn_box
+      return box_transform(rtn_box)
     end
 
 protected
