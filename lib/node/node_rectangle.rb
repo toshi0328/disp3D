@@ -7,12 +7,17 @@ module Disp3D
       Util3D.check_arg_type(Symbol, name, true)
       Util3D.check_arg_type(GMath3D::Rectangle, geom, false, false) #Array is not allowed
       super(geom, name)
-      @image = texture_image
-      initialize_texture
+      self.image = texture_image
     end
 
     def box
       return @geom.box
+    end
+
+    def image=(texture_image)
+      Util3D.check_arg_type(Magick::Image, texture_image, true)
+      @image = texture_image
+      initialize_texture
     end
 
 protected
