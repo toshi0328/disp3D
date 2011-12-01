@@ -3,11 +3,10 @@ require 'disp3D'
 module Disp3D
   class NodeRectangle < NodeLeaf
     # texture_image should be rmagick image
-    def initialize(geom, name = nil, texture_image = nil)
+    def initialize(geom, name = nil)
       Util3D.check_arg_type(Symbol, name, true)
       Util3D.check_arg_type(GMath3D::Rectangle, geom, false, false) #Array is not allowed
-      super(geom, name)
-      self.image = texture_image
+      super
     end
 
     def box

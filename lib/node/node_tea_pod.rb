@@ -4,9 +4,9 @@ module Disp3D
   class NodeTeaPod < NodeLeaf
     attr_accessor :size
 
-    def initialize(geom = nil, name = nil, size)
-      super(geom, name)
-      @size = size
+    def initialize(geom=nil, name=nil)
+      super
+      @size = 1.0
     end
 
     def box

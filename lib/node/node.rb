@@ -8,64 +8,14 @@ module Disp3D
 
     attr_reader :name
     attr_reader :instance_id
-
-    attr_accessor :parents # Array of Node
+    attr_reader :parents # Array of Node
 
     def initialize(name = nil)
       Util3D.check_arg_type(Symbol, name, true)
-
-      @name = name
-      @translate = nil
-      @rotate = nil
       @parents = []
       @instance_id = gen_instance_id()
-      Node.add_to_node_name_db(self) if(!name.nil?)
-    end
-
-    # path id DB
-    def self.init_path_db
-      @path_db = Hash.new
-    end
-
-    def self.add_to_path_db(path_id, node)
-      return @path_db[path_id] = node
-    end
-
-    def self.find_node_by_path_id(path_id)
-      return @path_db[path_id]
-    end
-
-    # node name DB
-    def self.add_to_node_name_db(node)
-      Util3D.check_arg_type(Node, node)
-      @node_db ||= Hash.new()
-      key = node.name
-      if(!@node_db.key?(key))
-        @node_db[key] = node
-      elsif(@node_db[key].kind_of?(Node))
-        @node_db[key] = [@node_db[key], node]
-      elsif(@node_db[key].kind_of?(Array))
-        @node_db[key].push(node)
-      else
-        raise
-      end
-    end
-
-    def self.find_node_by_name(node_name)
-      Util3D.check_arg_type(Symbol, node_name)
-      return @node_db[node_name]
-    end
-
-    def self.delete_from_node_name_db_by_node(node)
-      node_name = node.name
-      if(!node_name.nil?)
-        entry = find_node_by_name(node_name)
-        if(entry == node)
-          @node_db[node_name] = nil
-        elsif(entry.kind_of?(Array))
-          entry.reject!{|item| item == node}
-        end
-      end
+      @name = name
+      NodeDB.add_to_db(self) if(!name.nil?)
     end
 
     def pre_draw
@@ -85,29 +35,31 @@ module Disp3D
     end
 
 protected
-    def box_transform(box)
-      box = box.translate(@pre_translate) if(@pre_translate)
-      box = box.rotate(@rotate) if(@rotate)
-      box = box.translate(@post_translate) if(@post_translate)
-      return box
-    end
-
     def create(hash)
       Util3D.check_key_arg(hash, :type)
-      geom = hash[:geom]
-      name = hash[:name]
+      geom_arg = hash[:geom]
+      name_arg = hash[:name]
       clazz = eval "Node" + hash[:type].to_s
       # node leaf constractor need 2 args
-      if( clazz < NodeLeaf )
-        new_node = clazz.new(geom, name)
+      if( clazz < Disp3D::NodeLeaf )
+        new_node = clazz.new(geom_arg, name_arg)
+      elsif( clazz <= Disp3D::NodeCollection )
+        new_node = clazz.new(name_arg)
       else
-        new_node = clazz.new(name)
+        raise
       end
       hash.each do | key, value |
         next if( key == :geom or key == :type or key ==:name)
         new_node.send( key.to_s+"=", value)
       end
       return new_node
+    end
+
+    def box_transform(box)
+      box = box.translate(@pre_translate) if(@pre_translate)
+      box = box.rotate(@rotate) if(@rotate)
+      box = box.translate(@post_translate) if(@post_translate)
+      return box
     end
 
     def ancestors_inner(rtn_ancestors_ary)
@@ -121,22 +73,11 @@ protected
     end
 
 private
-    def remove(path_id)
-      if(path_id.kind_of?(Integer))
-        node = Node.find_node_by_path_id(path_id)
-      else
-        Util3D::raise_argurment_error(path_id)
-      end
-      node.parents.each do |parent|
-        parent.remove_child_by_path_id(path_id)
-      end
-    end
-
     def delete(node_name)
       if( node_name.kind_of?(Node) )
         node = node_name
       elsif(node_name.kind_of?(Symbol))
-        node = Node.find_node_by_name(node_name)
+        node = NodeDB.find_node_by_name(node_name)
       else
         Util3D::raise_argurment_error(node_name)
       end
@@ -149,7 +90,7 @@ private
         node.parents.each do |parent|
           parent.remove_child_by_node(node)
         end
-        Node.delete_from_node_name_db_by_node(node)
+        NodeDB.delete_from_node_name_db_by_node(node)
       end
     end
 
@@ -157,12 +98,41 @@ private
       id_adding = GL.GenLists(1)
       return id_adding
     end
+  end
 
-    @@path_id_list = Array.new()
-    def gen_path_id
-      id_adding = @@path_id_list.size
-      @@path_id_list.push(id_adding)
-      return id_adding
+  class NodeDB
+    def self.add_to_db(node)
+      Util3D.check_arg_type(Node, node)
+      @node_db ||= Hash.new()
+      key = node.name
+      if(!@node_db.key?(key))
+        @node_db[key] = node
+      elsif(@node_db[key].kind_of?(Node))
+        @node_db[key] = [@node_db[key], node]
+      elsif(@node_db[key].kind_of?(Array))
+        @node_db[key].push(node)
+      else
+        raise
+      end
+    end
+
+    def self.find_by_name(node_name)
+      @node_db ||= Hash.new()
+      Util3D.check_arg_type(Symbol, node_name)
+      return @node_db[node_name]
+    end
+
+    def self.delete_from_node_name_db_by_node(node)
+      @node_db ||= Hash.new()
+      node_name = node.name
+      if(!node_name.nil?)
+        entry = find_node_by_name(node_name)
+        if(entry == node)
+          @node_db[node_name] = nil
+        elsif(entry.kind_of?(Array))
+          entry.reject!{|item| item == node}
+        end
+      end
     end
   end
 end

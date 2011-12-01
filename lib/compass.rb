@@ -12,7 +12,7 @@ module Disp3D
       scalling_factor = 0.1
       coord_size *= scalling_factor
       @coord_pos = Vector3.new(-screen_width*0.5 + coord_size*1.5, -screen_height*0.5 + coord_size*1.5, 0.0)
-      node = NodeCoord.new(Vector3.new(), coord_size)
+      node = NodeCoord.new(nil, Vector3.new(), coord_size)
       return node
     end
 

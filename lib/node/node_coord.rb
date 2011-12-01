@@ -2,8 +2,8 @@ require 'disp3D'
 
 module Disp3D
   class NodeCoord < NodeCollection
-    def initialize(base_position = Vector3.new(), length = 1)
-      super()
+    def initialize(name = nil, base_position = Vector3.new(), length = 1)
+      super(name)
       @length = length
       @base_position = base_position
       @x_color = [1,0,0,1]

@@ -16,7 +16,7 @@ class NodeCollectionTestCase < MiniTest::Unit::TestCase
     node_point = Disp3D::NodePoints.new(Vector3.new())
     added_id = node_collection.add(node_point)
     node_ary = Array.new()
-    node_ary[0] = Disp3D::NodeTeaPod.new(4)
+    node_ary[0] = Disp3D::NodeTeaPod.new()
     node_ary[1] = Disp3D::NodeLines.new(FiniteLine.new(Vector3.new(0,0,0),Vector3.new(1,1,1)))
     added_id_ary = node_collection.add(node_ary)
 
@@ -29,57 +29,6 @@ class NodeCollectionTestCase < MiniTest::Unit::TestCase
     assert_equal(node_ary[0], node_collection.child(added_id_ary[0]))
     assert_equal(node_ary[1], node_collection.child(added_id_ary[1]))
     assert_equal(nil, node_collection.child(-1))
-  end
-
-  def test_ancestor
-    node_root = Disp3D::NodeCollection.new()
-    node_child = Disp3D::NodeCollection.new()
-    node_g_child = Disp3D::NodeCollection.new()
-    node_root.add(node_child)
-    node_child.add(node_g_child)
-    ancestors = node_child.ancestors
-    assert_equal(1,ancestors.size)
-    assert(ancestors.include?(node_root.instance_id))
-
-    ancestors = node_g_child.ancestors
-    assert_equal(2,ancestors.size)
-    assert(ancestors.include?(node_root.instance_id))
-    assert(ancestors.include?(node_child.instance_id))
-
-    node_root.add(node_g_child)
-    ancestors = node_g_child.ancestors
-    assert_equal(2,ancestors.size)
-    assert(ancestors.include?(node_root.instance_id))
-    assert(ancestors.include?(node_child.instance_id))
-
-    node_root.add(node_child)
-    ancestors = node_g_child.ancestors
-    assert_equal(2,ancestors.size)
-    assert(ancestors.include?(node_root.instance_id))
-    assert(ancestors.include?(node_child.instance_id))
-
-    node_g_child2 = Disp3D::NodeCollection.new()
-    node_child.add(node_g_child2)
-    ancestors = node_g_child2.ancestors
-    assert_equal(2,ancestors.size)
-    assert(ancestors.include?(node_root.instance_id))
-    assert(ancestors.include?(node_child.instance_id))
-
-    node_gg_child = Disp3D::NodeCollection.new()
-    node_g_child.add(node_gg_child)
-    ancestors = node_gg_child.ancestors
-    assert_equal(3,ancestors.size)
-    assert(ancestors.include?(node_root.instance_id))
-    assert(ancestors.include?(node_child.instance_id))
-    assert(ancestors.include?(node_g_child.instance_id))
-
-    node_g_child2.add(node_gg_child)
-    ancestors = node_gg_child.ancestors
-    assert_equal(4,ancestors.size)
-    assert(ancestors.include?(node_root.instance_id))
-    assert(ancestors.include?(node_child.instance_id))
-    assert(ancestors.include?(node_g_child.instance_id))
-    assert(ancestors.include?(node_g_child2.instance_id))
   end
 
   def test_circular_reference
@@ -104,7 +53,7 @@ class NodeCollectionTestCase < MiniTest::Unit::TestCase
     end
   end
 
-  def test_box_boundary
+  def test_boundary_box
     box_geom = Box.new(Vector3.new(-1,-1,-1), Vector3.new(1,1,1))
     box_node = Disp3D::NodeTris.new(TriMesh.from_box(box_geom))
     bb = box_node.box
