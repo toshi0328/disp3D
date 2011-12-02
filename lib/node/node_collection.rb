@@ -71,6 +71,11 @@ protected
       @children.reject!{|key, value| value == child_node}
     end
 
+    def update
+      @children.each do |key, node|
+        node.update
+      end
+    end
 private
     def add_new(node_info, &block)
       if(block_given?)
@@ -138,13 +143,6 @@ private
       @@path_id_list.push(id_adding)
       return id_adding
     end
-
-    def update
-      @children.each do |key, node|
-        node.update
-      end
-    end
-
   end
 
   # hold path id and node connectivity

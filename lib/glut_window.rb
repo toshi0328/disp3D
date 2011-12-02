@@ -19,21 +19,6 @@ module Disp3D
       super(width, height)
     end
 
-    def idle_process(wait_sec = nil, &block)
-      if(!wait_sec.nil?)
-        new_block = lambda do
-          @lasttime = Time.now if(@lasttime.nil?)
-          interval = Time.now - @lasttime
-          next if( interval < wait_sec)
-          yield
-          @lasttime = Time.now
-        end
-        GLUT.IdleFunc(new_block)
-      else
-        GLUT.IdleFunc(block)
-      end
-    end
-
     def update
       gl_display
     end
@@ -66,6 +51,21 @@ module Disp3D
 
     def passive_motion(x,y)
       @mouse_move_proc.call(self, x,y) if( @mouse_move_proc != nil)
+    end
+
+    def idle_process(wait_msec = nil, &block)
+      if(!wait_msec.nil?)
+        new_block = lambda do
+          @lasttime = Time.now if(@lasttime.nil?)
+          interval = Time.now - @lasttime
+          next if( interval < wait_msec/1000.0)
+          yield
+          @lasttime = Time.now
+        end
+        GLUT.IdleFunc(new_block)
+      else
+        GLUT.IdleFunc(block)
+      end
     end
 
     def start

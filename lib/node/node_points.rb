@@ -2,7 +2,7 @@ require 'disp3D'
 
 module Disp3D
   class NodePoints < NodeLeaf
-    attr_accessor :size
+    attr_for_disp :size
 
     def initialize(geom, name = nil)
       Util3D.check_arg_type(Symbol, name, true)

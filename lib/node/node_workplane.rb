@@ -2,7 +2,7 @@ require 'disp3D'
 
 module Disp3D
   class NodeWorkplane < NodeLeaf
-    attr_accessor :length
+    attr_for_disp :length
 
     def initialize(geom, name = nil)
       Util3D.check_arg_type(Symbol, name, true)

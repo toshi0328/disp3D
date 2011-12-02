@@ -2,7 +2,7 @@ require 'disp3D'
 
 module Disp3D
   class NodeLines < NodeLeaf
-    attr_accessor :width
+    attr_for_disp :width
 
     def initialize(geom, name = nil)
       Util3D.check_arg_type(Symbol, name, true)

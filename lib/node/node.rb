@@ -1,16 +1,24 @@
 require 'disp3D'
 
-module Disp3D
-  # call update if property changed
-#  update_if_write :
-  class Node
-    def self.update_if_write(arg)
-      # todo impliment
+class Class
+  # use this instead of attr_accessor.
+  # if attribute is changed call Node#update
+  def attr_for_disp(attribute)
+    define_method "#{attribute}=" do |value|
+      instance_variable_set("@#{attribute}", value)
+      update
     end
+    define_method attribute do
+      instance_variable_get "@#{attribute}"
+    end
+  end
+end
 
-    attr_accessor :pre_translate # GMath3D::Vector3
-    attr_accessor :rotate # GMath3D::Quat
-    attr_accessor :post_translate # GMath3D::Vector3
+module Disp3D
+  class Node
+    attr_for_disp :pre_translate # GMath3D::Vector3
+    attr_for_disp :rotate # GMath3D::Quat
+    attr_for_disp :post_translate # GMath3D::Vector3
 
     attr_reader :name
     attr_reader :instance_id

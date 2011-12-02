@@ -2,8 +2,8 @@ require 'disp3D'
 
 module Disp3D
   class NodeText < NodeLeaf
-    attr_accessor :text
-    attr_accessor :position
+    attr_for_disp :text
+    attr_for_disp :position
 
     def initialize(position, name = nil, text = nil)
       Util3D.check_arg_type(Vector3, position)

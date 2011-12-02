@@ -3,9 +3,9 @@ require 'disp3D'
 
 module Disp3D
   class NodeLeaf < Node
-    attr_accessor :material_color
-    attr_accessor :colors
-    attr_accessor :shininess
+    attr_for_disp :material_color
+    attr_for_disp :colors
+    attr_for_disp :shininess
 
     def initialize(geometry = nil, name = nil)
       Util3D.check_arg_type(Symbol, name, true)
@@ -38,6 +38,9 @@ module Disp3D
       return box_transform(rtn_box)
     end
 
+    def update
+      @dislay_list_created = false
+    end
 protected
     def draw_inner(draw_element)
       # colorsが設定されていたら、そちらを優先的に表示する。その際、ライティングはオフにする必要がある
@@ -87,11 +90,6 @@ protected
       if(!@colors.nil? and !@colors[i].nil? and @colors[i].kind_of?(Array))
         GL.Color(@colors[i][0], @colors[i][1], @colors[i][2], @colors[i][3])
       end
-    end
-
-private
-    def update
-      @dislay_list_created = false
     end
   end
 end

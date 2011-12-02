@@ -2,7 +2,7 @@ require 'disp3D'
 
 module Disp3D
   class NodeTris < NodeLeaf
-    attr_accessor :normal_mode
+    attr_for_disp :normal_mode
 
     NORMAL_EACH_FACE = 0
     NORMAL_EACH_VERTEX = 1

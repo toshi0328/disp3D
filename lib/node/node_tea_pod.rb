@@ -2,7 +2,7 @@ require 'disp3D'
 
 module Disp3D
   class NodeTeaPod < NodeLeaf
-    attr_accessor :size
+    attr_for_disp :size
 
     def initialize(geom=nil, name=nil)
       super
