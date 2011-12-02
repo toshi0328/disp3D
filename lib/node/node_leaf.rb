@@ -17,7 +17,7 @@ module Disp3D
       @shininess = nil
       @shininess_default = 32.0
 
-      @list_created = false
+      @dislay_list_created = false
     end
 
     def draw
@@ -58,8 +58,8 @@ protected
         GL.Disable(GL::GL_LIGHTING)
       end
 
-      if(@list_created == false)
-        @list_created = true
+      if(@dislay_list_created == false)
+        @dislay_list_created = true
         GL.NewList(@instance_id, GL::COMPILE_AND_EXECUTE)
         pre_draw  # matrix manipulation
         draw_element.call
@@ -87,6 +87,11 @@ protected
       if(!@colors.nil? and !@colors[i].nil? and @colors[i].kind_of?(Array))
         GL.Color(@colors[i][0], @colors[i][1], @colors[i][2], @colors[i][3])
       end
+    end
+
+private
+    def update
+      @dislay_list_created = false
     end
   end
 end

@@ -157,7 +157,7 @@ class NodeTestCase < MiniTest::Unit::TestCase
       add :node21
       add :node23
     end
-    assert_equal( 4, node_group.children_count)
+    assert_equal( 4, node_group.child_nodes.size)
     assert_equal( Disp3D::NodeTeaPod, Disp3D::NodeDB.find_by_name(:node20).class)
     node_ary = Disp3D::NodeDB.find_by_name(:node23)
     assert_equal( Array, node_ary.class)
@@ -167,13 +167,13 @@ class NodeTestCase < MiniTest::Unit::TestCase
     node_group.open do
       delete :node20
     end
-    assert_equal( 3, node_group.children_count)
+    assert_equal( 3, node_group.child_nodes.size)
     assert_equal( nil, Disp3D::NodeDB.find_by_name(:node20))
 
     node_group.open do
       delete :node23
     end
-    assert_equal( 1, node_group.children_count)
+    assert_equal( 1, node_group.child_nodes.size)
     assert_equal( nil, Disp3D::NodeDB.find_by_name(:node23))
   end
 end

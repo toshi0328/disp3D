@@ -54,8 +54,12 @@ module Disp3D
       return @children[path_id]
     end
 
-    def children_count
-      return @children.size
+    def child_nodes
+      return @children.values
+    end
+
+    def child_path_id
+      return @children.keys
     end
 
 protected
@@ -73,6 +77,8 @@ private
         create_and_add_node_by_block(node_info, &block)
       elsif(node_info.kind_of?(Hash))
         create_and_add_node(node_info)
+      else
+        Util3D.raise_argurment_error(node_info)
       end
     end
 
@@ -132,6 +138,13 @@ private
       @@path_id_list.push(id_adding)
       return id_adding
     end
+
+    def update
+      @children.each do |key, node|
+        node.update
+      end
+    end
+
   end
 
   # hold path id and node connectivity

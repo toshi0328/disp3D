@@ -1,7 +1,13 @@
 require 'disp3D'
 
 module Disp3D
+  # call update if property changed
+#  update_if_write :
   class Node
+    def self.update_if_write(arg)
+      # todo impliment
+    end
+
     attr_accessor :pre_translate # GMath3D::Vector3
     attr_accessor :rotate # GMath3D::Quat
     attr_accessor :post_translate # GMath3D::Vector3
