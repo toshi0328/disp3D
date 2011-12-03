@@ -2,13 +2,13 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../../', 'lib'))
 
 require 'disp3D'
 
-file_path = File.dirname(__FILE__) + "./data/bunny.stl";
+file_path = File.dirname(__FILE__) + "/data/bunny.stl";
 if( !File.exists?(file_path) )
   puts file_path + " is not exist!"
   exit
 end
 
-main_view = Disp3D::GLUTWindow.new(600,400)
+main_view = Disp3D::GLUTWindow.new(600,400,"06_FileParser")
 
 stl = Disp3D::STL.new()
 stl.parse(file_path, Disp3D::STL::ASCII)
@@ -17,5 +17,5 @@ main_view.world_scene_graph.open do
   add_new :type => :Tris,
           :geom => stl
 end
-
+main_view.camera.projection = Disp3D::Camera::ORTHOGONAL
 main_view.start

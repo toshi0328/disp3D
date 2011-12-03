@@ -5,7 +5,6 @@ require 'disp3D'
 main_view = Disp3D::GLUTWindow.new(600,400)
 
 rect_geom = Rectangle.new(Vector3.new(-1,-1,2), Vector3.new(2,0,0), Vector3.new(0,2,0))
-
 box_geom = Box.new(Vector3.new(),Vector3.new(1,1,1))
 box_tri_mesh_geom = TriMesh.from_box(box_geom)
 

@@ -6,7 +6,7 @@ require 'qt_widget_gl'
 class TestQTGLWindow < Qt::Widget
   def initialize(parent = nil)
     super
-    @gl_widget = QtWidgetGL.new(self, 600, 400)
+    @gl_widget = QtWidgetGL.new(self, 300, 300)
     self.layout = Qt::HBoxLayout.new do |m|
       m.addWidget(@gl_widget)
     end
