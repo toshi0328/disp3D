@@ -10,7 +10,7 @@ class TestQTGLWindow < Qt::Widget
     self.layout = Qt::HBoxLayout.new do |m|
       m.addWidget(@gl_widget)
     end
-    self.windowTitle = tr("04_Qt")
+    self.windowTitle = tr("10_AnimationQt")
     @is_first_show = true
 
     define_idle_process

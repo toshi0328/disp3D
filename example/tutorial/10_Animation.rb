@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../../', 'lib'))
 require 'disp3D'
 
-main_view = Disp3D::GLUTWindow.new(600,400)
+main_view = Disp3D::GLUTWindow.new(400,400,"10_Animation")
 
 main_view.world_scene_graph.open do
   add_new :type => :TeaPod,
