@@ -26,6 +26,7 @@ require 'node/node_collection'
 require 'node/node_leaf'
 
 require 'node/node_tea_pod'
+require 'node/node_cone'
 require 'node/node_text'
 require 'node/node_points'
 require 'node/node_lines'

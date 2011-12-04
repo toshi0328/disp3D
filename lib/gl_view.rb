@@ -58,7 +58,6 @@ module Disp3D
       GL.Clear(GL::GL_COLOR_BUFFER_BIT | GL::GL_DEPTH_BUFFER_BIT)
 
       return if(@camera.nil? or @light.nil?)
-      @light.gl_display()
 
       GL.Enable(GL::GL_DEPTH_TEST)
       @camera.set_projection_for_world_scene
@@ -76,6 +75,7 @@ module Disp3D
       GL.LoadIdentity()
       @camera.apply_position()
       @camera.apply_attitude()
+      @light.gl_display()
       @world_scene_graph.gl_display(self)
       GL.PopMatrix()
     end
