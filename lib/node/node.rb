@@ -109,7 +109,6 @@ protected
 
 private
     def gen_instance_id
-p "instance_id generataed"
       return GL.GenLists(1)
     end
   end
