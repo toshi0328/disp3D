@@ -97,8 +97,8 @@ module Disp3D
       return false
     end
 
-    def gl_display_compass
-      @compass.gl_display()
+    def gl_display_compass current_view
+      @compass.gl_display(current_view)
     end
 
 private

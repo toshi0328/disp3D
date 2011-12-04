@@ -29,7 +29,7 @@ module Disp3D
       @parents = []
       @instance_id = gen_instance_id()
       @name = name
-      NodeDB.add(self) if(!name.nil?)
+      NodeDB.add(self)
     end
 
     def pre_draw
@@ -109,8 +109,7 @@ protected
 
 private
     def gen_instance_id
-      id_adding = GL.GenLists(1)
-      return id_adding
+      return GL.GenLists(1)
     end
   end
 
@@ -137,7 +136,7 @@ private
     end
 
     def self.delete_by_name(node_name)
-      return if @node_db.nil?
+      return if @node_db.nil? || node_name.nil?
       @node_db[node_name] = nil
     end
   end

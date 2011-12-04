@@ -48,6 +48,10 @@ module Disp3D
       @mouse_release_proc = nil
     end
 
+    def sync_to target_view
+      @world_scene_graph = target_view.world_scene_graph
+    end
+
     def gl_display()
       GL.ClearColor(@bk_color[0],@bk_color[1],@bk_color[2],@bk_color[3])
       GL.Clear(GL::GL_COLOR_BUFFER_BIT | GL::GL_DEPTH_BUFFER_BIT)
@@ -61,7 +65,7 @@ module Disp3D
       GL.Disable(GL::GL_DEPTH_TEST)
       @camera.set_projection_for_camera_scene
       gl_display_camera_scene_graph()
-      @manipulator.gl_display_compass()
+      @manipulator.gl_display_compass(self)
     end
 
     def gl_display_world_scene_graph()
@@ -71,7 +75,7 @@ module Disp3D
       GL.LoadIdentity()
       @camera.apply_position()
       @camera.apply_attitude()
-      @world_scene_graph.gl_display()
+      @world_scene_graph.gl_display(self)
       GL.PopMatrix()
     end
 
@@ -81,7 +85,7 @@ module Disp3D
       GL.PushMatrix()
       GL.LoadIdentity()
       GLU.LookAt(0, 0, 1, 0, 0, 0, 0, 1, 0)
-      @camera_scene_graph.gl_display()
+      @camera_scene_graph.gl_display(self)
       GL.PopMatrix()
     end
 

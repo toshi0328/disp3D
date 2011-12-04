@@ -8,9 +8,9 @@ module Disp3D
       @root_node = NodeCollection.new()
     end
 
-    def gl_display()
+    def gl_display(current_view)
       NodePathDB.init
-      @root_node.draw()
+      @root_node.draw(current_view)
     end
 
     def add(node)

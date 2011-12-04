@@ -16,13 +16,13 @@ module Disp3D
       return node
     end
 
-    def gl_display
+    def gl_display current_view
       GL.PushMatrix()
       GL.LoadIdentity()
       node = node_coord
       GL.Translate(@coord_pos.x, @coord_pos.y, @coord_pos.z)
       @camera.apply_rotate
-      node.draw if( !node.nil? )
+      node.draw current_view if( !node.nil? )
       GL.PopMatrix()
     end
   end

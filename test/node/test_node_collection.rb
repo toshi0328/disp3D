@@ -103,7 +103,7 @@ class NodeCollectionTestCase < MiniTest::Unit::TestCase
 
     # path id DB is created by drawing
     @gl_view.world_scene_graph.add(node_group)
-    @gl_view.world_scene_graph.gl_display
+    @gl_view.world_scene_graph.gl_display @gl_view
 
     path_id_120_1 = node_group.child_path_id.find{ |path_id| node_group.child(path_id).name == :node120}
     path_id_120_2 = child_group_node.child_path_id.find{ |path_id| child_group_node.child(path_id).name == :node120}

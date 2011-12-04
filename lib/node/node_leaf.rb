@@ -17,11 +17,11 @@ module Disp3D
       @shininess = nil
       @shininess_default = 32.0
 
-      @dislay_list_created = false
+      @dislay_list_created = nil
     end
 
-    def draw
-      draw_inner(self.method(:draw_element))
+    def draw currnet_view
+      draw_inner(self.method(:draw_element), currnet_view)
     end
 
     def box
@@ -39,10 +39,10 @@ module Disp3D
     end
 
     def update
-      @dislay_list_created = false
+      @dislay_list_created = nil
     end
 protected
-    def draw_inner(draw_element)
+    def draw_inner(draw_element, current_view)
       # colorsが設定されていたら、そちらを優先的に表示する。その際、ライティングはオフにする必要がある
       if(@colors.nil?)
         GL.Enable(GL::GL_LIGHTING)
@@ -61,15 +61,16 @@ protected
         GL.Disable(GL::GL_LIGHTING)
       end
 
-      if(@dislay_list_created == false)
-        @dislay_list_created = true
-        GL.NewList(@instance_id, GL::COMPILE_AND_EXECUTE)
+      if(@dislay_list_created.nil? || @dislay_list_created[current_view] == nil)
+        @dislay_list_created ||= Hash.new()
+        @dislay_list_created[current_view] = true
+        GL.NewList(self.instance_id, GL::COMPILE_AND_EXECUTE)
         pre_draw  # matrix manipulation
         draw_element.call
         post_draw # matrix manipulation
         GL.EndList()
       else
-        GL.CallList(@instance_id)
+        GL.CallList(self.instance_id)
       end
     end
 

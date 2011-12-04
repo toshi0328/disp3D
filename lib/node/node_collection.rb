@@ -20,14 +20,14 @@ module Disp3D
       end
     end
 
-    def draw
+    def draw currnet_view
       pre_draw()
       @children.each do |key, node|
         if(node.kind_of?(NodeLeaf))
           NodePathDB.add(key, node)
           GL.LoadName(key)
         end
-        node.draw
+        node.draw currnet_view
       end
       post_draw()
     end
