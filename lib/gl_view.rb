@@ -42,6 +42,7 @@ module Disp3D
       @bk_color = [0.28,0.23,0.55,1]
 
       @manipulator = Manipulator.new(@camera, @picker)
+      @compass = Compass.new(@camera)
 
       @mouse_move_proc = nil
       @mouse_press_proc = nil
@@ -65,7 +66,7 @@ module Disp3D
       GL.Disable(GL::GL_DEPTH_TEST)
       @camera.set_projection_for_camera_scene
       gl_display_camera_scene_graph()
-      @manipulator.gl_display_compass(self)
+      @compass.gl_display(self)
     end
 
     def gl_display_world_scene_graph()
@@ -129,6 +130,11 @@ module Disp3D
 
     def mouse_release(&block)
       @mouse_release_proc = block
+    end
+
+    def reshape(w,h)
+      @camera.reshape(w,h)
+      @compass.update
     end
   end
 end

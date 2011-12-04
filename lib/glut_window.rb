@@ -28,10 +28,6 @@ module Disp3D
       GLUT.SwapBuffers
     end
 
-    def reshape(w,h)
-      @camera.reshape(w,h)
-    end
-
     def mouse(button,state,x,y)
       if(state == GLUT::GLUT_UP)
         @mouse_release_proc.call(self, button, x, y) if( @mouse_release_proc != nil)

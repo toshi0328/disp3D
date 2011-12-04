@@ -1,4 +1,3 @@
-# -*- coding: cp932 -*-
 require 'disp3D'
 
 include GMath3D
@@ -15,8 +14,6 @@ module Disp3D
       @scalling = false
       @translating = false
       @trackball_size = 0.8
-
-      @compass = Compass.new(camera)
     end
 
     def centering(scene_graph)
@@ -95,10 +92,6 @@ module Disp3D
         return true
       end
       return false
-    end
-
-    def gl_display_compass current_view
-      @compass.gl_display(current_view)
     end
 
 private

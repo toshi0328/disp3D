@@ -71,7 +71,7 @@ class QtWidgetGL < Qt::GLWidget
   end
 
   def resizeGL(width, height)
-    @view.camera.reshape(width, height)
+    @view.reshape(width, height)
   end
 
   def idle_process(wait_msec = nil, &block)

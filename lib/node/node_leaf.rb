@@ -6,6 +6,7 @@ module Disp3D
     attr_for_disp :material_color
     attr_for_disp :colors
     attr_for_disp :shininess
+    attr_for_disp :geom
 
     def initialize(geometry = nil, name = nil)
       Util3D.check_arg_type(Symbol, name, true)
@@ -41,6 +42,7 @@ module Disp3D
     def update
       @dislay_list_created = nil
     end
+
 protected
     def draw_inner(draw_element, current_view)
       # colorsが設定されていたら、そちらを優先的に表示する。その際、ライティングはオフにする必要がある
