@@ -19,9 +19,10 @@ main_view.world_scene_graph.open do
           :grid => 10
 
   light_pos_ary.each_with_index do |light_pos,idx|
-    add_new :type => :Cone,
+    add_new :type => :Sphere,
             :name => :lightSource,
-            :post_translate => light_pos
+            :radius => 1.0,
+            :center => light_pos
   end
 end
 
