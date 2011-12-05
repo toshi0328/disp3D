@@ -5,7 +5,7 @@ module Disp3D
   # GLView class hold primary object for 3D displaying like camera, scene_graph.
   # User never use this class
   # Use QtWidgetGL class (in Qt Application)
-  # Use GLWindow class (in GLUT Window)
+  # Use GLUTWindow class (in GLUT Window)
   class GLView
     attr_reader :world_scene_graph
     attr_reader :camera_scene_graph
@@ -13,10 +13,6 @@ module Disp3D
     attr_reader :manipulator
     attr_reader :light
     attr_reader :picker
-
-    attr_reader :mouse_move_proc
-    attr_reader :mouse_press_proc
-    attr_reader :mouse_release_proc
 
     attr_accessor :bk_color
 
@@ -54,6 +50,7 @@ module Disp3D
     end
 
     def gl_display()
+      GL.DrawBuffer( GL::BACK )
       GL.ClearColor(@bk_color[0],@bk_color[1],@bk_color[2],@bk_color[3])
       GL.Clear(GL::GL_COLOR_BUFFER_BIT | GL::GL_DEPTH_BUFFER_BIT)
 
@@ -135,6 +132,27 @@ module Disp3D
     def reshape(w,h)
       @camera.reshape(w,h)
       @compass.update
+    end
+
+    def mouse_press_process(button, x, y)
+      @mouse_press_proc.call(self, button, x, y) if( @mouse_press_proc != nil)
+      @manipulator.mouse(button, GLUT::GLUT_DOWN, x, y)
+      @picker.mouse(button, GLUT::GLUT_DOWN, x, y)
+    end
+
+    def mouse_release_process(button, x, y)
+      @mouse_release_proc.call(self, button, x, y) if( @mouse_release_proc != nil)
+      @manipulator.mouse(button, GLUT::GLUT_UP, x, y)
+      @picker.mouse(button, GLUT::GLUT_UP, x, y)
+    end
+
+    def mouse_move_process(x,y)
+      @mouse_move_proc.call(self, x,y) if( @mouse_move_proc != nil)
+      picking_in_progress = @picker.motion(x, y)
+      if(picking_in_progress)
+        return false
+      end
+      return @manipulator.motion(x, y)
     end
   end
 end

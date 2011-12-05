@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../../', 'lib'))
 require 'disp3D'
 
-main_view = Disp3D::GLUTWindow.new(400,400,"10_Animation")
+main_view = Disp3D::GLUTWindow.new(400,400,"12_Light")
 
 light_pos_ary = [Vector3.new(30,0,0), Vector3.new(-30,0,0), Vector3.new(0,0,30), Vector3.new(0,5,0)]
 light_spot_dir_ary = [Vector3.new(-1,0,0), Vector3.new(1,0,0), Vector3.new(0,0,-1), Vector3.new(0,-1,0)]

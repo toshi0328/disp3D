@@ -15,7 +15,7 @@ module Disp3D
 
       GLUT.MouseFunc(method(:mouse).to_proc())
       GLUT.MotionFunc(method(:motion).to_proc())
-      GLUT.PassiveMotionFunc(method(:passive_motion).to_proc())
+      GLUT.PassiveMotionFunc(method(:motion).to_proc())
       super(width, height)
     end
 
@@ -26,27 +26,6 @@ module Disp3D
     def gl_display
       super
       GLUT.SwapBuffers
-    end
-
-    def mouse(button,state,x,y)
-      if(state == GLUT::GLUT_UP)
-        @mouse_release_proc.call(self, button, x, y) if( @mouse_release_proc != nil)
-      elsif(state == GLUT::GLUT_DOWN)
-        @mouse_press_proc.call(self, button, x, y) if( @mouse_press_proc != nil)
-      end
-      @manipulator.mouse(button,state,x,y)
-    end
-
-    def motion(x,y)
-      @mouse_move_proc.call(self, x,y) if( @mouse_move_proc != nil)
-      update = @manipulator.motion(x,y)
-      if(update)
-        GLUT.PostRedisplay()
-      end
-    end
-
-    def passive_motion(x,y)
-      @mouse_move_proc.call(self, x,y) if( @mouse_move_proc != nil)
     end
 
     def idle_process(wait_msec = nil, &block)
@@ -67,6 +46,22 @@ module Disp3D
     def start
       fit
       GLUT.MainLoop()
+    end
+
+private
+    def mouse(button,state,x,y)
+      if(state == GLUT::GLUT_UP)
+        mouse_release_process(button, x, y)
+      elsif(state == GLUT::GLUT_DOWN)
+        mouse_press_process(button, x, y)
+      end
+    end
+
+    def motion(x,y)
+      need_update = mouse_move_process(x, y)
+      if(need_update)
+        GLUT.PostRedisplay()
+      end
     end
   end
 end

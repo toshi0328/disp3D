@@ -2,13 +2,6 @@ require 'disp3D'
 
 module Disp3D
   class Light
-     attr_accessor :enable
-     attr_accessor :diffuse
-     attr_accessor :ambient
-     attr_accessor :specular
-     attr_accessor :position
-     attr_accessor :spot_direction
-
     def initialize()
       @diffuse_default = [0.7, 0.7, 0.7, 1]
       @ambient_default = [0.2, 0.2, 0.2, 1]
@@ -40,8 +33,6 @@ module Disp3D
       @enable.each_with_index do | enable, idx |
         if(enable)
           GL.Enable( @light_id[idx])
-#p @position[idx]
-#p @spot_direction[idx]
           GL.Lightfv( @light_id[idx], GL::POSITION, [@position[idx].x,@position[idx].y,@position[idx].z] )
           GL.Lightfv( @light_id[idx], GL::SPOT_DIRECTION, [@spot_direction[idx].x,@spot_direction[idx].y,@spot_direction[idx].z] )
           GL.Lightfv( @light_id[idx], GL::DIFFUSE,  @diffuse[idx]  )
