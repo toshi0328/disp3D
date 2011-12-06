@@ -21,12 +21,12 @@ main_view.picker.start_rect_pick do |results|
     results.each do |result|
       result.node_path_info.each do |path_info|
         main_view.world_scene_graph.open do
-          node = Disp3D::NodeDB.find_by_name(path_info.node.name)
-          node.material_color = [1,0,0,1]
+          update :name => path_info.node.name,
+                 :material_color => [1,0,0,1]
         end
       end
-      main_view.update
     end
+    main_view.update
   end
 end
 

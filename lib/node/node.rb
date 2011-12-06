@@ -6,7 +6,7 @@ class Class
   def attr_for_disp(attribute)
     define_method "#{attribute}=" do |value|
       instance_variable_set("@#{attribute}", value)
-      update
+      update_for_display
     end
     define_method attribute do
       instance_variable_get "@#{attribute}"
@@ -62,11 +62,31 @@ protected
       else
         raise
       end
-      hash.each do | key, value |
-        next if( key == :geom or key == :type or key ==:name)
-        new_node.send( key.to_s+"=", value)
-      end
+      hash.delete(:geom)
+      hash.delete(:type)
+      hash.delete(:name)
+      new_node.update(hash)
       return new_node
+    end
+
+    # cannnot contains key :type and :name. they cannot be set
+    def update(hash)
+      if(hash.include?(:name))
+        node = NodeDB.find_by_name(hash[:name])
+        hash.delete(:name)
+        if(node.kind_of?(Array))
+          node.each do |item|
+            item.update(hash)
+          end
+        elsif(!node.nil?)
+          node.update(hash)
+        end
+      elsif
+        hash.each do | key, value |
+          next if( key == :type or key ==:name) # cannot change name and type
+          self.send( key.to_s+"=", value)
+        end
+      end
     end
 
     def delete(node_name)

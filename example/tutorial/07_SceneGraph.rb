@@ -37,6 +37,7 @@ main_view.mouse_press do |view, button, x, y|
   # result is Array of PickedResult
   results = view.picker.pick(x,y)
   if(results != nil)
+    picked_node_name = nil
     puts "hit #{results.size} elements"
     results.each_with_index do | result, idx |
       puts "====element #{idx}===="
@@ -44,6 +45,14 @@ main_view.mouse_press do |view, button, x, y|
       puts "instance id : #{result.node_path_info[0].node.instance_id}"
       puts "path id : #{result.node_path_info[0].path_id}"
       puts "=================="
+      picked_node_name = result.node_path_info[0].node.name
+    end
+    if(!picked_node_name.nil?)
+      main_view.world_scene_graph.open do
+        update :name => picked_node_name,
+               :material_color => [0,1,0,1]
+      end
+      main_view.update
     end
   end
 end

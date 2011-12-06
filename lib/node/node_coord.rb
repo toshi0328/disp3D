@@ -24,7 +24,7 @@ module Disp3D
       add(@z_node)
     end
 
-    def update
+    def update_for_display
       @x_node.geom = geom[0]
       @y_node.geom = geom[1]
       @z_node.geom = geom[2]

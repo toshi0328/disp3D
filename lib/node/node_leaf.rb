@@ -39,7 +39,7 @@ module Disp3D
       return box_transform(rtn_box)
     end
 
-    def update
+    def update_for_display
       @dislay_list_created = nil
     end
 

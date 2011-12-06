@@ -71,9 +71,9 @@ protected
       @children.reject!{|key, value| value == child_node}
     end
 
-    def update
+    def update_for_display
       @children.each do |key, node|
-        node.update
+        node.update_for_display
       end
     end
 private

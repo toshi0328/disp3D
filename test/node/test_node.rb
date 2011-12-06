@@ -57,8 +57,9 @@ class NodeTestCase < MiniTest::Unit::TestCase
     assert_equal([root_id, node04_id, node06_id, node08_id].sort, Disp3D::NodeDB.find_by_name(:node07).ancestors.sort)
   end
 
-  def test_create
+  def test_create_and_update
     node_group = Disp3D::NodeCollection.new()
+# create test
     node_group.open do
       create :type => :TeaPod,
              :size => 0.5,
@@ -82,6 +83,16 @@ class NodeTestCase < MiniTest::Unit::TestCase
              :pre_translate => Vector3.new(1,0,1),
              :post_translate => Vector3.new(1,0,1),
              :rotate => Quat.from_axis(Vector3.new(1,0,0), Math::PI)
+
+      create :type => :Points,
+             :geom => Vector3.new,
+             :name => :node14,
+             :colors => [1,1,0,1]
+
+      create :type => :Lines,
+             :geom => FiniteLine.new,
+             :name => :node14,
+             :colors => [1,1,0,1]
     end
 
     node10 = Disp3D::NodeDB.find_by_name(:node10)
@@ -105,6 +116,68 @@ class NodeTestCase < MiniTest::Unit::TestCase
     assert_equal( Vector3.new(1,0,1), node13.pre_translate)
     assert_equal( Vector3.new(1,0,1), node13.post_translate)
     assert_equal( Quat.from_axis(Vector3.new(1,0,0), Math::PI), node13.rotate)
+
+    node14 = Disp3D::NodeDB.find_by_name(:node14)
+    assert_equal( Array, node14.class)
+    node14.each do |node|
+      assert_equal( :node14, node.name)
+      assert_equal( [1,1,0,1], node.colors)
+      assert( [Disp3D::NodePoints, Disp3D::NodeLines].include?(node.class) )
+    end
+
+# update test
+    node_group.open do
+      update :name => :node10,
+             :size => 2.0
+
+      update :name => :node11,
+             :size => 4.0,
+             :geom => Vector3.new(3,2,1),
+             :pre_translate => Vector3.new(1,2,3),
+             :post_translate => Vector3.new(1,2,3),
+             :rotate => Quat.from_axis(Vector3.new(0,1,0), Math::PI/2.0)
+
+      update :name => :node12,
+             :geom => Vector3.new(),
+             :text => "this is node12 updated"
+
+      update :name => :node13,
+             :pre_translate => Vector3.new(3,2,1),
+             :post_translate => Vector3.new(3,2,-1),
+             :rotate => Quat.from_axis(Vector3.new(0,0,1), Math::PI)
+
+     update :name => :node14,
+             :colors => [0,1,1,1]
+    end
+
+    node10 = Disp3D::NodeDB.find_by_name(:node10)
+    assert_equal( Disp3D::NodeTeaPod, node10.class)
+    assert_equal( 2.0, node10.size)
+
+    node11 = Disp3D::NodeDB.find_by_name(:node11)
+    assert_equal( Disp3D::NodePoints, node11.class)
+    assert_equal( 4.0, node11.size)
+    assert_equal( Vector3.new(1,2,3), node11.pre_translate)
+    assert_equal( Vector3.new(1,2,3), node11.post_translate)
+    assert_equal( Quat.from_axis(Vector3.new(0,1,0), Math::PI/2.0), node11.rotate)
+
+    node12 = Disp3D::NodeDB.find_by_name(:node12)
+    assert_equal( Disp3D::NodeText, node12.class)
+    assert_equal( "this is node12 updated", node12.text )
+
+    node13 = Disp3D::NodeDB.find_by_name(:node13)
+    assert_equal( Disp3D::NodeCollection, node13.class)
+    assert_equal( Vector3.new(3,2,1), node13.pre_translate)
+    assert_equal( Vector3.new(3,2,-1), node13.post_translate)
+    assert_equal( Quat.from_axis(Vector3.new(0,0,1), Math::PI), node13.rotate)
+
+    node14 = Disp3D::NodeDB.find_by_name(:node14)
+    assert_equal( Array, node14.class)
+    node14.each do |node|
+      assert_equal( :node14, node.name)
+      assert_equal( [0,1,1,1], node.colors)
+      assert( [Disp3D::NodePoints, Disp3D::NodeLines].include?(node.class) )
+    end
   end
 
   def test_box_trans_form
