@@ -158,7 +158,7 @@ class NodeCollectionTestCase < MiniTest::Unit::TestCase
 
     node_collection.rotate = Quat.from_axis(Vector3.new(1,0,0), angle_45)
     bb = node_collection.box
-    assert_equal(Vector3.new(0, 0,            -Math.sqrt(2)), bb.min_point)
-    assert_equal(Vector3.new(2, 2*Math.sqrt(2),Math.sqrt(2)), bb.max_point)
+    assert_equal(Vector3.new(0, -Math.sqrt(2), 0), bb.min_point)
+    assert_equal(Vector3.new(2, Math.sqrt(2), 2*Math.sqrt(2),), bb.max_point)
   end
 end

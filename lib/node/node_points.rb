@@ -16,6 +16,7 @@ protected
       if(@geom)
         GL.PointSize(@size)
         draw_color
+        GL.Enable(GL::POINT_SMOOTH)
         GL.Begin(GL::POINTS)
         if(@geom.kind_of?(GMath3D::Vector3))
           GL.Vertex( @geom.x, @geom.y, @geom.z )
