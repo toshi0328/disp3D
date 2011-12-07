@@ -16,6 +16,7 @@ main_view.world_scene_graph.open do
   end
 end
 
+main_view.picker.max_select_count = 3000
 main_view.picker.start_rect_pick do |results|
   if(results != nil)
     results.each do |result|

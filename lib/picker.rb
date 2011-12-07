@@ -3,6 +3,7 @@ require 'disp3D'
 module Disp3D
   class Picker
     attr_reader :pick_mode
+    attr_accessor :max_select_count
     # pick modes
     NONE = 0
     RECT_PICK = 1
@@ -62,7 +63,7 @@ module Disp3D
         end
         picked_result.push(PickedResult.new(node_info, screen_pos, unprojected, near, far))
       end
-      @pick_done_process.call(picked_result) if(!@pick_done_process.nil?)
+      @post_pick_process.call(picked_result) if(!@post_pick_process.nil?)
       return picked_result
     end
 
@@ -102,12 +103,12 @@ module Disp3D
 
     def start_rect_pick(&block)
       @pick_mode = RECT_PICK
-      @pick_done_process = block
+      @post_pick_process = block
     end
 
     def end_rect_pick
       @pick_mode = NONE
-      @pick_done_process = nil
+      @post_pick_process = nil
     end
 
 private
