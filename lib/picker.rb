@@ -4,9 +4,12 @@ module Disp3D
   class Picker
     attr_reader :pick_mode
     attr_accessor :max_select_count
+
     # pick modes
     NONE = 0
-    RECT_PICK = 1
+    POINT_PICK = 1
+    LINE_PICK = 2
+    RECT_PICK = 3
 
     def initialize(view)
       @view = view
@@ -14,6 +17,90 @@ module Disp3D
       @pick_mode = NONE
     end
 
+    def point_pick(x,y)
+      pick(x, y)
+    end
+
+    def post_picked(&block)
+      @post_pick_process = block
+    end
+
+    def start_point_pick(&block)
+      @pick_mode = POINT_PICK
+      post_picked(&block) if(block_given?)
+    end
+
+    def start_line_pick(&block)
+      @pick_mode = LINE_PICK
+      post_picked(&block) if(block_given?)
+    end
+
+    def start_rect_pick(&block)
+      @pick_mode = RECT_PICK
+      post_picked(&block) if(block_given?)
+    end
+
+    def end_pick
+      @pick_mode = NONE
+    end
+
+    # users donot need to use this.
+    def mouse(button,state,x,y)
+      return if(@pick_mode == NONE)
+      if(button == GLUT::GLUT_LEFT_BUTTON && state == GLUT::GLUT_DOWN)
+        if(@pick_mode == POINT_PICK)
+          picked_result = point_pick(x,y)
+          @post_pick_process.call(picked_result) if(!@post_pick_process.nil?)
+          return
+        elsif(@pick_mode == LINE_PICK)
+          @line_start_result = point_pick(x,y)
+        end
+        @last_pos = Vector3.new(x, y)
+        @rubber_band = false
+      elsif(button == GLUT::GLUT_LEFT_BUTTON && state == GLUT::GLUT_UP)
+        if(@pick_mode == LINE_PICK)
+          draw_rubber_band(FiniteLine.new(@last_pos, @save_pos)) # delete rubber band
+          line_end_result =  pick(x, y)
+          @post_pick_process.call(@line_start_result, line_end_result) if(!@post_pick_process.nil?)
+          @line_start_result = nil
+        elsif(@pick_mode == RECT_PICK)
+          draw_rubber_band(Box.new(@last_pos, @save_pos)) # delete rubber band
+          pick_x = (x + @last_pos.x)/2
+          pick_y = (y + @last_pos.y)/2
+          width  = (x - @last_pos.x).abs
+          height = (y - @last_pos.y).abs
+          picked_result = pick(pick_x, pick_y, width, height)
+          @post_pick_process.call(picked_result) if(!@post_pick_process.nil?)
+        end
+        @save_pos = nil
+        @last_pos = nil
+        @rubber_band = false
+      end
+    end
+
+    # users donot need to use this.
+    # return if picking process is in progress?
+    def motion(x,y)
+      return false if(@pick_mode == NONE || @last_pos.nil?)
+      if(@pick_mode == LINE_PICK)
+        if(@rubber_band)
+          draw_rubber_band([FiniteLine.new(@last_pos, @save_pos), FiniteLine.new(@last_pos, Vector3.new(x,y))])
+        else
+          draw_rubber_band(FiniteLine.new(@last_pos, Vector3.new(x,y)))
+        end
+      elsif(@pick_mode == RECT_PICK)
+        if(@rubber_band)
+          draw_rubber_band([Box.new(@last_pos, @save_pos), Box.new(@last_pos, Vector3.new(x,y))])
+        else
+          draw_rubber_band(Box.new(@last_pos, Vector3.new(x,y)))
+        end
+      end
+      @save_pos = Vector3.new(x, y)
+      @rubber_band=true
+      return true
+    end
+
+private
     def pick(x, y, width = 1, height = 1)
       vp = GL.GetIntegerv(GL::VIEWPORT)
 
@@ -63,55 +150,9 @@ module Disp3D
         end
         picked_result.push(PickedResult.new(node_info, screen_pos, unprojected, near, far))
       end
-      @post_pick_process.call(picked_result) if(!@post_pick_process.nil?)
       return picked_result
     end
 
-    def mouse(button,state,x,y)
-      if(button == GLUT::GLUT_LEFT_BUTTON && state == GLUT::GLUT_DOWN)
-        @last_pos = Vector3.new(x, y)
-        @rubber_band = false
-      elsif(button == GLUT::GLUT_LEFT_BUTTON && state == GLUT::GLUT_UP)
-        if(@pick_mode == RECT_PICK)
-          draw_rubber_band(Box.new(@last_pos, @save_pos)) # delete rubber band
-          pick_x = (x + @last_pos.x)/2
-          pick_y = (y + @last_pos.y)/2
-          width  = (x - @last_pos.x).abs
-          height = (y - @last_pos.y).abs
-          pick(pick_x, pick_y, width, height)
-        end
-        @save_pos = nil
-        @last_pos = nil
-        @rubber_band = false
-      end
-    end
-
-    # return if picking process is in progress?
-    def motion(x,y)
-      return false if(@pick_mode == NONE || @last_pos.nil?)
-      if(@pick_mode == RECT_PICK)
-        if(@rubber_band)
-          draw_rubber_band([Box.new(@last_pos, @save_pos), Box.new(@last_pos, Vector3.new(x,y))])
-        else
-          draw_rubber_band(Box.new(@last_pos, Vector3.new(x,y)))
-        end
-        @save_pos = Vector3.new(x, y)
-        @rubber_band=true
-        return true
-      end
-    end
-
-    def start_rect_pick(&block)
-      @pick_mode = RECT_PICK
-      @post_pick_process = block
-    end
-
-    def end_rect_pick
-      @pick_mode = NONE
-      @post_pick_process = nil
-    end
-
-private
     def pre_rubber_band_process
       dmy,dmy, w,h = GL.GetIntegerv(GL::VIEWPORT)
       @view.camera.set_projection_for_camera_scene

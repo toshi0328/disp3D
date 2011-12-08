@@ -52,10 +52,7 @@ main_view.world_scene_graph.open do
           :name => :cube3
 end
 
-main_view.mouse_press do |view, button, x, y|
-  next if( button != GLUT::LEFT_BUTTON )
-  # result is Array of PickedResult
-  results = view.picker.pick(x,y)
+main_view.picker.post_picked do |results|
   if(results != nil)
     puts "hit #{results.size} elements"
     results.each_with_index do | result, idx |
@@ -68,6 +65,11 @@ main_view.mouse_press do |view, button, x, y|
       puts "=================="
     end
   end
+end
+
+main_view.mouse_press do |view, button, x, y|
+  next if( button != GLUT::LEFT_BUTTON )
+  view.picker.start_point_pick
 end
 
 main_view.start

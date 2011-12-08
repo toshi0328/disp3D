@@ -11,7 +11,7 @@ class PickerTestCase < MiniTest::Unit::TestCase
     gl_view.world_scene_graph.add(rect_node)
     gl_view.fit
 
-    picked_result = gl_view.picker.pick(200,149)
+    picked_result = gl_view.picker.point_pick(200,149)
     assert_equal(1, picked_result.size)
     picked_world_pos = picked_result[0].world_position
 
@@ -26,7 +26,7 @@ class PickerTestCase < MiniTest::Unit::TestCase
     translate = Vector3.new(0.1, -0.3, 0.0)
     gl_view.camera.pre_translate = translate
 
-    picked_result = gl_view.picker.pick(200,149)
+    picked_result = gl_view.picker.point_pick(200,149)
     assert_equal(1, picked_result.size)
     picked_world_pos = picked_result[0].world_position
     assert_in_delta(-0.1, picked_world_pos.x, precision)
@@ -39,7 +39,7 @@ class PickerTestCase < MiniTest::Unit::TestCase
     translate = Vector3.new(10, -3, 0.0)
     gl_view.camera.pre_translate = translate
 
-    picked_result = gl_view.picker.pick(200,149)
+    picked_result = gl_view.picker.point_pick(200,149)
     assert_equal(0, picked_result.size)
   end
 
@@ -50,7 +50,7 @@ class PickerTestCase < MiniTest::Unit::TestCase
     gl_view.world_scene_graph.add(box_node)
     gl_view.fit
 
-    picked_result = gl_view.picker.pick(200,149)
+    picked_result = gl_view.picker.point_pick(200,149)
     assert_equal(1, picked_result.size)
     picked_world_pos = picked_result[0].world_position
 
@@ -64,7 +64,7 @@ class PickerTestCase < MiniTest::Unit::TestCase
     # rotate model
     angle_45 = 45.0*Math::PI/180.0
     gl_view.camera.rotate = Quat.from_axis(Vector3.new(1,0,0), angle_45)
-    picked_result = gl_view.picker.pick(200,149)
+    picked_result = gl_view.picker.point_pick(200,149)
 
     assert_equal(1, picked_result.size)
     picked_world_pos = picked_result[0].world_position
@@ -86,7 +86,7 @@ class PickerTestCase < MiniTest::Unit::TestCase
     gl_view.fit
 
     precision = 0.001
-    picked_results = gl_view.picker.pick(200,149)
+    picked_results = gl_view.picker.point_pick(200,149)
     assert_equal(2, picked_results.size)
     picked_results.each do |picked|
       assert_equal(1, picked.node_path_info.size)
