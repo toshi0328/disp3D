@@ -49,44 +49,6 @@ module Disp3D
       @world_scene_graph = target_view.world_scene_graph
     end
 
-    def gl_display()
-      GL.DrawBuffer( GL::BACK )
-      GL.ClearColor(@bk_color[0],@bk_color[1],@bk_color[2],@bk_color[3])
-      GL.Clear(GL::GL_COLOR_BUFFER_BIT | GL::GL_DEPTH_BUFFER_BIT)
-
-      return if(@camera.nil? or @light.nil?)
-
-      GL.Enable(GL::GL_DEPTH_TEST)
-      @camera.set_projection_for_world_scene
-      gl_display_world_scene_graph()
-      GL.Disable(GL::GL_DEPTH_TEST)
-      @camera.set_projection_for_camera_scene
-      gl_display_camera_scene_graph()
-      @compass.gl_display(self)
-    end
-
-    def gl_display_world_scene_graph()
-      return if(@world_scene_graph.nil?)
-      GL.MatrixMode(GL::GL_MODELVIEW)
-      GL.PushMatrix()
-      GL.LoadIdentity()
-      @camera.apply_position()
-      @camera.apply_attitude()
-      @light.gl_display()
-      @world_scene_graph.gl_display(self)
-      GL.PopMatrix()
-    end
-
-    def gl_display_camera_scene_graph()
-      return if(@camera_scene_graph.nil?)
-      GL.MatrixMode(GL::GL_MODELVIEW)
-      GL.PushMatrix()
-      GL.LoadIdentity()
-      GLU.LookAt(0, 0, 1, 0, 0, 0, 0, 1, 0)
-      @camera_scene_graph.gl_display(self)
-      GL.PopMatrix()
-    end
-
     def capture
       dmy,dmy, w, h = @camera.viewport
       gl_display
@@ -117,6 +79,7 @@ module Disp3D
       @manipulator.centering(@world_scene_graph)
     end
 
+
     def mouse_move(&block)
       @mouse_move_proc = block
     end
@@ -127,6 +90,46 @@ module Disp3D
 
     def mouse_release(&block)
       @mouse_release_proc = block
+    end
+
+    def gl_display()
+      GL.DrawBuffer( GL::BACK )
+      GL.ClearColor(@bk_color[0],@bk_color[1],@bk_color[2],@bk_color[3])
+      GL.Clear(GL::GL_COLOR_BUFFER_BIT | GL::GL_DEPTH_BUFFER_BIT)
+
+      return if(@camera.nil? or @light.nil?)
+
+      GL.Enable(GL::GL_DEPTH_TEST)
+      @camera.set_projection_for_world_scene
+      gl_display_world_scene_graph()
+      GL.Disable(GL::GL_DEPTH_TEST)
+      @camera.set_projection_for_camera_scene
+      gl_display_camera_scene_graph()
+      @compass.gl_display(self)
+    end
+
+    # users do not need to user them
+    #=====================================
+    def gl_display_world_scene_graph()
+      return if(@world_scene_graph.nil?)
+      GL.MatrixMode(GL::GL_MODELVIEW)
+      GL.PushMatrix()
+      GL.LoadIdentity()
+      @camera.apply_position()
+      @camera.apply_attitude()
+      @light.gl_display()
+      @world_scene_graph.gl_display(self)
+      GL.PopMatrix()
+    end
+
+    def gl_display_camera_scene_graph()
+      return if(@camera_scene_graph.nil?)
+      GL.MatrixMode(GL::GL_MODELVIEW)
+      GL.PushMatrix()
+      GL.LoadIdentity()
+      GLU.LookAt(0, 0, 1, 0, 0, 0, 0, 1, 0)
+      @camera_scene_graph.gl_display(self)
+      GL.PopMatrix()
     end
 
     def reshape(w,h)

@@ -73,21 +73,17 @@ class QTWidgetController < Qt::Widget
   end
 
   def fit
-    @gl_widget.gl_view.fit
+    @gl_widget.fit
     @gl_widget.updateGL
   end
 
   def centering
-    @gl_widget.gl_view.centering
+    @gl_widgetcentering
     @gl_widget.updateGL
   end
 
   def change_projection
-    if(@gl_widget.gl_view.camera.is_orth)
-      @gl_widget.gl_view.camera.is_orth = false
-    else
-      @gl_widget.gl_view.camera.is_orth = true
-    end
+    @gl_widget.camera.switch_projection
     @gl_widget.updateGL
   end
 

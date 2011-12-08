@@ -27,8 +27,8 @@ class DocumentCtrl
 
 # 更新といっても、ノードの入れ替え、色の変更、フィットさせるだけなど、様々と思うが・・・
   def update
-    @main_window.gl_widget.gl_view.world_scene_graph.add(@document.tri_node)
-    @main_window.gl_widget.gl_view.fit
+    @main_window.gl_widget.world_scene_graph.add(@document.tri_node)
+    @main_window.gl_widget.fit
     @main_window.gl_widget.updateGL
 
     @main_window.ctrl_widget.vert_cnt = @document.tri_mesh.vertices.size

@@ -32,6 +32,14 @@ module Disp3D
       @orth_scale = 1.0
     end
 
+    def switch_projection
+      if(@projection == PERSPECTIVE)
+        @projection = ORTHOGONAL
+      else
+        @projection = PERSPECTIVE
+      end
+    end
+
     def reshape(w,h)
       GL.Viewport(0.0,0.0,w,h)
       set_projection_for_world_scene

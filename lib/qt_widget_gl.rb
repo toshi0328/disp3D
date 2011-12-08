@@ -1,12 +1,19 @@
+require 'forwardable'
 require 'Qt'
 require 'disp3D'
 
 include Disp3D
 class QtWidgetGL < Qt::GLWidget
+  extend Forwardable
+
   attr_accessor :width
   attr_accessor :height
 
   attr_reader :load_proc
+
+  def_delegators :@view, :camera, :world_scene_graph, :camera_scene_graph
+  def_delegators :@view, :manipulator, :light, :picker
+  def_delegators :@view, :sync_to, :capture, :fit, :centering
 
   def initialize(parent, width = 400, height = 400)
     super(parent)
@@ -19,10 +26,6 @@ class QtWidgetGL < Qt::GLWidget
 
   def dispose()
     super
-  end
-
-  def gl_view
-    @view
   end
 
   def set_load_proc(proc)
@@ -83,6 +86,5 @@ class QtWidgetGL < Qt::GLWidget
       @idle_proc.call
     end
   end
-
 end
 
