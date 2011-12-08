@@ -1,60 +1,42 @@
 = disp3D
-本ライブラリは、Qtと組み合わせて、3次元の表示が簡単に可能なフレームワークを提供する目的で開発されています。ターゲットは、簡単なアプリ、プロトタイピング、学術利用などを想定しています。
+disp3D is a library for 3D application without call opengl function. Writing OpenGL function is time-cosuming and boring. You can display 3D objects very easily as you want with this library. 
 
-以下のような特徴を持つようなライブラリを目指します。
-- シンプルで使いやすく！
-- Rubyでの開発が可能
-- windows,mac,linuxなどプラットフォームを問わない
-
-また、ゲーム、CGや大規模モデルなどは当面の目標からは外れます。
-
-== インストール
-ライブラリは以下の３つのgemに依存しています。
+== INSTALLING
+This library depends on these Gems.
 - gmath3D
 - ruby-opengl
 - rmagick
-- qtbindings(オプション)
+- qtbindings(optional)
 
-== 使い方
-=== 例
-1.点や線を３次元ビュー上に追加し、表示する
-開発中
+To install it, just type...
 
-2.Qtアプリケーションとして開発をする
-開発中
+    $ gem install disp3D
 
-3.STLファイルを読み込み、表示する
-開発中
+'disp3d' is call most of the classes in the lib (except for qt-components).
 
-4.表示要素をマウス操作で取得する
-開発中
+== RUNNING
+This is the first code you type.
 
-=== データ構造
-中心となるクラスは、GLViewおよびSceneGraphです。
-執筆中
+    require 'disp3D'
 
-== 今後の課題
-=== 開発項目
-- デモアプリ（STLビューワー）
-　- QTでのアプリケーション設計
-　- tri_nodeの法線方向指定
-- インディケート処理の追加
-- trackball manipulatorを洗練させる
-　- 回転中心を変えるとか・・・
-- DSLの設計
-- 自動テスト構築
-- Windowsでの利用(なぜか、インストールでエラー・・・)
-- ライティングの工夫、表示の洗練
-- ドキュメント整理(html?)
-- テクスチャの貼り付け
-- データの可視化としての応用
-- アニメーション
-- モバイル応用
+    # create view with GLUTWindow, then set width, height and window title
+    main_view = Disp3D::GLUTWindow.new(400,400, "01_HelloWorld")
 
-=== 他ライブラリとの組み合わせ
-- 3次元画像処理,pclの利用
-- 医用応用として、DICOMパーサー(Ruby-DICOM)の利用
-- 2次元画像処理、RMagicに任せる・・・（Ruby-DICOMとのつなぎなど）
+    # open world scene graph view has
+    main_view.world_scene_graph.open do
+      # put TeaPod which color is Red and size is 10 
+      add_new :type => :TeaPod,
+              :material_color => [1,0,0,1],
+              :size => 10.0
+    end
+
+    # set parameter for camera
+    main_view.camera.projection = Disp3D::Camera::ORTHOGONAL
+
+    # finally show window!
+    main_view.start
+
+see example/tutorial/*.rb for more details.
 
 == Copyright
 
