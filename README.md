@@ -1,8 +1,10 @@
-=disp3D
+disp3D
+=======
 
 disp3D is a library for 3D application without call opengl function. Writing OpenGL function is time-cosuming and boring. You can display 3D objects very easily as you want with this library. 
 
-==INSTALLING
+INSTALLING
+============
 
 This library depends on these Gems.
 
@@ -15,7 +17,8 @@ To install it, just type...
 
     $ gem install disp3D
 
-== RUNNING
+RUNNING
+============
 
 Require 'disp3d', then you can use most of the classes in the lib (except for qt-components).
 
@@ -45,7 +48,8 @@ You can see a teapod is shown in the window. you can rotate it with mouse L butt
 
 see example/tutorial/*.rb for more details.
 
-== Copyright
+Copyright
+============
 
 Copyright (c) 2011 Toshiyasu Shimizu. See LICENSE.txt for
 further details.
