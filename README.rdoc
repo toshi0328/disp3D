@@ -36,6 +36,9 @@ This is the first code you type.
     # finally show window!
     main_view.start
 
+You can see a teapod displayed in the window.
+![image](https://github.com/toshi0328/wiki/blob/master/images/disp3D/HelloWorld01.png?raw=true)
+
 see example/tutorial/*.rb for more details.
 
 == Copyright
