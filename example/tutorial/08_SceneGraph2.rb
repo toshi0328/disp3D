@@ -33,26 +33,27 @@ main_view.world_scene_graph.open do
 end
 
 main_view.mouse_press do |view, button, x, y|
-  results = view.picker.pick(x,y)
-  if(results != nil)
-    # remove node path when left button pressed
-    if( button == GLUT::LEFT_BUTTON )
-      path_id_ary = results.collect {| result | result.node_path_info[0].path_id }
-      main_view.world_scene_graph.open do
-        path_id_ary.each do |path_id|
-          remove path_id
+  # remove node path when left button pressed
+  if( button == GLUT::LEFT_BUTTON )
+    view.picker.start_point_pick do |results|
+      if(results != nil)
+        path_id_ary = results.collect {| result | result.node_path_info[0].path_id }
+        main_view.world_scene_graph.open do
+          path_id_ary.each do |path_id|
+            remove path_id
+          end
         end
+        main_view.update
       end
-      main_view.update
     end
+  end
 
-    # delete node when right button pressed
-    if( button == GLUT::RIGHT_BUTTON )
-      main_view.world_scene_graph.open do
-        delete :cube0
-      end
-      main_view.update
+  # delete node when right button pressed
+  if( button == GLUT::RIGHT_BUTTON )
+    main_view.world_scene_graph.open do
+      delete :cube0
     end
+    main_view.update
   end
 end
 

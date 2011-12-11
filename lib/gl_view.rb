@@ -79,7 +79,6 @@ module Disp3D
       @manipulator.centering(@world_scene_graph)
     end
 
-
     def mouse_move(&block)
       @mouse_move_proc = block
     end

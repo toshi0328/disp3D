@@ -18,17 +18,17 @@ class TestQTGLWindow < Qt::Widget
 
   def showEvent(eventArg)
     if( @is_first_show )
-      @gl_widget1.gl_view.world_scene_graph.open do
+      @gl_widget1.world_scene_graph.open do
         add_new :type => :TeaPod,
                 :material_color => [1,1,0,1],
                 :size => 10.0,
                 :name => :pod
       end
-      @gl_widget2.gl_view.sync_to @gl_widget1.gl_view
-      @gl_widget1.gl_view.camera.projection = Disp3D::Camera::ORTHOGONAL
-      @gl_widget1.gl_view.fit
-      @gl_widget2.gl_view.camera.projection = Disp3D::Camera::ORTHOGONAL
-      @gl_widget2.gl_view.fit
+      @gl_widget2.sync_to @gl_widget1
+      @gl_widget1.camera.projection = Disp3D::Camera::ORTHOGONAL
+      @gl_widget1.fit
+      @gl_widget2.camera.projection = Disp3D::Camera::PERSPECTIVE
+      @gl_widget2.fit
       @is_first_show = false
     end
   end

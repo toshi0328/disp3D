@@ -17,7 +17,7 @@ module Disp3D
       Util3D.check_arg_type(Magick::Image, texture_image, true)
       @image = texture_image
       initialize_texture
-      update
+      update_for_display
     end
 
 protected

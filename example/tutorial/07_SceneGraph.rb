@@ -32,10 +32,7 @@ main_view.world_scene_graph.open do
   end
 end
 
-main_view.mouse_press do |view, button, x, y|
-  next if( button != GLUT::LEFT_BUTTON )
-  # result is Array of PickedResult
-  results = view.picker.pick(x,y)
+main_view.picker.post_picked do |results|
   if(results != nil)
     picked_node_name = nil
     puts "hit #{results.size} elements"
@@ -55,6 +52,12 @@ main_view.mouse_press do |view, button, x, y|
       main_view.update
     end
   end
+end
+
+
+main_view.mouse_press do |view, button, x, y|
+  next if( button != GLUT::LEFT_BUTTON )
+  view.picker.start_point_pick
 end
 
 main_view.start
