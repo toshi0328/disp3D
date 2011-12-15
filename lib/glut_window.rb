@@ -3,9 +3,10 @@ require 'disp3D'
 module Disp3D
   class GLUTWindow < GLView
     GLUT.Init
-    def initialize(width, height, title = "")
+    def initialize(width, height, title = "", vert_file = nil, frag_file = nil)
       x = 100
       y = 100
+
       GLUT.InitWindowPosition(x, y)
       GLUT.InitWindowSize(width, height)
       GLUT.InitDisplayMode(GLUT::GLUT_DOUBLE | GLUT::GLUT_RGB | GLUT::GLUT_DEPTH)
@@ -16,7 +17,7 @@ module Disp3D
       GLUT.MouseFunc(method(:mouse).to_proc())
       GLUT.MotionFunc(method(:motion).to_proc())
       GLUT.PassiveMotionFunc(method(:motion).to_proc())
-      super(width, height)
+      super(width, height, vert_file, frag_file)
     end
 
     def update

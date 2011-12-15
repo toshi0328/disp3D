@@ -16,7 +16,7 @@ module Disp3D
 
     attr_accessor :bk_color
 
-    def initialize(width, height)
+    def initialize(width, height, vert_filename, frag_filename)
       GL.FrontFace(GL::GL_CW)
 
       GL.Enable(GL::GL_AUTO_NORMAL)
@@ -43,6 +43,7 @@ module Disp3D
       @mouse_move_proc = nil
       @mouse_press_proc = nil
       @mouse_release_proc = nil
+      init_shader(vert_filename, frag_filename)
     end
 
     def sync_to target_view
@@ -155,6 +156,41 @@ module Disp3D
         return false
       end
       return @manipulator.motion(x, y)
+    end
+
+private
+    def init_shader(vert_filename, frag_filename)
+      if(!vert_filename.nil? && !frag_filename.nil?)
+        vert_shader = GL.CreateShader GL_VERTEX_SHADER
+        frag_shader = GL.CreateShader GL_FRAGMENT_SHADER
+
+        File.open(vert_filename, "rb") { |file|
+          GL.ShaderSource  vert_shader, file.read
+          GL.CompileShader vert_shader
+          success = GL.GetShaderiv   vert_shader, GL_COMPILE_STATUS
+          if(success == false)
+            p "failed to compile vertex shader!"
+          end
+        }
+        File.open(frag_filename, "rb") { |file|
+          GL.ShaderSource  frag_shader, file.read
+          GL.CompileShader frag_shader
+          success = GL.GetShaderiv   frag_shader, GL_COMPILE_STATUS
+          if(success == false)
+            p "failed to compile fragment shader!"
+          end
+        }
+
+        @shader = GL.CreateProgram
+        GL.AttachShader @shader, vert_shader
+        GL.AttachShader @shader, frag_shader
+        GL.LinkProgram  @shader
+        GL.GetProgramiv @shader, GL_LINK_STATUS
+        GL.UseProgram   @shader
+
+        GL.DeleteShader vert_shader
+        GL.DeleteShader frag_shader
+      end
     end
   end
 end

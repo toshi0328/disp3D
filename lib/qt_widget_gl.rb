@@ -15,13 +15,16 @@ class QtWidgetGL < Qt::GLWidget
   def_delegators :@view, :manipulator, :light, :picker
   def_delegators :@view, :sync_to, :capture, :fit, :centering
 
-  def initialize(parent, width = 400, height = 400)
+  def initialize(parent, width = 400, height = 400, vert_file = nil, frag_file = nil)
     super(parent)
     @width = width
     @height = height
 
     @min_width = 50
     @min_height = 50
+
+    @vert_filename = vert_file
+    @frag_filename = frag_file
   end
 
   def dispose()
@@ -33,7 +36,7 @@ class QtWidgetGL < Qt::GLWidget
   end
 
   def initializeGL()
-    @view = Disp3D::GLView.new(@width, @height)
+    @view = Disp3D::GLView.new(@width, @height, @vert_filename, @frag_filename)
   end
 
   def minimumSizeHint()
