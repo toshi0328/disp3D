@@ -6,5 +6,5 @@ group :development do
   gem "glu"
   gem "glut"
   gem "rmagick"
-  gem 'minitest', '~> 4.5'
+  gem 'minitest', '~> 5.5'
 end

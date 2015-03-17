@@ -1,9 +1,6 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'helper'
 
-MiniTest::Unit.autorun
-
-class PickerTestCase < MiniTest::Unit::TestCase
+class PickerTestCase < Minitest::Test
   def test_pick_plane
     gl_view = Disp3D::GLUTWindow.new(400, 300)
     rect_geom = Rectangle.new(Vector3.new(-1,-1,2), Vector3.new(2,0,0), Vector3.new(0,2,0))

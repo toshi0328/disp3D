@@ -1,9 +1,6 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'helper'
 
-MiniTest::Unit.autorun
-
-class STLTestCase < MiniTest::Unit::TestCase
+class STLTestCase < Minitest::Test
   def setup
     @file_path_ascii = File.dirname(__FILE__) + "/data/cube-ascii.stl"
     @file_path_binary = File.dirname(__FILE__) + "/data/cube-binary.stl"

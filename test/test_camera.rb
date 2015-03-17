@@ -1,9 +1,6 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'helper'
 
-MiniTest::Unit.autorun
-
-class CameraTestCase < MiniTest::Unit::TestCase
+class CameraTestCase < Minitest::Test
   def setup
     gl_view = Disp3D::GLUTWindow.new(400, 300)
     @camera = gl_view.camera

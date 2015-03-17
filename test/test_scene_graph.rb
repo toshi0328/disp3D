@@ -1,9 +1,6 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'helper'
 
-MiniTest::Unit.autorun
-
-class SceneGraphTestCase < MiniTest::Unit::TestCase
+class SceneGraphTestCase < Minitest::Test
   def setup
     # GL must be initialized...
     @gl_view_has_line = Disp3D::GLUTWindow.new(300, 300)
