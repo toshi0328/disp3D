@@ -1,10 +1,6 @@
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..'))
-
 require 'helper'
 
-MiniTest::Unit.autorun
-
-class NodeArrowsTestCase < MiniTest::Unit::TestCase
+class NodeArrowsTestCase < Minitest::Test
   def setup
     # gl initalized befor creating node
    @gl_view = Disp3D::GLUTWindow.new(300, 300)

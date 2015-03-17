@@ -1,8 +1,12 @@
 source "http://rubygems.org"
+
+gem "gmath3D", "~> 1.0.0"
+gem "opengl", "~> 0.9.2"
+gem "glu"
+gem "glut"
+gem "rmagick"
+
 group :development do
-  gem "bundler", "~> 1.0.0"
   gem "jeweler", "~> 1.6.4" 
-  gem "gmath3D", "~> 1.0.0"
-  gem "ruby-opengl", "0.60.1"
-  gem "rmagick"
+  gem 'minitest', '~> 5.5'
 end

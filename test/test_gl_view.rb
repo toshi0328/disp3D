@@ -1,9 +1,6 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'helper'
 
-MiniTest::Unit.autorun
-
-class GLViewTestCase < MiniTest::Unit::TestCase
+class GLViewTestCase < Minitest::Test
   def setup
     @gl_view_has_line = Disp3D::GLUTWindow.new(300, 300)
     line_geom = GMath3D::FiniteLine.new(GMath3D::Vector3.new(0,0,0), GMath3D::Vector3.new(1,1,1))

@@ -1,4 +1,5 @@
 require 'disp3D'
+require 'glut'
 
 module Disp3D
   class GLUTWindow < GLView

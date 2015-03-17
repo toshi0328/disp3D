@@ -1,9 +1,6 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'helper'
 
-MiniTest::Unit.autorun
-
-class ManipulatorTestCase < MiniTest::Unit::TestCase
+class ManipulatorTestCase < Minitest::Test
   def setup
     @gl_view = Disp3D::GLUTWindow.new(300, 300)
   end
