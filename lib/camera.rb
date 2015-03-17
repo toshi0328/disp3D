@@ -1,4 +1,5 @@
 require 'disp3D'
+require 'glu'
 
 module Disp3D
   class Camera
