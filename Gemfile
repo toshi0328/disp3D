@@ -4,4 +4,5 @@ group :development do
   gem "gmath3D", "~> 1.0.0"
   gem "ruby-opengl", "0.60.1"
   gem "rmagick"
+  gem 'minitest', '~> 4.5'
 end
